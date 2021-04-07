@@ -93,11 +93,13 @@ public class ExploreScreenActivity extends AppCompatActivity {
             */
             ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face);
             ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face);
+            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face);
+            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face);
             //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
             cardList.add(item1);
             cardList.add(item2);
-
-
+            cardList.add(item3);
+            cardList.add(item4);
         }
     }
 
