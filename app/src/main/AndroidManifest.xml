@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ExploreScreenActivity" />
+        <activity android:name=".FavoriteActivity"/>
+        <activity android:name=".LandingPage"/>
     </application>
 
 </manifest>
