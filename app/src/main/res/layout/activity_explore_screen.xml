@@ -157,6 +157,14 @@
     </HorizontalScrollView>
 
 
+    <!-- Explore instead of profile on nav bar -->
+    <!-- have Home as the landing page with stats -->
+    <!-- Profile put in hamburger menu -->
+    <!-- Profile display all their trophies and avgs -->
+    <!-- are same stats on the landing page? -->
+    <!-- landing page showing current steps out of your goal
+    and active challenges, like a snapshot for today here's what you got -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

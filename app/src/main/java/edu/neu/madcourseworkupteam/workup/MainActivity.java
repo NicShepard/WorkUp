@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // start new intent
-                Intent intent = new Intent(MainActivity.this, ExploreScreenActivity.class);
+                Intent intent = new Intent(MainActivity.this, LandingPage.class);
                 intent.putExtra("CURRENT_USER", currentUser.getText().toString());
                 startActivity(intent);
             }

@@ -67,15 +67,15 @@ public class ExploreScreenActivity extends AppCompatActivity {
             menuItem -> {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_home:
-                        Intent explore_intent = new Intent(this, ExploreScreenActivity.class);
+                        Intent explore_intent = new Intent(this, LandingPage.class);
                         startActivity(explore_intent);
                         return true;
                     case R.id.navigation_favorite:
                         Intent fav_intent = new Intent(this, FavoriteActivity.class);
                         startActivity(fav_intent);
                         return true;
-                    case R.id.navigation_profile:
-                        Intent prof_intent = new Intent(this, ProfileActivity.class);
+                    case R.id.navigation_explore:
+                        Intent prof_intent = new Intent(this, ExploreScreenActivity.class);
                         startActivity(prof_intent);
                         return true;
                 }
