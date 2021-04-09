@@ -7,15 +7,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class LandingPage extends AppCompatActivity {
 
     ProgressBar simpleProgressBar;
+    TextView text_prog;
+
     private static final String TAG = "LANDINGPAGE ACTIVITY";
 
     // exercise database reference
@@ -23,14 +27,13 @@ public class LandingPage extends AppCompatActivity {
     // card clicks
 
     private RecyclerView rView;
-    private ArrayList<ExerciseCard> cardList = new ArrayList<>();
-    private ExerciseAdapter exerciseAdapter;
+    private ArrayList<ChallengeCard> cardList = new ArrayList<>();
+    private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
     private String currentUser;
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
-    private static final String ACTIVE_FRAGMENT = "ACTIVE_FRAGMENT";
     BottomNavigationView bottomNavigation;
 
     //private DatabaseReference database;
@@ -40,16 +43,17 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
 
+        text_prog = (TextView) findViewById(R.id.text_view_progress);
         simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
-        simpleProgressBar.setMax(100); // 100 maximum value for the progress bar
-        simpleProgressBar.setProgress(50); // 50 default progress value for the progress bar
-        //database = FirebaseDatabase.getInstance().getReference();
+        simpleProgressBar.setProgress(40);
+        text_prog.setText("40%");
         currentUser = getIntent().getStringExtra("CURRENT_USER");
-        createRecyclerView();
+        //createRecyclerView();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
         try {
             initialItemData(savedInstanceState);
         } catch (MalformedURLException e) {
@@ -98,7 +102,7 @@ public class LandingPage extends AppCompatActivity {
 //                size = emojis.size();
                 for (int i = 0; i < size; i++) {
                     Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
-                    ExerciseCard sCard = new ExerciseCard(1);
+                    ChallengeCard sCard = new ChallengeCard(new Date(), "1st Place", "Cindy, Rob, Alice");
                     cardList.add(sCard);
                 }
             }
@@ -120,11 +124,11 @@ public class LandingPage extends AppCompatActivity {
                 }
             }
             */
-            ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face);
-            //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
+            //TODO: CHANGE TO CHALLENGE CARD
+            ChallengeCard item1 = new ChallengeCard(new Date(), "", "");
+            ChallengeCard item2 = new ChallengeCard(new Date(), "", "");
+            ChallengeCard item3 = new ChallengeCard(new Date(), "", "");
+            ChallengeCard item4 = new ChallengeCard(new Date(), "", "");
             cardList.add(item1);
             cardList.add(item2);
             cardList.add(item3);
@@ -138,17 +142,18 @@ public class LandingPage extends AppCompatActivity {
         rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
 
-        exerciseAdapter = new ExerciseAdapter(cardList);
-        rView.setAdapter(exerciseAdapter);
+        challengeAdapter = new ChallengeAdapter(cardList);
+        rView.setAdapter(challengeAdapter);
         rView.setLayoutManager(layout);
 
     }
     private int addItem(int position) {
 
-        cardList.add(position, new ExerciseCard(R.drawable.common_google_signin_btn_icon_light));
+        //TODO: CHANGE TO CHALLENGE CARD
+        cardList.add(position, new ChallengeCard(new Date(), "1st Place", "Aaron, Nate, Damion"));
         //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
 
-        exerciseAdapter.notifyItemInserted(position);
+        challengeAdapter.notifyItemInserted(position);
         return 1;
     }
 
