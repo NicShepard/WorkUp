@@ -2,16 +2,27 @@ package edu.neu.madcourseworkupteam.workup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Button;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.neu.madcourseworkupteam.workup.fragments.ExploreFragment;
 
 public class ExploreScreenActivity extends AppCompatActivity {
 
@@ -29,6 +40,8 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
+    private static final String ACTIVE_FRAGMENT = "ACTIVE_FRAGMENT";
+    BottomNavigationView bottomNavigation;
 
     //private DatabaseReference database;
 
@@ -40,12 +53,34 @@ public class ExploreScreenActivity extends AppCompatActivity {
         currentUser = getIntent().getStringExtra("CURRENT_USER");
         createRecyclerView();
 
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         try {
             initialItemData(savedInstanceState);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
+
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent explore_intent = new Intent(this, ExploreScreenActivity.class);
+                        startActivity(explore_intent);
+                        return true;
+                    case R.id.navigation_favorite:
+                        Intent fav_intent = new Intent(this, FavoriteActivity.class);
+                        startActivity(fav_intent);
+                        return true;
+                    case R.id.navigation_profile:
+                        Intent prof_intent = new Intent(this, ProfileActivity.class);
+                        startActivity(prof_intent);
+                        return true;
+                }
+                return false;
+            };
 
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
@@ -158,4 +193,5 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
         return emojiList;
     }*/
+
 }

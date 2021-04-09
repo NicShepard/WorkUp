@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:id="@+id/challenge"
+        android:layout_width="match_parent"
+
+        android:layout_height="105dp"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/challenge_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/video_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="298dp"
+            android:layout_marginBottom="57dp"
+            android:layout_toEndOf="@+id/video_image"
+            android:text="DATE"
+            android:textColor="@android:color/black"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/challenge_placement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/video_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="275dp"
+            android:layout_marginBottom="19dp"
+            android:layout_toEndOf="@+id/video_image"
+            android:text="1st Place"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/p1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/video_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="161dp"
+            android:layout_marginBottom="9dp"
+            android:layout_toEndOf="@+id/video_image"
+            android:text="Nikki"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/p1_image"
+            android:layout_width="wrap_content"
+            android:layout_height="57dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="158dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="145dp"
+            android:layout_marginBottom="33dp"
+            app:srcCompat="@drawable/person" />
+
+
+        <TextView
+            android:id="@+id/p2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/video_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="85dp"
+            android:layout_marginBottom="9dp"
+            android:layout_toEndOf="@+id/video_image"
+            android:text="Akshay"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/p2_image"
+            android:layout_width="wrap_content"
+            android:layout_height="57dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="228dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="75dp"
+            android:layout_marginBottom="33dp"
+            app:srcCompat="@drawable/person" />
+
+        <ImageView
+            android:id="@+id/p3_image"
+            android:layout_width="wrap_content"
+            android:layout_height="57dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="298dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="34dp"
+            app:srcCompat="@drawable/person" />
+
+        <TextView
+            android:id="@+id/p3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/video_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="26dp"
+            android:layout_marginBottom="9dp"
+            android:layout_toEndOf="@+id/video_image"
+            android:text="Eva"
+            android:textSize="16dp" />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
