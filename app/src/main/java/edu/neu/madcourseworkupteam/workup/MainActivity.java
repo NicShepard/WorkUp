@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 // Get User object and use the values to update the UI
                 User dbuser = dataSnapshot.getValue(User.class);
                 Log.w(TAG, dbuser.toString());
-
             }
 
             @Override
