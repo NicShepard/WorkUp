@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">WorkUp</string>
+    <string name="stretch">Stretch</string>
+    <string name="dance">Dance</string>
+    <string name="popularity">Popularity</string>
+    <string name="search">Search</string>
+    <string name="cardio">Cardio</string>
+    <string name="sticker_icon">sticker_icon</string>
 </resources>
