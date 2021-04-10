@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "WorkUp";
@@ -29,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference db = database.getReference("test123");
 
+        Movement movement = new Movement("test", "test", Movement.Difficulty.EASY, "url", new ArrayList<>());
         db.setValue("Hello, World!");
 
         User user = new User("Nic", "nbshepard@gmail.com");
 
         db.child("users").child("1").setValue(user);
+
+        db.child("movements").child("1").setValue(movement);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
