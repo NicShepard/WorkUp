@@ -63,6 +63,7 @@ public class LandingPage extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
