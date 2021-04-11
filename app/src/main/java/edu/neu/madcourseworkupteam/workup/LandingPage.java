@@ -105,7 +105,7 @@ public class LandingPage extends AppCompatActivity {
 //                        cardList.add(new StickerCard(R.drawable.sad_face));
 //                    }
 //                }
-//                size = emojis.size();
+                size = cardList.size();
                 for (int i = 0; i < size; i++) {
                     Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
                     ChallengeCard sCard = new ChallengeCard(new Date(), "1st Place", "Cindy, Rob, Alice");
@@ -130,11 +130,10 @@ public class LandingPage extends AppCompatActivity {
                 }
             }
             */
-            //TODO: CHANGE TO CHALLENGE CARD
-            ChallengeCard item1 = new ChallengeCard(new Date(), "", "");
-            ChallengeCard item2 = new ChallengeCard(new Date(), "", "");
-            ChallengeCard item3 = new ChallengeCard(new Date(), "", "");
-            ChallengeCard item4 = new ChallengeCard(new Date(), "", "");
+            ChallengeCard item1 = new ChallengeCard(new Date(), "1", "");
+            ChallengeCard item2 = new ChallengeCard(new Date(), "2", "");
+            ChallengeCard item3 = new ChallengeCard(new Date(), "3", "");
+            ChallengeCard item4 = new ChallengeCard(new Date(), "4", "");
             cardList.add(item1);
             cardList.add(item2);
             cardList.add(item3);
@@ -155,7 +154,6 @@ public class LandingPage extends AppCompatActivity {
     }
     private int addItem(int position) {
 
-        //TODO: CHANGE TO CHALLENGE CARD
         cardList.add(position, new ChallengeCard(new Date(), "1st Place", "Aaron, Nate, Damion"));
         //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
 

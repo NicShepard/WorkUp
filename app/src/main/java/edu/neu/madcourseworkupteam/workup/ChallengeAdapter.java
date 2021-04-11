@@ -27,8 +27,8 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {
         ChallengeCard currentCard = challengeList.get(position);
-        //holder.video.setImageResource(currentCard.getImageSource());
-
+        holder.date.setText(currentCard.getDate().toString());
+        holder.place.setText(currentCard.getPlacement());
     }
 
     @Override
