@@ -7,11 +7,14 @@ public class DataService {
     FirebaseDatabase db;
 
 
-    public DataService(){
+    public DataService() {
         db = FirebaseDatabase.getInstance();
     }
 
+    /******* Users *******/
+    void createUser(){
 
+    }
 
 
 }
