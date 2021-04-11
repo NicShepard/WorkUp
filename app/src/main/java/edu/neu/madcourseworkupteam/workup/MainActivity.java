@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("CURRENT_USER", user.getUid().toString());
                 startActivity(intent);
             } else {
-             //Handle te error here
+                Log.d("UID", "Result was not okay");
+
+                //Handle te error here
             }
         }
     }
