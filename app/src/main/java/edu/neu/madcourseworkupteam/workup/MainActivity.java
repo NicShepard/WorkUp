@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +33,14 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference db = database.getReference("test123");
 
-        Movement movement = new Movement("test", "test", Movement.Difficulty.EASY, "url", new ArrayList<>());
+        List views = new ArrayList();
+        views.add("View 1");
+        views.add("View 2");
+
+        Movement movement = new Movement("test", "test", Movement.Difficulty.EASY, "url", new HashMap<>());
+
+        movement.getUserViews().put("user 1", views);
+
         db.setValue("Hello, World!");
 
         User user = new User("Nic", "nbshepard@gmail.com");

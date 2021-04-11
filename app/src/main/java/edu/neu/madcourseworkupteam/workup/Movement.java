@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Movement {
@@ -10,10 +11,10 @@ public class Movement {
     public String description;
     public Difficulty difficulty;
     public String videoURL;
-    List<String> userViews;
+    HashMap<String, List<String>> userViews;
 
 
-    public Movement(String title, String description, Difficulty difficulty, String videoURL, List<String> userViews) {
+    public Movement(String title, String description, Difficulty difficulty, String videoURL, HashMap<String, List<String>> userViews) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
@@ -57,11 +58,11 @@ public class Movement {
         this.videoURL = videoURL;
     }
 
-    public List<String> getUserViews() {
+    public HashMap<String,List<String>> getUserViews() {
         return userViews;
     }
 
-    public void setUserViews(List<String> userViews) {
+    public void setUserViews(HashMap<String,List<String>> userViews) {
         this.userViews = userViews;
     }
 }
