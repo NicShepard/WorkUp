@@ -33,21 +33,15 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference db = database.getReference("test123");
 
-        List views = new ArrayList();
-        views.add("View 1");
-        views.add("View 2");
+        Challenge challenge = new Challenge("Challenge 1", true, "1/1/21", "1/1/22", new HashMap<>(), new ArrayList<>());
+        challenge.getUserPoints().put("User 1", Long.valueOf(123));
+        challenge.getUserPoints().put("User 2", Long.valueOf(345));
+        challenge.getUserPlacement().add("User 2");
+        challenge.getUserPlacement().add("User 1");
 
-        Movement movement = new Movement("test", "test", Movement.Difficulty.EASY, "url", new HashMap<>());
-
-        movement.getUserViews().put("user 1", views);
-
-        db.setValue("Hello, World!");
-
-        User user = new User("Nic", "nbshepard@gmail.com");
-
-        db.child("users").child("1").setValue(user);
-
-        db.child("movements").child("1").setValue(movement);
+        db.child("challenges").setValue(challenge);
+        String key = db.child("challenges").push().getKey();
+        db.child("challenges").child(key).setValue(challenge);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
