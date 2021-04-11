@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Log.d("UID", "Result was not okay");
-
-                //Handle te error here
             }
         }
     }

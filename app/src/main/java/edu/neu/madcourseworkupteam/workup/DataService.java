@@ -4,15 +4,16 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DataService {
 
-    FirebaseDatabase db;
+    DatabaseReference db;
 
 
     public DataService() {
-        db = FirebaseDatabase.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
     }
 
     /******* Users *******/
@@ -28,5 +29,8 @@ public class DataService {
         return user.getUid();
     }
 
+    void registerUser(User user, String uid){
+        db.child("users").child(uid).setValue(user);
+    }
 
 }
