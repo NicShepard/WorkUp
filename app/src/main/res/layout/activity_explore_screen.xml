@@ -123,20 +123,14 @@
                 android:textAlignment="center"
                 android:visibility="visible" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
+            <Spinner android:id="@+id/spinner1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_baseline_filter_alt_24" />
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
     </HorizontalScrollView>
 
 
-    <!-- Explore instead of profile on nav bar -->
-    <!-- have Home as the landing page with stats -->
     <!-- Profile put in hamburger menu -->
     <!-- Profile display all their trophies and avgs -->
     <!-- are same stats on the landing page? -->
