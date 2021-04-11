@@ -4,19 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,35 +28,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference db = database.getReference("test123");
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build());
 
-        Challenge challenge = new Challenge("Challenge 1", true, "1/1/21", "1/1/22", new HashMap<>(), new ArrayList<>());
-        challenge.getUserPoints().put("User 1", Long.valueOf(123));
-        challenge.getUserPoints().put("User 2", Long.valueOf(345));
-        challenge.getUserPlacement().add("User 2");
-        challenge.getUserPlacement().add("User 1");
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                123);
 
-        db.child("challenges").setValue(challenge);
-        String key = db.child("challenges").push().getKey();
-        db.child("challenges").child(key).setValue(challenge);
 
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get User object and use the values to update the UI
-                User dbuser = dataSnapshot.getValue(User.class);
-                Log.w(TAG, dbuser.toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-
-        db.addValueEventListener(userListener);
 
         //Get views
         login_button = (Button) findViewById(R.id.SignInButton);
@@ -74,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 123) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                // ...
+            } else {
+             //Handle te error here
+            }
+        }
     }
 }

@@ -2,42 +2,51 @@ package edu.neu.madcourseworkupteam.workup;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.List;
+
 @IgnoreExtraProperties
-public class User {
+class User {
 
-    public String username;
-    public String email;
-    public SettingConfiguration settingConfiguration;
+    String firstName;
+    String lastName;
+    String username;
+    Long totalPoints;
+    Long totalSteps;
+    String email;
+    SettingConfiguration settingConfiguration;
+    List<String> favorites;
+    List<String> friends;
 
-    public User() {
+
+    User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public String getUsername() {
+    String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    void setUsername(String username) {
         this.username = username;
     }
 
-    public String getEmail() {
+    String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email = email;
     }
 
-    public SettingConfiguration getSettingConfiguration() {
+    SettingConfiguration getSettingConfiguration() {
         return settingConfiguration;
     }
 
-    public void setSettingConfiguration(SettingConfiguration settingConfiguration) {
+    void setSettingConfiguration(SettingConfiguration settingConfiguration) {
         this.settingConfiguration = settingConfiguration;
     }
 
-    public User(String username, String email) {
+    User(String username, String email) {
         this.username = username;
         this.email = email;
         this.settingConfiguration = new SettingConfiguration();
