@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.neu.madcourseworkupteam.workup.fragments.ExploreFragment;
 
 public class ExploreScreenActivity extends AppCompatActivity {
 

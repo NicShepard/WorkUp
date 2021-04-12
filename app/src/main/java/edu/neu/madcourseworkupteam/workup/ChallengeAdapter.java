@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> {
 
@@ -27,7 +29,10 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {
         ChallengeCard currentCard = challengeList.get(position);
-        holder.date.setText(currentCard.getDate().toString());
+        Date date = currentCard.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String dateStr = formatter.format(date);
+        holder.date.setText(dateStr);
         holder.place.setText(currentCard.getPlacement());
     }
 
