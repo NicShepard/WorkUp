@@ -102,6 +102,12 @@ public class DataService {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("TAG", "DATA CHANGED");
                 Log.d("TAG", String.valueOf(dataSnapshot.getKey()));
+                Log.d("TAG", String.valueOf(dataSnapshot.getValue()));
+                Iterable i = dataSnapshot.getChildren();
+                for (Object m:
+                     i) {
+                    Log.d("TAG",  m.toString());
+                }
                 movement[0] = dataSnapshot.getValue(Movement.class);
             }
 
@@ -111,7 +117,10 @@ public class DataService {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        db.child("movements").addValueEventListener(userListener);
+
+        DatabaseReference databaseReference = db.child("movements").child("MYAvLIIaCgURQcGK2mw");
+        databaseReference.addValueEventListener(userListener);
+
         return movement[0];
     }
 
