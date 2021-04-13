@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ public class Registration extends AppCompatActivity implements SensorEventListen
     EditText username;
     String uid;
     Movement m;
+    int steps;
 
     SensorManager sensorManager;
     Sensor stepCounter;
@@ -36,6 +38,9 @@ public class Registration extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        steps = 0;
         dataService = new DataService();
 
         uid = getIntent().getStringExtra("CURRENT_USER");
@@ -48,10 +53,11 @@ public class Registration extends AppCompatActivity implements SensorEventListen
 
         if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null){
             stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            sensorManager.registerListener(this, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
             fName.setText("Step counter detected");
+            fName.setText(String.valueOf(steps));
         } else {
             fName.setText("No Step counter detected");
-
         }
 
 
@@ -91,7 +97,10 @@ public class Registration extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        if(event.sensor == stepCounter){
+            steps = (int) event.values[0];
+            fName.setText(String.valueOf(steps));
+        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourseworkupteam.workup">
-
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkUp">
         <activity android:name=".Registration"></activity>
-        <activity android:name=".ChallengeCard" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,6 +21,6 @@
         <activity android:name=".ExploreScreenActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".LandingPage" />
-    </application>
 
+    </application>
 </manifest>
