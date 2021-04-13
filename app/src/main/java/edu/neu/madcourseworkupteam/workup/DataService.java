@@ -4,13 +4,16 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class DataService {
 
     DatabaseReference db;
-
+    User currentUser;
 
     public DataService() {
         db = FirebaseDatabase.getInstance().getReference();
@@ -33,4 +36,27 @@ public class DataService {
         db.child("users").child(uid).setValue(user);
     }
 
+    User getUser (String userKey){
+        final User[] user = new User[1];
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user[0] = dataSnapshot.getValue(User.class);
+                currentUser = user[0];
+                Log.d("TAG", user[0].getUsername() + " found");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        db.child("users").child(userKey).addValueEventListener(userListener);
+        return user[0];
+    }
+
+     User getCurrentUser() {
+        return currentUser;
+    }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class Registration extends AppCompatActivity {
 
     Button testButton;
+    private Button testButton2;
     EditText fName;
     EditText lName;
     EditText username;
@@ -32,15 +33,27 @@ public class Registration extends AppCompatActivity {
         lName = findViewById(R.id.lastName);
         username = findViewById(R.id.username);
 
+        testButton2 = findViewById(R.id.getUser);
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("UID", uid);
-                User userToRegister = new User();
-                userToRegister.setFirstName(fName.getText().toString());
-                userToRegister.setLastName(lName.getText().toString());
-                userToRegister.setUsername(username.getText().toString());
-                dataService.registerUser(userToRegister, uid);
+                //Test register user
+//                Log.d("UID", uid);
+//                User userToRegister = new User();
+//                userToRegister.setFirstName(fName.getText().toString());
+//                userToRegister.setLastName(lName.getText().toString());
+//                userToRegister.setUsername(username.getText().toString());
+//                dataService.registerUser(userToRegister, uid);
+
+                User user = dataService.getUser("3WS6DrguO9NWtJ4q3WxsvNNhitH2");
+            }
+        });
+
+        testButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User u = dataService.getCurrentUser();
+                Log.d("UID", u.getFirstName().toString());
             }
         });
 

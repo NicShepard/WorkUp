@@ -25,33 +25,37 @@ public class MainActivity extends AppCompatActivity {
     String token;
     private Button login_button;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setAndroidPackageName("edu.neu.madcourseworkupteam.workup", true,
-                /* minimumVersion= */ null)
-        .setHandleCodeInApp(true) // This must be set to true
-                .setUrl("https://google.com") // This URL needs to be whitelisted
-                .build();
+//
+//        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+//                .setAndroidPackageName("edu.neu.madcourseworkupteam.workup", true,
+//                /* minimumVersion= */ null)
+//        .setHandleCodeInApp(true) // This must be set to true
+//                .setUrl("https://google.com") // This URL needs to be whitelisted
+//                .build();
+//
+//
+//        List<AuthUI.IdpConfig> providers = Arrays.asList(
+//                new AuthUI.IdpConfig.EmailBuilder().build());
 
-
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build());
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(providers)
-                        .build(),
-                123);
+//        startActivityForResult(
+//                AuthUI.getInstance()
+//                        .createSignInIntentBuilder()
+//                        .setIsSmartLockEnabled(false)
+//                        .setAvailableProviders(providers)
+//                        .build(),
+//                123);
 
 
         //Get views
         login_button = (Button) findViewById(R.id.SignInButton);
+
         TextView currentUser = findViewById(R.id.UserName);
 
         //Carry the name of the user into the second screen
