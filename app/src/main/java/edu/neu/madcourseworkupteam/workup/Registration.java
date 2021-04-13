@@ -9,6 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class Registration extends AppCompatActivity {
 
     Button testButton;
@@ -17,6 +21,7 @@ public class Registration extends AppCompatActivity {
     EditText lName;
     EditText username;
     String uid;
+    Movement m;
 
     DataService dataService;
 
@@ -37,23 +42,15 @@ public class Registration extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Test register user
-//                Log.d("UID", uid);
-//                User userToRegister = new User();
-//                userToRegister.setFirstName(fName.getText().toString());
-//                userToRegister.setLastName(lName.getText().toString());
-//                userToRegister.setUsername(username.getText().toString());
-//                dataService.registerUser(userToRegister, uid);
 
-                User user = dataService.getUser("3WS6DrguO9NWtJ4q3WxsvNNhitH2");
+                m = dataService.getMovement("MYAvLIIaCgURQcGK2mw");
             }
         });
 
         testButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User u = dataService.getCurrentUser();
-                Log.d("UID", u.getFirstName().toString());
+                Log.d("Movement", m.getTitle());
             }
         });
 

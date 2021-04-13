@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class DataService {
 
     DatabaseReference db;
@@ -20,32 +22,34 @@ public class DataService {
     }
 
     /******* Users *******/
-    void createUser(){
+    void createUser() {
 
     }
 
-    String getUID(){
+    String getUID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d("UID","Getting close to UID");
+        Log.d("UID", "Getting close to UID");
 
-        Log.d("UID",user.getUid());
+        Log.d("UID", user.getUid());
         return user.getUid();
     }
 
-    void registerUser(User user, String uid){
+    void registerUser(User user, String uid) {
         db.child("users").child(uid).setValue(user);
     }
 
-    User getUser (String userKey){
+    User getUser(String userKey) {
         final User[] user = new User[1];
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 user[0] = dataSnapshot.getValue(User.class);
                 currentUser = user[0];
                 Log.d("TAG", user[0].getUsername() + " found");
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -56,7 +60,60 @@ public class DataService {
         return user[0];
     }
 
-     User getCurrentUser() {
+    User getCurrentUser() {
         return currentUser;
     }
+
+    /******* Movements *******/
+
+    void createMovement(Movement movement) {
+        String key = db.child("movements").push().getKey();
+        db.child("movements").child(key).setValue(movement);
+    }
+
+//    List<Movement> getMovements() {
+//
+//        List<Movement> movements;
+//
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                user[0] = dataSnapshot.getValue(User.class);
+//                currentUser = user[0];
+//                Log.d("TAG", user[0].getUsername() + " found");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // Getting Post failed, log a message
+//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+//            }
+//        };
+//        db.child("users").child(userKey).addValueEventListener(userListener);
+//        return user[0];
+//    }
+
+    Movement getMovement(String key) {
+
+        final Movement[] movement = new Movement[1];
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TAG", "DATA CHANGED");
+                Log.d("TAG", String.valueOf(dataSnapshot.getKey()));
+                movement[0] = dataSnapshot.getValue(Movement.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        db.child("movements").addValueEventListener(userListener);
+        return movement[0];
+    }
+
+
 }
