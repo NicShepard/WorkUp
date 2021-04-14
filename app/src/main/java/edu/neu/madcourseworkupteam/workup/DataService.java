@@ -103,11 +103,6 @@ public class DataService {
                 Log.d("TAG", "DATA CHANGED");
                 Log.d("TAG", String.valueOf(dataSnapshot.getKey()));
                 Log.d("TAG", String.valueOf(dataSnapshot.getValue()));
-                Iterable i = dataSnapshot.getChildren();
-                for (Object m:
-                     i) {
-                    Log.d("TAG",  m.toString());
-                }
                 movement[0] = dataSnapshot.getValue(Movement.class);
             }
 

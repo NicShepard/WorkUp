@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private Button login_button;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // start new intent
-                Intent intent = new Intent(MainActivity.this, StepCounter.class);
+                Intent intent = new Intent(MainActivity.this, Registration.class);
                 intent.putExtra("CURRENT_USER", currentUser.getText().toString());
                 startActivity(intent);
             }
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d("UID",user.getUid());
-                Intent intent = new Intent(MainActivity.this, StepCounter.class);
+                Intent intent = new Intent(MainActivity.this, Registration.class);
                 intent.putExtra("CURRENT_USER", user.getUid());
                 startActivity(intent);
             } else {

@@ -1,8 +1,11 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.HashMap;
 import java.util.List;
 
+@IgnoreExtraProperties
 public class Movement {
 
 //    enum Difficulty {EASY, MEDIUM, HARD};
