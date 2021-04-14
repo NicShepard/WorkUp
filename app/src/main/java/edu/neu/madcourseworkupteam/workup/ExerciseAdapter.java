@@ -11,17 +11,21 @@ import java.util.ArrayList;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
 
-    private final ArrayList<ExerciseCard> exerciseList;
+    private ArrayList<ExerciseCard> exerciseList;
+    private ItemClickListener listener;
 
     public ExerciseAdapter(ArrayList<ExerciseCard> cards) { this.exerciseList = cards; }
+
+    public void setOnClickItemClickListener(ItemClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
     public ExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.exercise_card, parent,
                 false);
-        return new ExerciseViewHolder(view);
-        //return null;
+        return new ExerciseViewHolder(view, listener);
     }
 
     @Override

@@ -8,9 +8,7 @@
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
-        android:id="@+id/video"
         android:layout_width="match_parent"
-
         android:layout_height="105dp"
         android:layout_margin="5dp">
 
@@ -74,6 +72,19 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="67dp"
             app:srcCompat="@drawable/ic_bookmark" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="35dp"
+            android:layout_height="36dp"
+            android:layout_alignStart="@+id/bookmark"
+            android:layout_alignBottom="@+id/bookmark"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="1dp" />
 
 
     </RelativeLayout>

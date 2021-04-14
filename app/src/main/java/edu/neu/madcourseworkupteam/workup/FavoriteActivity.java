@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,11 +15,8 @@ import java.util.ArrayList;
 
 public class FavoriteActivity extends AppCompatActivity {
 
-    private static final String TAG = "ExploreScreen ACTIVITY";
+    private static final String TAG = "Favorites ACTIVITY";
 
-    // exercise database reference
-    // buttons to filter
-    // card clicks
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
@@ -28,7 +26,6 @@ public class FavoriteActivity extends AppCompatActivity {
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
-    private static final String ACTIVE_FRAGMENT = "ACTIVE_FRAGMENT";
     BottomNavigationView bottomNavigation;
 
     //private DatabaseReference database;
@@ -44,11 +41,7 @@ public class FavoriteActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        try {
-            initialItemData(savedInstanceState);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        init(savedInstanceState);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -70,55 +63,60 @@ public class FavoriteActivity extends AppCompatActivity {
                 return false;
             };
 
-    private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        int size = cardList == null ? 0 : cardList.size();
+        outState.putInt(NUMBER_OF_ITEMS, size);
+
+        // Need to generate unique key for each item
+        // TODO: This is only a possible way to do, please find own way to generate the key
+        for (int i = 0; i < size; i++) {
+            // put image information id into instance
+            outState.putInt(KEY_OF_INSTANCE + i + "0", cardList.get(i).getImageSource());
+            // put itemName information into instance
+            outState.putString(KEY_OF_INSTANCE + i + "1", cardList.get(i).getName());
+            // put itemDesc information into instance
+            outState.putString(KEY_OF_INSTANCE + i + "2", cardList.get(i).getDesc());
+            // put isChecked information into instance
+            outState.putBoolean(KEY_OF_INSTANCE + i + "3", cardList.get(i).getStatus());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    private void init(Bundle savedInstanceState) {
+        initialItemData(savedInstanceState);
+        createRecyclerView();
+    }
+
+    private void initialItemData(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
             if (cardList == null || cardList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-//                List<String> emojis = getEmojisForUser(database, currentUser);
-//                Log.d("emojis size:", String.valueOf(emojis.size()));
-//
-//                for(String each : emojis) {
-//                    if (each == "smiley") {
-//                        cardList.add(new StickerCard(R.drawable.smiley_face));
-//                    } else if (each == "laughing") {
-//                        cardList.add(new StickerCard(R.drawable.laughing_face));
-//                    } else if (each == "angry") {
-//                        cardList.add(new StickerCard(R.drawable.angry_face));
-//                    } else if (each == "sad") {
-//                        cardList.add(new StickerCard(R.drawable.sad_face));
-//                    }
-//                }
-//                size = emojis.size();
+                // Retrieve keys we store in the instance
                 for (int i = 0; i < size; i++) {
-                    Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
-                    ExerciseCard sCard = new ExerciseCard(1);
-                    cardList.add(sCard);
+                    Integer imgId = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
+                    String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
+                    String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
+                    boolean isChecked = savedInstanceState.getBoolean(KEY_OF_INSTANCE + i + "3");
+
+                    // Need to make sure names such as "XXX(checked)" will not duplicate
+                    // Use a tricky way to solve this problem, but not the best though
+                    if (isChecked) {
+                        itemName = itemName.substring(0, itemName.lastIndexOf("("));
+                    }
+                    ExerciseCard itemCard = new ExerciseCard(imgId, itemName, itemDesc, isChecked);
+                    cardList.add(itemCard);
                 }
             }
         }
         // Load the initial cards
         else {
-            /*List<String> emojis = getEmojisForUser(database, currentUser);
-            Log.d("emojis size:", String.valueOf(emojis.size()));
-
-            for(String each : emojis) {
-                if (each == "smiley") {
-                    cardList.add(new StickerCard(R.drawable.smiley_face));
-                } else if (each == "laughing") {
-                    cardList.add(new StickerCard(R.drawable.laughing_face));
-                } else if (each == "angry") {
-                    cardList.add(new StickerCard(R.drawable.angry_face));
-                } else if (each == "sad") {
-                    cardList.add(new StickerCard(R.drawable.sad_face));
-                }
-            }
-            */
-            ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face);
-            //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
+            // TODO: load favorites cards
+            ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face, "videoName1", "Video Desc", true);
+            ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face, "videoName2", "Video Desc", true);
+            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face, "videoName3", "Video Desc", true);
+            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face, "videoName4", "Video Desc", true);
             cardList.add(item1);
             cardList.add(item2);
             cardList.add(item3);
@@ -131,54 +129,24 @@ public class FavoriteActivity extends AppCompatActivity {
         layout = new LinearLayoutManager(this);
         rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
-
         exerciseAdapter = new ExerciseAdapter(cardList);
+        ItemClickListener itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                cardList.get(position).onItemClick(position);
+            }
+            @Override
+            public void onCheckBoxClick(int position) {
+                // attributions bond to the item has been changed
+                cardList.get(position).onCheckBoxClick(position);
+                exerciseAdapter.notifyItemChanged(position);
+                //TODO: if user clicks on checkbox/bookmark, then uncheck it and remove from list
+            }
+        };
+        exerciseAdapter.setOnClickItemClickListener(itemClickListener);
         rView.setAdapter(exerciseAdapter);
         rView.setLayoutManager(layout);
 
+
     }
-    private int addItem(int position) {
-
-        cardList.add(position, new ExerciseCard(R.drawable.common_google_signin_btn_icon_light));
-        //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
-
-        exerciseAdapter.notifyItemInserted(position);
-        return 1;
-    }
-
-    /**
-     * Get the emojis for a user
-     */
-    /*
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
-
-        List emojiList = new LinkedList();
-
-        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
-                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
-                            if (snapshot.getKey() != null) {
-                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
-                                    Log.e("ADDING", message.getValue().toString());
-                                    emojiList.add(message.getValue().toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error while reading data");
-            }
-        });
-
-        return emojiList;
-    }*/
 }

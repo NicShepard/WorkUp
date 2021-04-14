@@ -36,7 +36,7 @@
         android:layout_height="115dp"
         android:layout_marginTop="8dp"
         android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/circle"
+        android:progressDrawable="@drawable/circle2"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

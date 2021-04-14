@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -31,18 +37,20 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
     BottomNavigationView bottomNavigation;
 
-    //private DatabaseReference database;
+    private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         currentUser = getIntent().getStringExtra("CURRENT_USER");
-        //createRecyclerView();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         try {
             initialItemData(savedInstanceState);
@@ -75,21 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
             if (cardList == null || cardList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-//                List<String> emojis = getEmojisForUser(database, currentUser);
-//                Log.d("emojis size:", String.valueOf(emojis.size()));
-//
-//                for(String each : emojis) {
-//                    if (each == "smiley") {
-//                        cardList.add(new StickerCard(R.drawable.smiley_face));
-//                    } else if (each == "laughing") {
-//                        cardList.add(new StickerCard(R.drawable.laughing_face));
-//                    } else if (each == "angry") {
-//                        cardList.add(new StickerCard(R.drawable.angry_face));
-//                    } else if (each == "sad") {
-//                        cardList.add(new StickerCard(R.drawable.sad_face));
-//                    }
-//                }
-//                size = emojis.size();
                 for (int i = 0; i < size; i++) {
                     Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
                     ChallengeCard sCard = new ChallengeCard(new Date(), "1st Place", "Cindy, Rob, Alice");
@@ -99,21 +92,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
         // Load the initial cards
         else {
-            /*List<String> emojis = getEmojisForUser(database, currentUser);
-            Log.d("emojis size:", String.valueOf(emojis.size()));
-
-            for(String each : emojis) {
-                if (each == "smiley") {
-                    cardList.add(new StickerCard(R.drawable.smiley_face));
-                } else if (each == "laughing") {
-                    cardList.add(new StickerCard(R.drawable.laughing_face));
-                } else if (each == "angry") {
-                    cardList.add(new StickerCard(R.drawable.angry_face));
-                } else if (each == "sad") {
-                    cardList.add(new StickerCard(R.drawable.sad_face));
-                }
-            }
-            */
             //TODO: CHANGE TO CHALLENGE CARD
             ChallengeCard item1 = new ChallengeCard(new Date(), "", "");
             ChallengeCard item2 = new ChallengeCard(new Date(), "", "");
@@ -147,39 +125,4 @@ public class ProfileActivity extends AppCompatActivity {
         return 1;
     }
 
-    /**
-     * Get the emojis for a user
-     */
-    /*
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
-
-        List emojiList = new LinkedList();
-
-        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
-                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
-                            if (snapshot.getKey() != null) {
-                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
-                                    Log.e("ADDING", message.getValue().toString());
-                                    emojiList.add(message.getValue().toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error while reading data");
-            }
-        });
-
-        return emojiList;
-    }*/
 }
