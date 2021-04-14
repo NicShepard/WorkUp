@@ -9,22 +9,33 @@ import java.util.List;
 public class Movement {
 
 //    enum Difficulty {EASY, MEDIUM, HARD};
+//    enum Type {STRETCH, CARDIO, STRENGTH, DANCE}
 
     public String title;
     public String description;
     public String difficulty;
     public String videoURL;
+    public String type;
 
 
-    public Movement(String title, String description, String difficulty, String videoURL) {
+    public Movement(String title, String description, String difficulty, String videoURL, String type) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
         this.videoURL = videoURL;
+        this.type = type;
     }
 
     public Movement() {
 
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTitle() {
