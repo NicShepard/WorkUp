@@ -66,8 +66,7 @@ public class LandingPage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.d("UID",user.getUid());
+
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =

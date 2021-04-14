@@ -1,29 +1,41 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.HashMap;
 import java.util.List;
 
+@IgnoreExtraProperties
 public class Movement {
 
-    enum Difficulty {EASY, MEDIUM, HARD};
+//    enum Difficulty {EASY, MEDIUM, HARD};
+//    enum Type {STRETCH, CARDIO, STRENGTH, DANCE}
 
     public String title;
     public String description;
-    public Difficulty difficulty;
+    public String difficulty;
     public String videoURL;
-    HashMap<String, List<String>> userViews;
+    public String type;
 
 
-    public Movement(String title, String description, Difficulty difficulty, String videoURL, HashMap<String, List<String>> userViews) {
+    public Movement(String title, String description, String difficulty, String videoURL, String type) {
         this.title = title;
         this.description = description;
         this.difficulty = difficulty;
         this.videoURL = videoURL;
-        this.userViews = userViews;
+        this.type = type;
     }
 
     public Movement() {
 
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTitle() {
@@ -42,11 +54,11 @@ public class Movement {
         this.description = description;
     }
 
-    public Difficulty getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -56,13 +68,5 @@ public class Movement {
 
     public void setVideoURL(String videoURL) {
         this.videoURL = videoURL;
-    }
-
-    public HashMap<String,List<String>> getUserViews() {
-        return userViews;
-    }
-
-    public void setUserViews(HashMap<String,List<String>> userViews) {
-        this.userViews = userViews;
     }
 }

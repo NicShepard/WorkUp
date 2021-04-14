@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,26 +25,36 @@ public class MainActivity extends AppCompatActivity {
     String token;
     private Button login_button;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build());
+//
+//        ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+//                .setAndroidPackageName("edu.neu.madcourseworkupteam.workup", true,
+//                /* minimumVersion= */ null)
+//        .setHandleCodeInApp(true) // This must be set to true
+//                .setUrl("https://google.com") // This URL needs to be whitelisted
+//                .build();
+//
+//
+//        List<AuthUI.IdpConfig> providers = Arrays.asList(
+//                new AuthUI.IdpConfig.EmailBuilder().build());
 
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(false)
-                        .setAvailableProviders(providers)
-                        .build(),
-                123);
-
+//        startActivityForResult(
+//                AuthUI.getInstance()
+//                        .createSignInIntentBuilder()
+//                        .setIsSmartLockEnabled(false)
+//                        .setAvailableProviders(providers)
+//                        .build(),
+//                123);
 
 
         //Get views
         login_button = (Button) findViewById(R.id.SignInButton);
+
         TextView currentUser = findViewById(R.id.UserName);
 
         //Carry the name of the user into the second screen
@@ -51,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // start new intent
-                Intent intent = new Intent(MainActivity.this, LandingPage.class);
+                Intent intent = new Intent(MainActivity.this, Registration.class);
                 intent.putExtra("CURRENT_USER", currentUser.getText().toString());
                 startActivity(intent);
             }
@@ -69,13 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Log.d("UID",user.getUid());
-                Intent intent = new Intent(MainActivity.this, LandingPage.class);
-                intent.putExtra("CURRENT_USER", user.getUid().toString());
+                Intent intent = new Intent(MainActivity.this, Registration.class);
+                intent.putExtra("CURRENT_USER", user.getUid());
                 startActivity(intent);
             } else {
                 Log.d("UID", "Result was not okay");
-
-                //Handle te error here
             }
         }
     }
