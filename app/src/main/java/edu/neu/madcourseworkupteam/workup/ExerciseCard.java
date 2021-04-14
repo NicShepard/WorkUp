@@ -1,38 +1,26 @@
 package edu.neu.madcourseworkupteam.workup;
 
-
-import android.text.BoringLayout;
-
 public class ExerciseCard implements ItemClickListener {
 
-    private int imageSource;
+    private String videoUrl;
     private String videoName;
     private String videoDesc;
     private Boolean isChecked;
 
-
-    public ExerciseCard(int videoID) {
-        this.imageSource = videoID;
-    }
-
-    public ExerciseCard(int videoID, String ID) {
-        this.imageSource = videoID;
-    }
-
-    public ExerciseCard(int videoID, String name, String desc, Boolean checked) {
-        this.imageSource = videoID;
+    public ExerciseCard(String url, String name, String desc, Boolean checked) {
+        this.videoUrl = url;
         this.videoName = name;
         this.videoDesc = desc;
         this.isChecked = checked;
     }
-
-    public int getImageSource() { return imageSource; }
 
     public String getName() { return this.videoName; }
 
     public String getDesc() { return this.videoDesc; }
 
     public Boolean getStatus() { return this.isChecked; }
+
+    public String getVideoUrl() { return this.videoUrl; }
 
     // Clicking on somewhere within item
     @Override

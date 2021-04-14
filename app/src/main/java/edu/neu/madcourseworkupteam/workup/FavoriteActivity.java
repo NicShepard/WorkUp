@@ -12,10 +12,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FavoriteActivity extends AppCompatActivity {
 
     private static final String TAG = "Favorites ACTIVITY";
+
+    private ArrayList<String> videoURLs = new ArrayList<String>(
+            Arrays.asList("cBPP_izKKSs", "GLy2rYHwUqY", "EXh42q4jDBc", "y01ri_43G50"));
+
+    private ArrayList<String> videoNames = new ArrayList<String>(
+            Arrays.asList(
+                    "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
+                    "Kick Ball Change",
+                    "Calf Stretch"));
 
 
     private RecyclerView rView;
@@ -72,7 +82,7 @@ public class FavoriteActivity extends AppCompatActivity {
         // TODO: This is only a possible way to do, please find own way to generate the key
         for (int i = 0; i < size; i++) {
             // put image information id into instance
-            outState.putInt(KEY_OF_INSTANCE + i + "0", cardList.get(i).getImageSource());
+            outState.putString(KEY_OF_INSTANCE + i + "0", cardList.get(i).getVideoUrl());
             // put itemName information into instance
             outState.putString(KEY_OF_INSTANCE + i + "1", cardList.get(i).getName());
             // put itemDesc information into instance
@@ -95,7 +105,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
                 // Retrieve keys we store in the instance
                 for (int i = 0; i < size; i++) {
-                    Integer imgId = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
+                    String videoUrl = savedInstanceState.getString(KEY_OF_INSTANCE + i + "0");
                     String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
                     String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
                     boolean isChecked = savedInstanceState.getBoolean(KEY_OF_INSTANCE + i + "3");
@@ -105,22 +115,18 @@ public class FavoriteActivity extends AppCompatActivity {
                     if (isChecked) {
                         itemName = itemName.substring(0, itemName.lastIndexOf("("));
                     }
-                    ExerciseCard itemCard = new ExerciseCard(imgId, itemName, itemDesc, isChecked);
+                    ExerciseCard itemCard = new ExerciseCard(videoUrl, itemName, itemDesc, isChecked);
                     cardList.add(itemCard);
                 }
             }
         }
         // Load the initial cards
         else {
-            // TODO: load favorites cards
-            ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face, "videoName1", "Video Desc", true);
-            ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face, "videoName2", "Video Desc", true);
-            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face, "videoName3", "Video Desc", true);
-            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face, "videoName4", "Video Desc", true);
-            cardList.add(item1);
-            cardList.add(item2);
-            cardList.add(item3);
-            cardList.add(item4);
+            for (int i = 0; i < videoNames.size(); i++) {
+                ExerciseCard item = new ExerciseCard("https://www.youtube.com/watch?v=" + videoURLs.get(i),
+                        videoNames.get(i), "Video Description", false);
+                cardList.add(item);
+            }
         }
     }
 

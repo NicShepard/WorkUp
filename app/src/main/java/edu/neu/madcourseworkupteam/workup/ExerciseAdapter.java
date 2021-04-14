@@ -31,7 +31,11 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         ExerciseCard currentCard = exerciseList.get(position);
-        holder.video.setImageResource(currentCard.getImageSource());
+        //holder.video.setImageResource(currentCard.getImageSource());
+        holder.videoName.setText(currentCard.getName());
+        holder.videoDesc.setText(currentCard.getDesc());
+        holder.videoURL = currentCard.getVideoUrl();
+        //holder.videoURL.loadData(currentCard.getVideoUrl(), "text/html", "utf-8");
 
     }
 
