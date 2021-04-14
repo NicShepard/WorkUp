@@ -1,21 +1,36 @@
 package edu.neu.madcourseworkupteam.workup;
 
+public class ExerciseCard implements ItemClickListener {
 
-public class ExerciseCard {
+    private String videoUrl;
+    private String videoName;
+    private String videoDesc;
+    private Boolean isChecked;
 
-    private int imageSource;
-    private String imageID;
-
-    public ExerciseCard(int videoID) {
-        this.imageSource = videoID;
+    public ExerciseCard(String url, String name, String desc, Boolean checked) {
+        this.videoUrl = url;
+        this.videoName = name;
+        this.videoDesc = desc;
+        this.isChecked = checked;
     }
 
-    public ExerciseCard(int videoID, String ID) {
-        this.imageSource = videoID;
-        this.imageID = ID;
+    public String getName() { return this.videoName; }
+
+    public String getDesc() { return this.videoDesc; }
+
+    public Boolean getStatus() { return this.isChecked; }
+
+    public String getVideoUrl() { return this.videoUrl; }
+
+    // Clicking on somewhere within item
+    @Override
+    public void onItemClick(int position) {
+        // should actually take the user to the web page they entered
+        return;
     }
 
-    public int getImageSource() { return imageSource; }
-
-    public String getImageID() { return imageID; }
+    @Override
+    public void onCheckBoxClick(int position) {
+        isChecked = !isChecked;
+    }
 }

@@ -19,18 +19,33 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import edu.neu.madcourseworkupteam.workup.fragments.ExploreFragment;
 
 public class ExploreScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "ExploreScreen ACTIVITY";
 
-    // exercise database reference
-    // buttons to filter
-    // card clicks
+    private ArrayList<String> videoURLs = new ArrayList<String>(
+            Arrays.asList("cBPP_izKKSs", "GLy2rYHwUqY", "EXh42q4jDBc", "y01ri_43G50"));
+
+    private ArrayList<String> videoNames = new ArrayList<String>(
+            Arrays.asList(
+                    "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
+                    "Kick Ball Change",
+                    "Calf Stretch"));
+
+//    private Map<String, ArrayList<String>> videosList = new HashMap<String, ArrayList<String>>() {{
+//        for (int i = 0; i < videoNames.size(); i++) {
+//            put("key1", "value1");
+//            put("key2", "value2");
+//        }
+//    }};
+
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
@@ -40,10 +55,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
-    private static final String ACTIVE_FRAGMENT = "ACTIVE_FRAGMENT";
     BottomNavigationView bottomNavigation;
-
-    //private DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +63,10 @@ public class ExploreScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explore_screen);
         //database = FirebaseDatabase.getInstance().getReference();
         currentUser = getIntent().getStringExtra("CURRENT_USER");
-        createRecyclerView();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
-
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        try {
-            initialItemData(savedInstanceState);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        init(savedInstanceState);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -82,116 +88,80 @@ public class ExploreScreenActivity extends AppCompatActivity {
                 return false;
             };
 
-    private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        int size = cardList == null ? 0 : cardList.size();
+        outState.putInt(NUMBER_OF_ITEMS, size);
+
+        // Need to generate unique key for each item
+        // TODO: This is only a possible way to do, please find own way to generate the key
+        for (int i = 0; i < size; i++) {
+            // put image information id into instance
+            outState.putString(KEY_OF_INSTANCE + i + "0", cardList.get(i).getVideoUrl());
+            // put itemName information into instance
+            outState.putString(KEY_OF_INSTANCE + i + "1", cardList.get(i).getName());
+            // put itemDesc information into instance
+            outState.putString(KEY_OF_INSTANCE + i + "2", cardList.get(i).getDesc());
+            // put isChecked information into instance
+            outState.putBoolean(KEY_OF_INSTANCE + i + "3", cardList.get(i).getStatus());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    private void init(Bundle savedInstanceState) {
+        initialItemData(savedInstanceState);
+        createRecyclerView();
+    }
+
+    private void initialItemData(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
             if (cardList == null || cardList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-//                List<String> emojis = getEmojisForUser(database, currentUser);
-//                Log.d("emojis size:", String.valueOf(emojis.size()));
-//
-//                for(String each : emojis) {
-//                    if (each == "smiley") {
-//                        cardList.add(new StickerCard(R.drawable.smiley_face));
-//                    } else if (each == "laughing") {
-//                        cardList.add(new StickerCard(R.drawable.laughing_face));
-//                    } else if (each == "angry") {
-//                        cardList.add(new StickerCard(R.drawable.angry_face));
-//                    } else if (each == "sad") {
-//                        cardList.add(new StickerCard(R.drawable.sad_face));
-//                    }
-//                }
-//                size = emojis.size();
+                // Retrieve keys we store in the instance
                 for (int i = 0; i < size; i++) {
-                    Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
-                    ExerciseCard sCard = new ExerciseCard(1);
-                    cardList.add(sCard);
+                    String videoUrl = savedInstanceState.getString(KEY_OF_INSTANCE + i + "0");
+                    String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
+                    String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
+                    boolean isChecked = savedInstanceState.getBoolean(KEY_OF_INSTANCE + i + "3");
+
+                    ExerciseCard itemCard = new ExerciseCard(videoUrl, itemName, itemDesc, isChecked);
+                    cardList.add(itemCard);
                 }
             }
         }
         // Load the initial cards
         else {
-            /*List<String> emojis = getEmojisForUser(database, currentUser);
-            Log.d("emojis size:", String.valueOf(emojis.size()));
-
-            for(String each : emojis) {
-                if (each == "smiley") {
-                    cardList.add(new StickerCard(R.drawable.smiley_face));
-                } else if (each == "laughing") {
-                    cardList.add(new StickerCard(R.drawable.laughing_face));
-                } else if (each == "angry") {
-                    cardList.add(new StickerCard(R.drawable.angry_face));
-                } else if (each == "sad") {
-                    cardList.add(new StickerCard(R.drawable.sad_face));
-                }
+            for (int i = 0; i < videoNames.size(); i++) {
+                ExerciseCard item = new ExerciseCard("https://www.youtube.com/watch?v=" + videoURLs.get(i),
+                        videoNames.get(i), "Video Description", false);
+                cardList.add(item);
             }
-            */
-            ExerciseCard item1 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item2 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item3 = new ExerciseCard(R.drawable.neutral_face);
-            ExerciseCard item4 = new ExerciseCard(R.drawable.neutral_face);
-            //StickerCard item3 = new StickerCard(R.drawable.common_google_signin_btn_icon_light));
-            cardList.add(item1);
-            cardList.add(item2);
-            cardList.add(item3);
-            cardList.add(item4);
         }
     }
 
     private void createRecyclerView() {
 
-        layout = new LinearLayoutManager(this);
+        layout = new LinearLayoutManager(ExploreScreenActivity.this);
         rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
-
         exerciseAdapter = new ExerciseAdapter(cardList);
+        ItemClickListener itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                cardList.get(position).onItemClick(position);
+            }
+            @Override
+            public void onCheckBoxClick(int position) {
+                // attributions bond to the item has been changed
+                cardList.get(position).onCheckBoxClick(position);
+                exerciseAdapter.notifyItemChanged(position);
+            }
+        };
+        exerciseAdapter.setOnClickItemClickListener(itemClickListener);
         rView.setAdapter(exerciseAdapter);
         rView.setLayoutManager(layout);
 
     }
-    private int addItem(int position) {
-
-        cardList.add(position, new ExerciseCard(R.drawable.common_google_signin_btn_icon_light));
-        //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
-
-        exerciseAdapter.notifyItemInserted(position);
-        return 1;
-    }
-
-    /**
-     * Get the emojis for a user
-     */
-    /*
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
-
-        List emojiList = new LinkedList();
-
-        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
-                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
-                            if (snapshot.getKey() != null) {
-                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
-                                    Log.e("ADDING", message.getValue().toString());
-                                    emojiList.add(message.getValue().toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error while reading data");
-            }
-        });
-
-        return emojiList;
-    }*/
 
 }

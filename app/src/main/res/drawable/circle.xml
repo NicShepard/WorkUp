@@ -11,12 +11,16 @@
         </shape>
     </item>
     <item>
-        <shape
-            android:shape="ring"
-            android:thicknessRatio="16"
-            android:useLevel="true">
-            <solid android:color="@color/purple_700"/>
-        </shape>
+        <rotate
+            android:fromDegrees="270"
+            android:toDegrees="270">
+            <shape
+                android:shape="ring"
+                android:thicknessRatio="16"
+                android:useLevel="true">
+                <solid android:color="@color/purple_700" />
+            </shape>
+        </rotate>
     </item>
 
 </layer-list>

@@ -1,128 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="10dp">
 
-    <RelativeLayout
-        android:id="@+id/challenge"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        android:layout_height="105dp"
-        android:layout_margin="5dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/challenge_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="298dp"
-            android:layout_marginBottom="57dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="DATE"
-            android:textColor="@android:color/black"
-            android:textSize="25dp" />
+            <ImageView
+                android:id="@+id/p1_image"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="76dp"
+                app:layout_constraintEnd_toStartOf="@+id/p3_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/person" />
 
-        <TextView
-            android:id="@+id/challenge_placement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="275dp"
-            android:layout_marginBottom="19dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="1st Place"
-            android:textSize="20dp" />
+            <ImageView
+                android:id="@+id/p2_image"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/p3_image"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/p1_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/person" />
 
-        <TextView
-            android:id="@+id/p1_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="161dp"
-            android:layout_marginBottom="9dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="Nikki"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/challenge_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
+                android:text="DATE"
+                android:textColor="@android:color/black"
+                android:textSize="25dp"
+                app:layout_constraintEnd_toStartOf="@+id/p1_image"
+                app:layout_constraintHorizontal_bias="0.035"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/p1_image"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="158dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="145dp"
-            android:layout_marginBottom="33dp"
-            app:srcCompat="@drawable/person" />
+            <TextView
+                android:id="@+id/challenge_placement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="1st Place"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/challenge_date"
+                app:layout_constraintTop_toBottomOf="@+id/challenge_date" />
 
+            <TextView
+                android:id="@+id/p1_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:text="Nikki"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/p1_image"
+                app:layout_constraintTop_toBottomOf="@+id/p1_image" />
 
-        <TextView
-            android:id="@+id/p2_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="85dp"
-            android:layout_marginBottom="9dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="Akshay"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/p2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Akshay"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/p2_image"
+                app:layout_constraintTop_toBottomOf="@+id/p2_image" />
 
-        <ImageView
-            android:id="@+id/p2_image"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="228dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="75dp"
-            android:layout_marginBottom="33dp"
-            app:srcCompat="@drawable/person" />
+            <ImageView
+                android:id="@+id/p3_image"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/person" />
 
-        <ImageView
-            android:id="@+id/p3_image"
-            android:layout_width="wrap_content"
-            android:layout_height="57dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="298dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="34dp"
-            app:srcCompat="@drawable/person" />
+            <TextView
+                android:id="@+id/p3_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:text="Eva"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/p3_image"
+                app:layout_constraintTop_toBottomOf="@+id/p3_image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/p3_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="26dp"
-            android:layout_marginBottom="9dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="Eva"
-            android:textSize="16dp" />
-
-
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,10 +30,6 @@ public class LandingPage extends AppCompatActivity {
     TextView text_prog;
 
     private static final String TAG = "LANDINGPAGE ACTIVITY";
-
-    // exercise database reference
-    // buttons to filter
-    // card clicks
 
     private RecyclerView rView;
     private ArrayList<ChallengeCard> cardList = new ArrayList<>();
@@ -48,10 +50,11 @@ public class LandingPage extends AppCompatActivity {
 
         text_prog = (TextView) findViewById(R.id.text_view_progress);
         simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
+        // TODO: To change the user's progress, use .setProgress with new value
         simpleProgressBar.setProgress(40);
         text_prog.setText("40%");
         currentUser = getIntent().getStringExtra("CURRENT_USER");
-        //createRecyclerView();
+        createRecyclerView();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
@@ -90,20 +93,6 @@ public class LandingPage extends AppCompatActivity {
             if (cardList == null || cardList.size() == 0) {
 
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-//                List<String> emojis = getEmojisForUser(database, currentUser);
-//                Log.d("emojis size:", String.valueOf(emojis.size()));
-//
-//                for(String each : emojis) {
-//                    if (each == "smiley") {
-//                        cardList.add(new StickerCard(R.drawable.smiley_face));
-//                    } else if (each == "laughing") {
-//                        cardList.add(new StickerCard(R.drawable.laughing_face));
-//                    } else if (each == "angry") {
-//                        cardList.add(new StickerCard(R.drawable.angry_face));
-//                    } else if (each == "sad") {
-//                        cardList.add(new StickerCard(R.drawable.sad_face));
-//                    }
-//                }
                 size = cardList.size();
                 for (int i = 0; i < size; i++) {
                     Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
@@ -114,25 +103,10 @@ public class LandingPage extends AppCompatActivity {
         }
         // Load the initial cards
         else {
-            /*List<String> emojis = getEmojisForUser(database, currentUser);
-            Log.d("emojis size:", String.valueOf(emojis.size()));
-
-            for(String each : emojis) {
-                if (each == "smiley") {
-                    cardList.add(new StickerCard(R.drawable.smiley_face));
-                } else if (each == "laughing") {
-                    cardList.add(new StickerCard(R.drawable.laughing_face));
-                } else if (each == "angry") {
-                    cardList.add(new StickerCard(R.drawable.angry_face));
-                } else if (each == "sad") {
-                    cardList.add(new StickerCard(R.drawable.sad_face));
-                }
-            }
-            */
-            ChallengeCard item1 = new ChallengeCard(new Date(), "1", "");
-            ChallengeCard item2 = new ChallengeCard(new Date(), "2", "");
-            ChallengeCard item3 = new ChallengeCard(new Date(), "3", "");
-            ChallengeCard item4 = new ChallengeCard(new Date(), "4", "");
+            ChallengeCard item1 = new ChallengeCard(new Date(), "1st Place", "");
+            ChallengeCard item2 = new ChallengeCard(new Date(), "2nd Place", "");
+            ChallengeCard item3 = new ChallengeCard(new Date(), "3rd Place", "");
+            ChallengeCard item4 = new ChallengeCard(new Date(), "4th Place", "");
             cardList.add(item1);
             cardList.add(item2);
             cardList.add(item3);
@@ -154,45 +128,15 @@ public class LandingPage extends AppCompatActivity {
     private int addItem(int position) {
 
         cardList.add(position, new ChallengeCard(new Date(), "1st Place", "Aaron, Nate, Damion"));
-        //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
 
         challengeAdapter.notifyItemInserted(position);
         return 1;
     }
 
-    /**
-     * Get the emojis for a user
-     */
-    /*
-    public List<String> getEmojisForUser(DatabaseReference database, String user) {
-
-        List emojiList = new LinkedList();
-
-        database.child("users").child(user).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.e("SNAPSHOT IS", snapshot.getKey());
-                    if (snapshot.getKey().equalsIgnoreCase("received")) {
-                        for (DataSnapshot receivedMessageUser : snapshot.getChildren()) {
-                            if (snapshot.getKey() != null) {
-                                for (DataSnapshot message : receivedMessageUser.getChildren()) {
-                                    Log.e("ADDING", message.getValue().toString());
-                                    emojiList.add(message.getValue().toString());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error while reading data");
-            }
-        });
-
-        return emojiList;
-    }*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 }

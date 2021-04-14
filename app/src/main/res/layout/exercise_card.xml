@@ -1,80 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="10dp">
 
-    <RelativeLayout
-        android:id="@+id/video"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        android:layout_height="105dp"
-        android:layout_margin="5dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/video_image"
-            android:layout_width="102dp"
-            android:layout_height="80dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="false"
-            android:contentDescription="@string/sticker_icon"
-            android:padding="3dp"
-            android:src="@drawable/neutral_face" />
+            <WebView
+                android:id="@+id/video_view"
+                android:layout_width="102dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="false"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/video_title"
-            android:layout_width="129dp"
-            android:layout_height="25dp"
-            android:layout_alignTop="@+id/video_image"
-            android:textSize="18dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="19dp"
-            android:layout_marginTop="-1dp"
-            android:layout_marginEnd="107dp"
-            android:layout_marginBottom="66dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:textColor="@android:color/black"
-            android:text="Video Title" />
+            <TextView
+                android:id="@+id/video_title"
+                android:layout_width="234dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/video_view"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/video_view"
+                android:text="Video Title"
+                android:textColor="@android:color/black"
+                android:textSize="18dp"
+                app:layout_constraintStart_toEndOf="@+id/video_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/video_desc"
-            android:layout_width="187dp"
-            android:layout_height="48dp"
-            android:layout_alignTop="@+id/video_image"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="51dp"
-            android:layout_marginBottom="9dp"
-            android:layout_toEndOf="@+id/video_image"
-            android:text="Lorem ipsum dolor sit amet, consectetur"
-            android:textSize="14dp" />
+            <TextView
+                android:id="@+id/video_desc"
+                android:layout_width="232dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/video_view"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="12dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur"
+                android:textSize="14dp"
+                app:layout_constraintStart_toStartOf="@+id/video_title"
+                app:layout_constraintTop_toBottomOf="@+id/video_title" />
 
-        <ImageView
-            android:id="@+id/bookmark"
-            android:layout_width="40dp"
-            android:layout_height="33dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="328dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="67dp"
-            app:srcCompat="@drawable/ic_bookmark" />
+            <ImageView
+                android:id="@+id/bookmark"
+                android:layout_width="40dp"
+                android:layout_height="33dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/checkbox"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox"
+                app:srcCompat="@drawable/ic_bookmark" />
+
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="35dp"
+                android:layout_height="36dp"
+                android:layout_alignStart="@+id/bookmark"
+                android:layout_alignBottom="@+id/bookmark"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
