@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -8,10 +9,12 @@ import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ExerciseViewHolder extends RecyclerView.ViewHolder {
@@ -25,7 +28,6 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
     public ExerciseViewHolder(@NonNull View itemView, final ItemClickListener listener) {
         super(itemView);
-        //video = itemView.findViewById(R.id.video_image);
         video = itemView.findViewById(R.id.video_view);
         videoName = itemView.findViewById(R.id.video_title);
         videoDesc = itemView.findViewById(R.id.video_desc);
@@ -38,15 +40,14 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
                 if (listener != null) {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
-                    // error check correct URL input
-                    //String url = String.valueOf(itemDesc.getText());
-                    //String url = "https://www.youtube.com/watch?v=1WE2HkoF1pg";
-                    //videoURL.getSettings().setJavaScriptEnabled(true);
-                    //videoURL.setWebChromeClient(new WebChromeClient());
-                    //videoURL.loadUrl(videoURL.getUrl());
-                    //String url = "https://www.youtube.com/watch?v=1WE2HkoF1pg";
-                    Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
-                    itemView.getContext().startActivity(webintent);
+
+                    video.getSettings().setJavaScriptEnabled(true);
+                    video.setWebChromeClient(new WebChromeClient());
+                    video.loadUrl(videoURL);
+
+
+                    //Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
+                    //itemView.getContext().startActivity(webintent);
                 }
             }
         });

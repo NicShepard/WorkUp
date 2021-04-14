@@ -20,8 +20,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 public class ExploreScreenActivity extends AppCompatActivity {
@@ -36,6 +38,14 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
                     "Kick Ball Change",
                     "Calf Stretch"));
+
+//    private Map<String, ArrayList<String>> videosList = new HashMap<String, ArrayList<String>>() {{
+//        for (int i = 0; i < videoNames.size(); i++) {
+//            put("key1", "value1");
+//            put("key2", "value2");
+//        }
+//    }};
+
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
