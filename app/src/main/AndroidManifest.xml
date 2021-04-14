@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkUp">
         <activity android:name=".Registration"></activity>
+        <activity android:name=".StepCounter"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
