@@ -21,16 +21,19 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        mTextView = (TextView) findViewById(R.id.text);
+        mTextView = findViewById(R.id.text);
         mButton = findViewById(R.id.test);
         ds = new DataService();
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List list = ds.getMovements();
-                Log.d("Size", "The size is");
-                Log.d("Size", list.toString());
+               User u = ds.getUser("3WS6DrguO9NWtJ4q3WxsvNNhitH2");
+               if(u != null){
+                   mTextView.setText(u.getUsername());
+               }
+                mTextView.setText("It's been called");
+
             }
         });
     }

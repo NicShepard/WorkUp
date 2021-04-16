@@ -41,15 +41,19 @@ public class DataService {
     }
 
     User getUser(String userKey) {
-        final User[] user = new User[1];
+        User user = null;
 
+        Log.d("Username is", "Called" );
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                user[0] = dataSnapshot.getValue(User.class);
-                currentUser = user[0];
-                Log.d("TAG", user[0].getUsername() + " found");
+                if(dataSnapshot.getValue() != null){
+                    User user = new User();
+                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
+                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
+                }
             }
 
             @Override
@@ -59,7 +63,7 @@ public class DataService {
             }
         };
         db.child("users").child(userKey).addValueEventListener(userListener);
-        return user[0];
+        return user;
     }
 
     User getCurrentUser() {
@@ -73,28 +77,6 @@ public class DataService {
         db.child("movements").child(key).setValue(movement);
     }
 
-//    List<Movement> getMovements() {
-//
-//        List<Movement> movements;
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                user[0] = dataSnapshot.getValue(User.class);
-//                currentUser = user[0];
-//                Log.d("TAG", user[0].getUsername() + " found");
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-//            }
-//        };
-//        db.child("users").child(userKey).addValueEventListener(userListener);
-//        return user[0];
-//    }
-
     List<Movement> getMovements() {
 
         List movements = new ArrayList();
@@ -102,7 +84,7 @@ public class DataService {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Get movement called", "Called");
+                Log.d("Get movement", "called");
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     Movement movement = new Movement();
