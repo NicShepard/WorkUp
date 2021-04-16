@@ -24,32 +24,44 @@
 
     <EditText
         android:id="@+id/regEmail"
-        android:layout_width="215dp"
-        android:layout_height="79dp"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
         android:hint="Enter Email"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/regUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/registerText"/>
+
+    <EditText
+        android:id="@+id/regPassword"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="Enter Password"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regUsername"/>
 
     <EditText
         android:id="@+id/regUsername"
-        android:layout_width="193dp"
-        android:layout_height="63dp"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
         android:hint="Username"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/firstName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regEmail" />
 
     <EditText
         android:id="@+id/firstName"
-        android:layout_width="203dp"
-        android:layout_height="71dp"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
         android:hint="First Name"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/lastName"
@@ -59,8 +71,8 @@
 
     <EditText
         android:id="@+id/lastName"
-        android:layout_width="215dp"
-        android:layout_height="79dp"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
         android:hint="Last Name"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/registerButton"
