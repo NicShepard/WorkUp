@@ -6,8 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".Registration">
 
+    <TextView
+        android:id="@+id/registerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#5C00FF"
+        android:textSize="65sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.131" />
+
+
+    <EditText
+        android:id="@+id/regEmail"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="Enter Email"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/regUsername"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerText"/>
+
+    <EditText
+        android:id="@+id/regPassword"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="Enter Password"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regUsername"/>
+
+    <EditText
+        android:id="@+id/regUsername"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="Username"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regEmail" />
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="First Name"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/lastName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regUsername" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="324dp"
+        android:layout_height="60dp"
+        android:hint="Last Name"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/registerButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstName"/>
+
+
     <Button
-        android:id="@+id/testButton"
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
@@ -15,50 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastName" />
+        app:layout_constraintTop_toBottomOf="@+id/lastName"/>
 
-    <EditText
-        android:id="@+id/pedometerDisplay"
-        android:layout_width="193dp"
-        android:layout_height="63dp"
-        android:hint="Username"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/firstName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/firstName"
-        android:layout_width="203dp"
-        android:layout_height="71dp"
-        android:hint="First Name"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/lastName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pedometerDisplay" />
-
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="215dp"
-        android:layout_height="79dp"
-        android:hint="Last Name"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/testButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
-
-    <Button
-        android:id="@+id/getUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getUser"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
