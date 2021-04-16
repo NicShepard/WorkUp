@@ -95,12 +95,6 @@ public class DataService {
 //        return user[0];
 //    }
 
-    public String title;
-    public String description;
-    public String difficulty;
-    public String videoURL;
-    public String type;
-
     List<Movement> getMovements() {
 
         List movements = new ArrayList();
