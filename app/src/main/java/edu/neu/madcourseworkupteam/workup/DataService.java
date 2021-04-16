@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DataService {
@@ -93,30 +95,48 @@ public class DataService {
 //        return user[0];
 //    }
 
-    Movement getMovement(String key) {
+    public String title;
+    public String description;
+    public String difficulty;
+    public String videoURL;
+    public String type;
 
-        final Movement[] movement = new Movement[1];
+    List<Movement> getMovements() {
+
+        List movements = new ArrayList();
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("TAG", "DATA CHANGED");
-                Log.d("TAG", String.valueOf(dataSnapshot.getKey()));
-                Log.d("TAG", String.valueOf(dataSnapshot.getValue()));
-                movement[0] = dataSnapshot.getValue(Movement.class);
+                Log.d("Get movement called", "Called");
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Movement movement = new Movement();
+                    Log.d("Get movement key", String.valueOf(ds.getKey()));
+                    Log.d("Size is", String.valueOf(movements.size()));
+
+                    movement.setTitle(ds.getValue(Movement.class).getTitle());
+                    movement.setDescription(ds.getValue(Movement.class).getDescription());
+                    movement.setDifficulty(ds.getValue(Movement.class).getDifficulty());
+                    movement.setVideoURL(ds.getValue(Movement.class).getVideoURL());
+                    movement.setType(ds.getValue(Movement.class).getType());
+                    movements.add(movement);
+                }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
             }
         };
-
-        DatabaseReference databaseReference = db.child("movements").child("MYAvLIIaCgURQcGK2mw");
+        DatabaseReference databaseReference = db.child("movements");
         databaseReference.addValueEventListener(userListener);
+        Log.d("Size of list is", String.valueOf(movements.size()));
 
-        return movement[0];
+        return movements;
+
     }
 
 
