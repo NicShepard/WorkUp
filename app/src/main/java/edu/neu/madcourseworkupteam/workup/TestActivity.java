@@ -47,9 +47,13 @@ public class TestActivity extends AppCompatActivity {
         if(user != null){
             Log.d("UID", "Getting close to UID");
             Log.d("UID", user.getUid());
+            mTextView.setText(user.getUid());
             return true;
         }
         Log.d("UID","is null");
         return false;
     }
+
+
+
 }
