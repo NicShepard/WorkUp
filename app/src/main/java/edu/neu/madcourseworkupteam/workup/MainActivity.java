@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         login_button = (Button) findViewById(R.id.SignInButton);
         forgotButton = (Button) findViewById(R.id.ForgotButton);
 
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                                 onStart();
 
                                 startActivity(new Intent(MainActivity.this,
-                                        LandingPage.class));
+                                        ProfileActivity.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
