@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(MainActivity.this,
-                TestActivity.class));
+
 
         mEmail = findViewById(R.id.UserName);
         mPassword = findViewById(R.id.Password);
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         forgotButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
 
@@ -100,8 +101,9 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this,
                                         "Login Successfully !!", Toast.LENGTH_SHORT).show();
                                 onStart();
+
                                 startActivity(new Intent(MainActivity.this,
-                                        LandingPage.class));
+                                        TestActivity.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -122,5 +124,6 @@ public class MainActivity extends AppCompatActivity {
             mEmail.setError("Pleas Enter Correct Email");
         }
     }
+
 
 }
