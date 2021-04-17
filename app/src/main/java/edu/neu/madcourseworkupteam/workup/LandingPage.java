@@ -82,6 +82,7 @@ public class LandingPage extends AppCompatActivity {
             Query query = mFirebaseDB.child("users").orderByChild("email").equalTo(emailCheck);
 
             String x = query.toString();
+
             //query.addListenerForSingleValueEvent(valueEventListener);
 
             //Ok here is the issue:
