@@ -1,6 +1,7 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -12,15 +13,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DataService {
 
-    DatabaseReference db;
+    DatabaseReference mFirebaseDB;
     User currentUser;
+    HashMap<String , String> userMap = new HashMap<>();
+
+    private FirebaseAuth mAuth;
 
     public DataService() {
-        db = FirebaseDatabase.getInstance().getReference();
+
+        mFirebaseDB = FirebaseDatabase.getInstance().getReference();
     }
 
     /******* Users *******/
@@ -36,8 +42,47 @@ public class DataService {
         return user.getUid();
     }
 
-    void registerUser(User user, String uid) {
-        db.child("users").child(uid).setValue(user);
+    void registerUser(String firstName, String lastName, String userName) {
+        //TODO add a hashmap here to add all the user info
+        //String email, String userName and maybe other credentials
+        String fName, lName, userName1;
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+           return;
+        } else {
+            String currentUserEmail = mAuth.getCurrentUser().getEmail();
+            //mFirebaseDB.child("users").child("email").setValue(currentUserEmail);
+
+            if (firstName.isEmpty()) {
+                fName = "";
+            } else fName = firstName;
+
+            if (lastName.isEmpty()) {
+                lName = "";
+            } else lName = lastName;
+
+            if (userName.isEmpty()) {
+                userName1 = "";
+            } else userName1 = userName;
+
+            userMap.put("Email", currentUserEmail);
+            userMap.put("FirstName", fName);
+            userMap.put("LastName", lName);
+            userMap.put("Username", userName1);
+
+            mFirebaseDB.child("users").push().setValue(userMap);
+//                    .addOnCompleteListener( new OnCompleteListener<Void>()
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//            }
+//            )
+//
+        }
+//
+
+//        mFirebaseDB.child("users").child("username").setValue(userName);
+//        mFirebaseDB.child("users").child("email").setValue(email);
     }
 
     User getUser(String userKey) {
@@ -62,8 +107,11 @@ public class DataService {
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        db.child("users").child(userKey).addValueEventListener(userListener);
+        //db.child("users").child(userKey).addValueEventListener(userListener);
+        //return user;
+        mFirebaseDB.child("users").child(userKey).addValueEventListener(userListener);
         return user;
+        //return user[0];
     }
 
     User getCurrentUser() {
@@ -73,8 +121,8 @@ public class DataService {
     /******* Movements *******/
 
     void createMovement(Movement movement) {
-        String key = db.child("movements").push().getKey();
-        db.child("movements").child(key).setValue(movement);
+        String key = mFirebaseDB.child("movements").push().getKey();
+        mFirebaseDB.child("movements").child(key).setValue(movement);
     }
 
     List<Movement> getMovements() {
@@ -107,7 +155,10 @@ public class DataService {
                 Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        DatabaseReference databaseReference = db.child("movements");
+
+        //DatabaseReference databaseReference = db.child("movements");
+
+        DatabaseReference databaseReference = mFirebaseDB.child("movements").child("MYAvLIIaCgURQcGK2mw");
         databaseReference.addValueEventListener(userListener);
         Log.d("Size of list is", String.valueOf(movements.size()));
 

@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +16,15 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ public class LandingPage extends AppCompatActivity {
 
     ProgressBar simpleProgressBar;
     TextView text_prog;
+    private FirebaseAuth mAuth;
+    DatabaseReference mFirebaseDB;
 
     private static final String TAG = "LANDINGPAGE ACTIVITY";
 
@@ -59,6 +67,34 @@ public class LandingPage extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+
+        mFirebaseDB = FirebaseDatabase.getInstance().getReference();
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null) {
+            Toast.makeText(LandingPage.this,
+                    "Current user is null", Toast.LENGTH_SHORT).show();
+        } else {
+            String emailCheck = currentUser.getEmail();
+            Toast.makeText(LandingPage.this,
+                    "Current user is:" + emailCheck, Toast.LENGTH_SHORT).show();
+
+
+            Query query = mFirebaseDB.child("users").orderByChild("email").equalTo(emailCheck);
+
+            String x = query.toString();
+
+            //query.addListenerForSingleValueEvent(valueEventListener);
+
+            //Ok here is the issue:
+            //String rtdbEmail = mFirebaseDB.child("users").child(emailCheck).get().toString();
+            Toast.makeText(LandingPage.this,
+                    "Current user is:" + x, Toast.LENGTH_SHORT).show();
+
+
+        }
 
         try {
             initialItemData(savedInstanceState);

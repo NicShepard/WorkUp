@@ -10,6 +10,7 @@ class User {
     String firstName;
     String lastName;
     String username;
+    String password;
     Long totalPoints;
     Long totalSteps;
     String email;
@@ -17,8 +18,14 @@ class User {
     List<String> favorites;
     List<String> friends;
 
-    User() {
+    public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
+    }
+
+    public User( String username, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
     public User(String firstName, String lastName, String username) {
@@ -27,7 +34,9 @@ class User {
         this.username = username;
     }
 
-    public User(String firstName, String lastName, String username, Long totalPoints, Long totalSteps, String email, SettingConfiguration settingConfiguration, List<String> favorites, List<String> friends) {
+    public User(String firstName, String lastName, String username, Long totalPoints,
+                Long totalSteps, String email, SettingConfiguration settingConfiguration,
+                List<String> favorites, List<String> friends) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
