@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mEmail = findViewById(R.id.UserName);
         mPassword = findViewById(R.id.Password);
         login_button = (Button) findViewById(R.id.SignInButton);
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                                 onStart();
 
                                 startActivity(new Intent(MainActivity.this,
-                                        TestActivity.class));
+                                        LandingPage.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
