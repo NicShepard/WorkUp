@@ -80,12 +80,14 @@ public class LandingPage extends AppCompatActivity {
 
 
             Query query = mFirebaseDB.child("users").orderByChild("email").equalTo(emailCheck);
+
+            String x = query.toString();
             //query.addListenerForSingleValueEvent(valueEventListener);
 
             //Ok here is the issue:
             //String rtdbEmail = mFirebaseDB.child("users").child(emailCheck).get().toString();
             Toast.makeText(LandingPage.this,
-                    "Current user is:" + query, Toast.LENGTH_SHORT).show();
+                    "Current user is:" + x, Toast.LENGTH_SHORT).show();
 
 
         }
