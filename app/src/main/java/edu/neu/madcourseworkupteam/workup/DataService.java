@@ -11,12 +11,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DataService {
 
     DatabaseReference mFirebaseDB;
     User currentUser;
+    HashMap<String , String> userMap = new HashMap<>();
 
     private FirebaseAuth mAuth;
 
@@ -38,18 +40,44 @@ public class DataService {
         return user.getUid();
     }
 
-    void registerUser() {
+    void registerUser(String firstName, String lastName, String userName) {
         //TODO add a hashmap here to add all the user info
         //String email, String userName and maybe other credentials
+        String fName, lName, userName1;
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
            return;
         } else {
             String currentUserEmail = mAuth.getCurrentUser().getEmail();
-            mFirebaseDB.child("users").child("email").setValue(currentUserEmail);
+            //mFirebaseDB.child("users").child("email").setValue(currentUserEmail);
 
+            if (firstName.isEmpty()) {
+                fName = "";
+            } else fName = firstName;
+
+            if (lastName.isEmpty()) {
+                lName = "";
+            } else lName = lastName;
+
+            if (userName.isEmpty()) {
+                userName1 = "";
+            } else userName1 = userName;
+
+            userMap.put("Email", currentUserEmail);
+            userMap.put("FirstName", fName);
+            userMap.put("LastName", lName);
+            userMap.put("Username", userName1);
+
+            mFirebaseDB.child("users").push().setValue(userMap);
+//                    .addOnCompleteListener( new OnCompleteListener<Void>()
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//
+//            }
+//            )
+//
         }
-
+//
 
 //        mFirebaseDB.child("users").child("username").setValue(userName);
 //        mFirebaseDB.child("users").child("email").setValue(email);
