@@ -16,6 +16,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -38,14 +43,6 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
                     "Kick Ball Change",
                     "Calf Stretch"));
-
-//    private Map<String, ArrayList<String>> videosList = new HashMap<String, ArrayList<String>>() {{
-//        for (int i = 0; i < videoNames.size(); i++) {
-//            put("key1", "value1");
-//            put("key2", "value2");
-//        }
-//    }};
-
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
@@ -110,8 +107,43 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
     private void init(Bundle savedInstanceState) {
         initialItemData(savedInstanceState);
-        createRecyclerView();
     }
+
+    void getMovements() {
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Get movement", "called");
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    ExerciseCard movement = new ExerciseCard();
+                    Log.d("Get movement key", String.valueOf(ds.getKey()));
+                    Log.d("Size is", String.valueOf(cardList.size()));
+
+                    movement.setVideoName(ds.getValue(Movement.class).getTitle());
+                    movement.setVideoDesc(ds.getValue(Movement.class).getDescription());
+                    movement.setVideoUrl(ds.getValue(Movement.class).getVideoURL());
+                    movement.setChecked(false);
+
+                    cardList.add(movement);
+                }
+                createRecyclerView();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("movements");
+        databaseReference.addValueEventListener(userListener);
+        Log.d("Size of list is", String.valueOf(cardList.size()));
+    }
+
+
 
     private void initialItemData(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
@@ -132,11 +164,12 @@ public class ExploreScreenActivity extends AppCompatActivity {
         }
         // Load the initial cards
         else {
-            for (int i = 0; i < videoNames.size(); i++) {
-                ExerciseCard item = new ExerciseCard("https://www.youtube.com/watch?v=" + videoURLs.get(i),
-                        videoNames.get(i), "Video Description", false);
-                cardList.add(item);
-            }
+//            for (int i = 0; i < videoNames.size(); i++) {
+//                ExerciseCard item = new ExerciseCard("https://www.youtube.com/watch?v=" + videoURLs.get(i),
+//                        videoNames.get(i), "Video Description", false);
+//                cardList.add(item);
+//            }
+            getMovements();
         }
     }
 
@@ -161,7 +194,6 @@ public class ExploreScreenActivity extends AppCompatActivity {
         exerciseAdapter.setOnClickItemClickListener(itemClickListener);
         rView.setAdapter(exerciseAdapter);
         rView.setLayoutManager(layout);
-
     }
 
 }

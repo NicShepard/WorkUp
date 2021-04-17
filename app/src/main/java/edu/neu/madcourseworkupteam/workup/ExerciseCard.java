@@ -14,6 +14,37 @@ public class ExerciseCard implements ItemClickListener {
         this.isChecked = checked;
     }
 
+    public ExerciseCard() {
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = "https://www.youtube.com/watch?v=" + videoUrl;
+    }
+
+    public String getVideoName() {
+        return videoName;
+    }
+
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
+    }
+
+    public String getVideoDesc() {
+        return videoDesc;
+    }
+
+    public void setVideoDesc(String videoDesc) {
+        this.videoDesc = videoDesc;
+    }
+
+    public Boolean getChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(Boolean checked) {
+        isChecked = checked;
+    }
+
     public String getName() { return this.videoName; }
 
     public String getDesc() { return this.videoDesc; }
