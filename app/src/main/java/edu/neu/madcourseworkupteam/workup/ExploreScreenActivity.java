@@ -3,6 +3,7 @@ package edu.neu.madcourseworkupteam.workup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,14 +36,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "ExploreScreen ACTIVITY";
 
-    private ArrayList<String> videoURLs = new ArrayList<String>(
-            Arrays.asList("cBPP_izKKSs", "GLy2rYHwUqY", "EXh42q4jDBc", "y01ri_43G50"));
-
-    private ArrayList<String> videoNames = new ArrayList<String>(
-            Arrays.asList(
-                    "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
-                    "Kick Ball Change",
-                    "Calf Stretch"));
+    private DatabaseReference databaseReference;
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
@@ -58,11 +52,11 @@ public class ExploreScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_screen);
-        //database = FirebaseDatabase.getInstance().getReference();
         currentUser = getIntent().getStringExtra("CURRENT_USER");
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
         init(savedInstanceState);
     }
 
@@ -137,8 +131,8 @@ public class ExploreScreenActivity extends AppCompatActivity {
         }
     }
 
-    void getMovements() {
 
+    void getMovements() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
