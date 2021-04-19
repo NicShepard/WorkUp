@@ -1,9 +1,12 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.CheckBox;
@@ -12,6 +15,9 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -25,6 +31,9 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
     public TextView videoName;
     public TextView videoDesc;
     public CheckBox checkBox;
+
+    private static final String ACTIVE_FRAGMENT = "ACTIVE_FRAGMENT";
+    private Fragment activeFragment;
 
     public ExerciseViewHolder(@NonNull View itemView, final ItemClickListener listener) {
         super(itemView);
@@ -41,6 +50,9 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
 
+//                    Intent intent = new Intent(itemView.getContext(), VideoFragment.newInstance(videoURL).getClass());
+//                    itemView.getContext().startActivity(intent);
+
                     video.getSettings().setJavaScriptEnabled(true);
                     video.setWebChromeClient(new WebChromeClient());
                     video.loadUrl(videoURL);
@@ -52,6 +64,8 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+
+        // TODO: add the video to the db of favorites for the user
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,4 +78,5 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
+
 }
