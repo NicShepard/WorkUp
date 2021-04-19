@@ -40,31 +40,7 @@ public class DataService {
         db.child("users").child(uid).setValue(user);
     }
 
-    User getUser(String userKey) {
-        User user = null;
 
-        Log.d("Username is", "Called" );
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.getValue() != null){
-                    User user = new User();
-                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
-                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        db.child("users").child(userKey).addValueEventListener(userListener);
-        return user;
-    }
 
     User getCurrentUser() {
         return currentUser;

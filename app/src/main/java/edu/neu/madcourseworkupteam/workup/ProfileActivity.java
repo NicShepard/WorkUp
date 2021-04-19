@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
     private String currentUser;
+    private TextView username;
+    private TextView firstLast;
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -44,6 +50,10 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        username = findViewById(R.id.user_name);
+        firstLast = findViewById(R.id.firstLast);
+
         currentUser = getIntent().getStringExtra("CURRENT_USER");
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -51,6 +61,28 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
+            ValueEventListener userListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if(dataSnapshot.getValue() != null){
+                        String name = "";
+                        username.setText(dataSnapshot.getValue(User.class).getUsername());
+                        name += (dataSnapshot.getValue(User.class).getFirstName());
+                        name +=(" " + dataSnapshot.getValue(User.class).getLastName());
+                        firstLast.setText(name);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+                }
+            };
+            databaseReference.child("users").child(user.getUid()).addValueEventListener(userListener);
+
+
 
         try {
             initialItemData(savedInstanceState);
