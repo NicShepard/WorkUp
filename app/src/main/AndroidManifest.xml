@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkUp">
         <activity android:name=".Registration" />
-        <activity android:name=".StepCounter" />
+        <activity android:name=".VideoCard" />
         <activity android:name=".TestActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".MainActivity">
