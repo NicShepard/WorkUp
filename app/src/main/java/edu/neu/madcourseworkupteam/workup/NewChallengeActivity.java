@@ -78,10 +78,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     public void addOnSpinnerFriends() {
         multiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.friends);
         ArrayList<String> list = new ArrayList<>();
-        list.add("Select friends to challenge");
 
         for (User u : friendList) {
-            list.add(u.getFirstName() + u.getLastName() + u.getUsername());
+            list.add(u.getFirstName() + " " + u.getLastName() + " (" + u.getUsername()  + ")");
         }
 
         String[] friends = new String[list.size()];
@@ -90,7 +89,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         }
 
         multiSelectSpinner.setItems(friends);
-        multiSelectSpinner.setSelection(0);
+        multiSelectSpinner.setSelection(new int[] {0});
         multiSelectSpinner.setListener(this);
 
 
