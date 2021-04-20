@@ -180,4 +180,36 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
 
         databaseReference.addValueEventListener(userListener);
     }
+
+    void getStepsForDay() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        ld = LocalDate.now();
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Get Steps", "called");
+
+                if (dataSnapshot != null) {
+                    Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
+        databaseReference.addValueEventListener(userListener);
+    }
+
+    void setStepsForDay() {
+        ld = LocalDate.now();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
+        databaseReference.setValue("0");
+    }
 }
