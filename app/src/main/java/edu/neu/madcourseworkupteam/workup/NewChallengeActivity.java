@@ -18,12 +18,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,6 +45,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private MultiSelectSpinner multiSelectSpinner;
     private String course1;
     private String course2;
+    private Button saveButton;
     BottomNavigationView bottomNavigation;
 
     private Button startDate;
@@ -52,6 +55,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
         startDate = (Button) findViewById(R.id.start_date);
+        saveButton = findViewById(R.id.save_button);
 
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Challenge Dates");
@@ -67,6 +71,13 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onPositiveButtonClick(Object selection) {
                 startDate.setText(datePicker.getHeaderText());
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createChallenge();
             }
         });
 
@@ -143,6 +154,20 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     @Override
     public void selectedStrings(List<String> strings) {
 
+    }
+
+    void createChallenge() {
+        Log.d("Create challenge", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
+
+        Challenge challenge = new Challenge();
+        challenge.setTitle("Title");
+        db.child("challenges").setValue("challenge");
+
+        db.child("users").child(user.getUid()).child("challenges").child(key).setValue(challenge);
     }
 
 }
