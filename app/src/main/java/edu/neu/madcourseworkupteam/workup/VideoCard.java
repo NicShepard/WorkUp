@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class VideoCard extends AppCompatActivity implements SensorEventListener {
 
     int steps;
+    int initialSteps = -1;
     SensorManager sensorManager;
     Sensor stepCounter;
     TextView stepDisplay;
@@ -67,19 +68,22 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if(initialSteps == -1){
+            initialSteps = (int) event.values[0];
+        }
+
         if(event.sensor == stepCounter){
             steps = (int) event.values[0];
+            steps = steps - initialSteps;
             stepDisplay.setText(String.valueOf(steps));
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
