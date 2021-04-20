@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
@@ -74,7 +75,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         getFriends();
     }
 
-    void getFriends() {
+
+
+    public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
