@@ -21,6 +21,7 @@ public class DataService {
     DatabaseReference mFirebaseDB;
     User currentUser;
     HashMap<String , String> userMap = new HashMap<>();
+    private String currentUserID;
 
     private FirebaseAuth mAuth;
 
@@ -51,6 +52,7 @@ public class DataService {
            return;
         } else {
             String currentUserEmail = mAuth.getCurrentUser().getEmail();
+            String currentUserID = mAuth.getUid();
             //mFirebaseDB.child("users").child("email").setValue(currentUserEmail);
 
             if (firstName.isEmpty()) {
@@ -65,12 +67,13 @@ public class DataService {
                 userName1 = "";
             } else userName1 = userName;
 
-            userMap.put("Email", currentUserEmail);
-            userMap.put("FirstName", fName);
-            userMap.put("LastName", lName);
-            userMap.put("Username", userName1);
+            userMap.put("email", currentUserEmail);
+            userMap.put("firstName", fName);
+            userMap.put("lastName", lName);
+            userMap.put("username", userName1);
 
-            mFirebaseDB.child("users").push().setValue(userMap);
+            mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
+            this.setUser();
 //                    .addOnCompleteListener( new OnCompleteListener<Void>()
 //            @Override
 //            public void onComplete(@NonNull Task<Void> task) {
@@ -80,25 +83,29 @@ public class DataService {
 //
         }
 //
-
 //        mFirebaseDB.child("users").child("username").setValue(userName);
 //        mFirebaseDB.child("users").child("email").setValue(email);
     }
 
-    User getUser(String userKey) {
+    void setUser() {
         User user = null;
-
         Log.d("Username is", "Called" );
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.getValue() != null){
-                    User user = new User();
+                if(dataSnapshot.child("users").hasChild(currentUserID)) {
                     user.setUsername(dataSnapshot.getValue(User.class).getUsername());
                     user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
                     user.setLastName(dataSnapshot.getValue(User.class).getLastName());
+                    currentUser = user;
                 }
+//                if(dataSnapshot.getValue() != null){
+//                    User user = new User();
+//                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
+//                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+//                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
+//                }
             }
 
             @Override
@@ -109,8 +116,8 @@ public class DataService {
         };
         //db.child("users").child(userKey).addValueEventListener(userListener);
         //return user;
-        mFirebaseDB.child("users").child(userKey).addValueEventListener(userListener);
-        return user;
+        mFirebaseDB.child("users").child(currentUserID).addValueEventListener(userListener);
+        //return user;
         //return user[0];
     }
 
