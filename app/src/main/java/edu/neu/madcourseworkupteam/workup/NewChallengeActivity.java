@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -53,6 +54,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private String course2;
     private Button saveButton;
     BottomNavigationView bottomNavigation;
+    private Challenge challengeToAdd;
+    private TextView nameOfChallenge;
 
     private Button startDate;
     private MaterialDatePicker datePicker;
@@ -62,6 +65,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         setContentView(R.layout.activity_new_challenge);
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
+        nameOfChallenge = findViewById(R.id.name_of_challenge);
 
         start = null;
         end = null;
@@ -96,17 +100,23 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                 String endDate = dateFormat.format(newEndDate);
                 endDate = LocalDate.parse(endDate).plusDays(1).toString();
 
-                Log.d("selection is", startDate);
-                Log.d("selection is", endDate);
+                //Crete the challenge to be added
+                challengeToAdd = new Challenge();
+                challengeToAdd.setStartDate(startDate);
+                challengeToAdd.setEndDate(endDate);
+
+                if(nameOfChallenge.getText().length() > 0){
+                    challengeToAdd.setTitle(nameOfChallenge.getText().toString());
+                } else {
+                    challengeToAdd.setTitle("Unnamed Challenge");
+                }
             }
-
-
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createChallenge();
+                createChallenge(challengeToAdd);
             }
         });
 
@@ -185,16 +195,12 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     }
 
-    void createChallenge() {
+    void createChallenge(Challenge challenge) {
         Log.d("Create challenge", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
-
-        Challenge challenge = new Challenge();
-        challenge.setTitle("Title");
-        db.child("challenges").setValue("challenge");
 
         db.child("users").child(user.getUid()).child("challenges").child(key).setValue(challenge);
     }

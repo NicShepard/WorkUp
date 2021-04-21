@@ -27,7 +27,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/textView"
+                android:id="@+id/name_of_challenge"
                 android:layout_width="222dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="9dp"
