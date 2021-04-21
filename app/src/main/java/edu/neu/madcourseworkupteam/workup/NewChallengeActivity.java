@@ -25,11 +25,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 
 public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener {
 
@@ -66,6 +69,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Challenge Dates");
         datePicker = builder.build();
+
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,16 +81,23 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onPositiveButtonClick(Object selection) {
 
-
+                //Get the start end end date by casting to Long
                 start = (Long) ((Pair) selection).first;
                 end = (Long) ((Pair) selection).second;
 
                 startDate.setText(datePicker.getHeaderText());
 
+                //Create the dates, format them, and add 1 day to correct a quirk with the date picker
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date newStartDate = new Date(start);
                 Date newEndDate = new Date(end);
+                String startDate = dateFormat.format(newStartDate);
+                startDate = LocalDate.parse(startDate).plusDays(1).toString();
+                String endDate = dateFormat.format(newEndDate);
+                endDate = LocalDate.parse(endDate).plusDays(1).toString();
 
-                Log.d("selection is", newStartDate.toString());
+                Log.d("selection is", startDate);
+                Log.d("selection is", endDate);
             }
 
 
