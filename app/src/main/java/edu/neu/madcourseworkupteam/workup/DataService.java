@@ -51,6 +51,7 @@ public class DataService {
            return;
         } else {
             String currentUserEmail = mAuth.getCurrentUser().getEmail();
+            String currentUserID = mAuth.getUid();
             //mFirebaseDB.child("users").child("email").setValue(currentUserEmail);
 
             if (firstName.isEmpty()) {
@@ -70,7 +71,7 @@ public class DataService {
             userMap.put("LastName", lName);
             userMap.put("Username", userName1);
 
-            mFirebaseDB.child("users").push().setValue(userMap);
+            mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
 //                    .addOnCompleteListener( new OnCompleteListener<Void>()
 //            @Override
 //            public void onComplete(@NonNull Task<Void> task) {
