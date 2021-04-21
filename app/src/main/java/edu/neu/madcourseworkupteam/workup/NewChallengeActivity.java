@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener {
@@ -37,6 +38,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private ArrayList<User> friendList = new ArrayList<>();
+    private Long start = null;
+    private Long end = null;
 
     private SharedPreferences sharedPreferences;
     private String currentUsername;
@@ -57,6 +60,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
 
+        start = null;
+        end = null;
+
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Challenge Dates");
         datePicker = builder.build();
@@ -70,8 +76,20 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
+
+
+                start = (Long) ((Pair) selection).first;
+                end = (Long) ((Pair) selection).second;
+
                 startDate.setText(datePicker.getHeaderText());
+
+                Date newStartDate = new Date(start);
+                Date newEndDate = new Date(end);
+
+                Log.d("selection is", newStartDate.toString());
             }
+
+
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
