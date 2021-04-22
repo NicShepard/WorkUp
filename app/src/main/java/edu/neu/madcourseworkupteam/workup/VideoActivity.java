@@ -52,6 +52,9 @@ public class VideoActivity extends AppCompatActivity {
 
         WebSettings settings = video.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setAppCacheEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setSaveFormData(true);
         video.setWebViewClient(new Callback());
         video.loadUrl(videoURL);
 
