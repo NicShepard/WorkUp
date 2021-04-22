@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -56,6 +57,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     BottomNavigationView bottomNavigation;
     private Challenge challengeToAdd;
     private TextView nameOfChallenge;
+    private List selectedUsers;
+    private HashMap<String, Long> pointsMap;
 
     private Button startDate;
     private MaterialDatePicker datePicker;
@@ -104,6 +107,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                 challengeToAdd = new Challenge();
                 challengeToAdd.setStartDate(startDate);
                 challengeToAdd.setEndDate(endDate);
+                String selected = multiSelectSpinner.getSelectedItemsAsString();
+                Log.d("Items Selected", selected);
+                challengeToAdd.setUserPoints(pointsMap);
 
                 if(nameOfChallenge.getText().length() > 0){
                     challengeToAdd.setTitle(nameOfChallenge.getText().toString());
@@ -130,7 +136,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         ArrayList<String> list = new ArrayList<>();
 
         for (User u : friendList) {
-            list.add(u.getFirstName() + " " + u.getLastName() + " (" + u.getUsername()  + ")");
+            list.add(u.getUsername());
         }
 
         String[] friends = new String[list.size()];
@@ -141,7 +147,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         multiSelectSpinner.setItems(friends);
         multiSelectSpinner.setSelection(new int[] {0});
         multiSelectSpinner.setListener(this);
-
 
     }
 
@@ -192,10 +197,19 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     @Override
     public void selectedStrings(List<String> strings) {
+        selectedUsers = strings;
+
+        pointsMap = new HashMap<>();
+        for(String selected : strings){
+            pointsMap.put(selected, Long.valueOf(0));
+        }
+
+
 
     }
 
     void createChallenge(Challenge challenge) {
+
         Log.d("Create challenge", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
