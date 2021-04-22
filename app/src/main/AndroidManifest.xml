@@ -19,7 +19,6 @@
         <activity android:name=".Registration" />
         <activity android:name=".VideoCard" />
         <activity android:name=".TestActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

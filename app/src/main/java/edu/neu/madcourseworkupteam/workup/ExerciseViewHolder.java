@@ -25,8 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
-    //public ImageView video;
-    public WebView video;
+    public ImageView video;
+    //public WebView video;
     public String videoURL;
     public TextView videoName;
     public TextView videoDesc;
@@ -37,9 +37,9 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
     public ExerciseViewHolder(@NonNull View itemView, final ItemClickListener listener) {
         super(itemView);
-        video = itemView.findViewById(R.id.video_view);
-        videoName = itemView.findViewById(R.id.video_title);
-        videoDesc = itemView.findViewById(R.id.video_desc);
+//        this.video = itemView.findViewById(R.id.img_view);
+        this.videoName = itemView.findViewById(R.id.video_title);
+        this.videoDesc = itemView.findViewById(R.id.video_desc);
         this.checkBox = itemView.findViewById(R.id.checkbox);
 
         itemView.setOnClickListener(new View.OnClickListener() {
