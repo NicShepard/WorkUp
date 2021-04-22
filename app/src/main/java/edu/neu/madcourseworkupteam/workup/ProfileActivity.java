@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +34,8 @@ public class ProfileActivity extends AppCompatActivity {
     private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
     private String currentUser;
+    private ImageView profilePic;
+    private TextView displayCurrentUser;
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -51,6 +55,10 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        profilePic = findViewById(R.id.profilePic);
+
+        displayCurrentUser = findViewById(R.id.user_name);
 
         try {
             initialItemData(savedInstanceState);
