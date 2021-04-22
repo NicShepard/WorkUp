@@ -62,6 +62,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private Button startDate;
     private MaterialDatePicker datePicker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                 Log.d("Items Selected", selected);
                 challengeToAdd.setUserPoints(pointsMap);
 
-                if(nameOfChallenge.getText().length() > 0){
+                if (nameOfChallenge.getText().length() > 0) {
                     challengeToAdd.setTitle(nameOfChallenge.getText().toString());
                 } else {
                     challengeToAdd.setTitle("Unnamed Challenge");
@@ -146,7 +147,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         }
 
         multiSelectSpinner.setItems(friends);
-        multiSelectSpinner.setSelection(new int[] {0});
+        multiSelectSpinner.setSelection(new int[]{0});
         multiSelectSpinner.setListener(this);
 
     }
@@ -160,7 +161,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     }
 
 
-
     public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -171,7 +171,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                     User friend = new User();
                     Log.d("Get friend key", String.valueOf(ds.getKey()));
 
-                    friend.setFirstName(ds.getValue(User.class).getFirstName()) ;
+                    friend.setFirstName(ds.getValue(User.class).getFirstName());
                     friend.setLastName(ds.getValue(User.class).getLastName());
                     friend.setUsername(ds.getValue(User.class).getUsername());
 
@@ -201,13 +201,23 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         selectedUsers = strings;
 
         pointsMap = new HashMap<>();
-        for(String selected : strings){
+        for (String selected : strings) {
             pointsMap.put(selected, Long.valueOf(0));
         }
 
 
-
     }
+
+    //PLAN TODO
+
+    /**
+     * Put challenge in own node
+     * Add challenge to all user's nodes
+     * For each user, on visit the app it will calculate the total steps from start to now and
+     * update their map. If it is past the last day, update the map, create a sorted list of rankings.
+     *
+     * A user declining the challenge will delete it from the map, and from their user node
+     */
 
     void createChallenge(Challenge challenge) {
 
