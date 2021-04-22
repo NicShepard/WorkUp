@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener {
+public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener, View.OnClickListener {
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -39,11 +39,10 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private SharedPreferences sharedPreferences;
     private String currentUsername;
     private final String defaultString = "default";
-    private Spinner spinner;
     private MultiSelectSpinner multiSelectSpinner;
-    private String course1;
-    private String course2;
     BottomNavigationView bottomNavigation;
+    Button save;
+    Button cancel;
 
     private Button startDate;
     private MaterialDatePicker datePicker;
@@ -52,6 +51,11 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
         startDate = (Button) findViewById(R.id.start_date);
+        save = (Button) findViewById(R.id.save_button);
+        cancel = (Button) findViewById(R.id.cancel_button);
+
+        save.setOnClickListener(this);
+        cancel.setOnClickListener(this);
 
         MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
         builder.setTitleText("Select Challenge Dates");
@@ -145,4 +149,11 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cancel_button:
+                finish();
+        }
+    }
 }

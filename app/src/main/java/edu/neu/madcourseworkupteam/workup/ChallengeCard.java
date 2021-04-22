@@ -1,21 +1,20 @@
 package edu.neu.madcourseworkupteam.workup;
 
-
-import java.util.Date;
-
 public class ChallengeCard {
 
-    private Date date;
-    private String placement;
+    private String dates;
+    private String challengeName;
     private String friends;
 
-    public ChallengeCard(Date date, String place, String friends) {
-        this.date = date;
-        this.placement = place;
+    public ChallengeCard(String dates, String name, String friends) {
+        this.dates = dates;
+        this.challengeName = name;
         this.friends = friends;
     }
 
-    public Date getDate() { return this.date; }
+    public String getDate() { return this.dates; }
 
-    public String getPlacement() { return this.placement; }
+    public String getChallengeName() { return this.challengeName; }
+
+    public String getFriends() { return this.friends; }
 }

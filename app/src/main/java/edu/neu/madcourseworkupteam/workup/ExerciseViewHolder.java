@@ -50,13 +50,12 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
 
-//                    Intent intent = new Intent(itemView.getContext(), VideoFragment.newInstance(videoURL).getClass());
-//                    itemView.getContext().startActivity(intent);
+                    Intent intent = new Intent(itemView.getContext(), VideoActivity.class);
+                    intent.putExtra("videoURL", videoURL);
+                    intent.putExtra("videoTitle", videoName.getText().toString());
+                    intent.putExtra("videoDesc", videoDesc.getText().toString());
 
-                    video.getSettings().setJavaScriptEnabled(true);
-                    video.setWebChromeClient(new WebChromeClient());
-                    video.loadUrl(videoURL);
-
+                    itemView.getContext().startActivity(intent);
 
                     //Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
                     //itemView.getContext().startActivity(webintent);
