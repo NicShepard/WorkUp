@@ -131,6 +131,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         init(savedInstanceState);
     }
 
+    //TODO uncheck first one, filter out self
     public void addOnSpinnerFriends() {
         multiSelectSpinner = (MultiSelectSpinner) findViewById(R.id.friends);
         ArrayList<String> list = new ArrayList<>();
