@@ -3,16 +3,12 @@ package edu.neu.madcourseworkupteam.workup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
-import androidx.fragment.app.DialogFragment;
 
-import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,9 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener, View.OnClickListener {
-
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -169,7 +163,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void initialItemData(Bundle savedInstanceState) {
         getFriends();
-        getActiveChallengesForUser("test");
+
     }
 
 
@@ -298,10 +292,48 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
-
-
         return challenges;
+    }
 
+    List<String> getPastChallengesForUser(String userKey) {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    challenges.add(ds.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("pastChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+        return challenges;
+    }
+
+    //TODO delete from map
+    void declineChallenge(String challengeKey){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("users").child(user.getUid()).child("activeChallenges").child(challengeKey).setValue(null);
+    }
+
+    void updateChallenges(){
+        //Get active challenges
+        //Iterate through all of them
+        //Add total steps for each day in the challenge and update it in challenge
+        //Compare dates to see if it is over
+        //If challenge is over add to past challenges in user node, and then delete from active
+        //Create ranking list in challenge
     }
 
     @Override
