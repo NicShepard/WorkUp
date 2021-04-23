@@ -315,7 +315,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     Challenge c = new Challenge();
                     c.setPk(ds.getKey());
-                    c.setAccepted(Boolean.valueOf(ds.getValue().toString()));
+
+
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
                     Log.d("Size of list is", challenges.toString());
