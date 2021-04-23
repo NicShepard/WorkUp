@@ -2,6 +2,7 @@ package edu.neu.madcourseworkupteam.workup;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.HashMap;
 import java.util.List;
 
 @IgnoreExtraProperties
@@ -10,22 +11,15 @@ class User {
     String firstName;
     String lastName;
     String username;
-    String password;
     Long totalPoints;
     Long totalSteps;
     String email;
     SettingConfiguration settingConfiguration;
-    List<String> favorites;
+    HashMap<String, String> favorites;
     List<String> friends;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
-
-    public User( String username, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
     }
 
     public User(String firstName, String lastName, String username) {
@@ -34,19 +28,7 @@ class User {
         this.username = username;
     }
 
-    public User(String firstName, String lastName, String username, Long totalPoints,
-                Long totalSteps, String email, SettingConfiguration settingConfiguration,
-                List<String> favorites, List<String> friends) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.totalPoints = totalPoints;
-        this.totalSteps = totalSteps;
-        this.email = email;
-        this.settingConfiguration = settingConfiguration;
-        this.favorites = favorites;
-        this.friends = friends;
-    }
+
 
     public String getFirstName() {
         return firstName;
@@ -104,11 +86,13 @@ class User {
         this.settingConfiguration = settingConfiguration;
     }
 
-    public List<String> getFavorites() {
+    public HashMap<String, String> getFavorites() {
         return favorites;
     }
 
-    public void setFavorites(List<String> favorites) {
+
+
+    public void setFavorites(HashMap<String, String> favorites) {
         this.favorites = favorites;
     }
 

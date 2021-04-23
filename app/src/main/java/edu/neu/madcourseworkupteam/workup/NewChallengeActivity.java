@@ -67,7 +67,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
-        currentUser = getCurrentUser();
+        getActiveChallengesForUser();
+
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
         nameOfChallenge = findViewById(R.id.name_of_challenge);
@@ -160,7 +161,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void init(Bundle savedInstanceState) {
         initialItemData(savedInstanceState);
-        declineChallenge("-MYyzQeU-JtawVlx-BlW");
     }
 
     private void initialItemData(Bundle savedInstanceState) {
@@ -271,7 +271,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.addValueEventListener(userListener);
     }
 
-    List<String> getActiveChallengesForUser() {
+    List<Challenge> getActiveChallengesForUser() {
         Log.d("activeChallenges", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -281,7 +281,10 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    challenges.add(ds.getValue().toString());
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setAccepted(Boolean.valueOf(ds.getValue().toString()));
+                    challenges.add(c);
                 }
             }
 
@@ -293,6 +296,10 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
+        Log.d("Size of list is", String.valueOf(challenges.size()));
+        Log.d("Size of list is", challenges.toString());
+
+
         return challenges;
     }
 
@@ -337,9 +344,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
 
         //Get active challenges
-        List<String> activeChallenges = getActiveChallengesForUser();
+        List<Challenge> activeChallenges = getActiveChallengesForUser();
 
-        for (String challenge : activeChallenges) {
+        for (Challenge challenge : activeChallenges) {
         }
 
         //Iterate through all of them
