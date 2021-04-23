@@ -45,6 +45,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private ArrayList<User> friendList = new ArrayList<>();
     private Long start = null;
     private Long end = null;
+    private boolean challengeCreated = false;
 
     private SharedPreferences sharedPreferences;
     private String currentUsername;
@@ -70,6 +71,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
         nameOfChallenge = findViewById(R.id.name_of_challenge);
+
+
 
         start = null;
         end = null;
@@ -206,6 +209,10 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         }
 
 
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+
+
     }
 
     //PLAN TODO
@@ -217,6 +224,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
      * update their map. If it is past the last day, update the map, create a sorted list of rankings.
      *
      * A user declining the challenge will delete it from the map, and from their user node
+     *
+     * Create active and past challenges
      */
 
     void createChallenge(Challenge challenge) {
@@ -227,7 +236,37 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
 
-        db.child("users").child(user.getUid()).child("challenges").child(key).setValue(challenge);
+        db.child("challenges").child(key).setValue(challenge);
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    User friend = new User();
+                    Log.d("Get friend key", String.valueOf(ds.getKey()));
+
+                    String currentKey = String.valueOf(ds.getKey());
+
+                    for (Object user : selectedUsers){
+                        if(ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated){
+                            String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
+                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(activeKey).setValue(key);
+                        }
+                    }
+                }
+                challengeCreated = true;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Friends", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        databaseReference.addValueEventListener(userListener);
     }
+
 
 }
