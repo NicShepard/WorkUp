@@ -35,15 +35,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         holder.videoName.setText(currentCard.getName());
         holder.videoDesc.setText(currentCard.getDesc());
         holder.videoURL = currentCard.getVideoUrl();
-        String dataUrl =
-                "<html>" +
-                        "<body>" +
-                        "<h2>Video From YouTube</h2>" +
-                        "<br>" +
-                        "<iframe width=\"560\" height=\"315\" src=\""+currentCard.getVideoUrl()+"\" frameborder=\"0\" allowfullscreen/>" +
-                        "</body>" +
-                        "</html>";
-        holder.video.loadData(currentCard.getVideoUrl(), "text/html", "utf-8");
+
+
+//        String dataUrl =
+//                "<html>" +
+//                        "<body>" +
+//                        "<h2>Video From YouTube</h2>" +
+//                        "<br>" +
+//                        "<iframe width=\"560\" height=\"315\" src=\""+currentCard.getVideoUrl()+"\" frameborder=\"0\" allowfullscreen/>" +
+//                        "</body>" +
+//                        "</html>";
+//        holder.video.loadData(currentCard.getVideoUrl(), "text/html", "utf-8");
 
     }
 

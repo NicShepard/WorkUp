@@ -27,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.annotations.NotNull;
 
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -131,18 +132,25 @@ public class LandingPage extends AppCompatActivity {
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
                 size = cardList.size();
                 for (int i = 0; i < size; i++) {
-                    Integer image = savedInstanceState.getInt(KEY_OF_INSTANCE + i + "0");
-                    ChallengeCard sCard = new ChallengeCard(new Date(), "1st Place", "Cindy, Rob, Alice");
+                    Date date = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                    String dateStr = formatter.format(date);
+
+                    ChallengeCard sCard = new ChallengeCard(dateStr + " - " + dateStr, "Stretch for 10 min", "Andrew, Sally, Bob");
                     cardList.add(sCard);
                 }
             }
         }
         // Load the initial cards
         else {
-            ChallengeCard item1 = new ChallengeCard(new Date(), "1st Place", "");
-            ChallengeCard item2 = new ChallengeCard(new Date(), "2nd Place", "");
-            ChallengeCard item3 = new ChallengeCard(new Date(), "3rd Place", "");
-            ChallengeCard item4 = new ChallengeCard(new Date(), "4th Place", "");
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            String dateStr = formatter.format(date);
+
+            ChallengeCard item1 = new ChallengeCard(dateStr + " - " + dateStr, "Stretch for 10 min", "Andrew, Sally, Bob");
+            ChallengeCard item2 = new ChallengeCard(dateStr + " - " + dateStr, "5,000 steps/day", "Aaron, Charles, Phillip");
+            ChallengeCard item3 = new ChallengeCard(dateStr + " - " + dateStr, "Drink 24 oz of water/day", "Sandra, Leslie, Elena");
+            ChallengeCard item4 = new ChallengeCard(dateStr + " - " + dateStr, "Lift 15 lbs", "Nancy, Marcus, Dennis");
             cardList.add(item1);
             cardList.add(item2);
             cardList.add(item3);
@@ -163,7 +171,11 @@ public class LandingPage extends AppCompatActivity {
     }
     private int addItem(int position) {
 
-        cardList.add(position, new ChallengeCard(new Date(), "1st Place", "Aaron, Nate, Damion"));
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String dateStr = formatter.format(date);
+
+        cardList.add(position, new ChallengeCard(dateStr + " - " + dateStr, "Dance Off!", "Aaron, Nate, Damion"));
 
         challengeAdapter.notifyItemInserted(position);
         return 1;
