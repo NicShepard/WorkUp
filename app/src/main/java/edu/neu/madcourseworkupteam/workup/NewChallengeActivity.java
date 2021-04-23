@@ -281,10 +281,14 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+
                     Challenge c = new Challenge();
                     c.setPk(ds.getKey());
                     c.setAccepted(Boolean.valueOf(ds.getValue().toString()));
                     challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
                 }
             }
 
@@ -296,8 +300,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
-        Log.d("Size of list is", String.valueOf(challenges.size()));
-        Log.d("Size of list is", challenges.toString());
+
 
 
         return challenges;

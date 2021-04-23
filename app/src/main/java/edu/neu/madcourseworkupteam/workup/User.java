@@ -90,8 +90,6 @@ class User {
         return favorites;
     }
 
-
-
     public void setFavorites(HashMap<String, String> favorites) {
         this.favorites = favorites;
     }
