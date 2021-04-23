@@ -163,7 +163,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void initialItemData(Bundle savedInstanceState) {
         getFriends();
-
     }
 
 
@@ -252,8 +251,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     for (Object user : selectedUsers) {
                         if (ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated) {
-                            String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
-                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(activeKey).setValue(key);
+//                            String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
+                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(key);
                         }
                     }
                 }
@@ -334,6 +333,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         //Compare dates to see if it is over
         //If challenge is over add to past challenges in user node, and then delete from active
         //Create ranking list in challenge
+        //Add rank to past challenge?
     }
 
     @Override
