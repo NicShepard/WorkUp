@@ -1,7 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -12,7 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +24,6 @@ public class DataService {
     private FirebaseAuth mAuth;
 
     public DataService() {
-
         mFirebaseDB = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -73,7 +70,7 @@ public class DataService {
             userMap.put("username", userName1);
 
             mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
-            this.setUser();
+//            this.setUser();
 //                    .addOnCompleteListener( new OnCompleteListener<Void>()
 //            @Override
 //            public void onComplete(@NonNull Task<Void> task) {
@@ -85,44 +82,6 @@ public class DataService {
 //
 //        mFirebaseDB.child("users").child("username").setValue(userName);
 //        mFirebaseDB.child("users").child("email").setValue(email);
-    }
-
-    void setUser() {
-        User user = null;
-        Log.d("Username is", "Called" );
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.child("users").hasChild(currentUserID)) {
-                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
-                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
-                    currentUser = user;
-                }
-//                if(dataSnapshot.getValue() != null){
-//                    User user = new User();
-//                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
-//                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-//                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
-//                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        //db.child("users").child(userKey).addValueEventListener(userListener);
-        //return user;
-        mFirebaseDB.child("users").child(currentUserID).addValueEventListener(userListener);
-        //return user;
-        //return user[0];
-    }
-
-    User getCurrentUser() {
-        return currentUser;
     }
 
     /******* Movements *******/

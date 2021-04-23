@@ -2,6 +2,7 @@ package edu.neu.madcourseworkupteam.workup;
 
 public class ExerciseCard implements ItemClickListener {
 
+    private String imgView;
     private String videoUrl;
     private String videoName;
     private String videoDesc;
@@ -19,6 +20,14 @@ public class ExerciseCard implements ItemClickListener {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = "https://www.youtube.com/watch?v=" + videoUrl;
+    }
+
+    public void setVideoImg(String videoUrl) {
+        this.imgView = "https://img.youtube.com/vi/" + videoUrl + "/0.jpg";
+    }
+
+    public String getImgView() {
+        return this.imgView;
     }
 
     public String getVideoName() {

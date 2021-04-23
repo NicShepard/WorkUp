@@ -20,18 +20,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <WebView
-                android:id="@+id/video_view"
-                android:layout_width="102dp"
-                android:layout_height="80dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:adjustViewBounds="false"
-                android:padding="6dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <ImageView-->
+<!--                android:id="@+id/img_view"-->
+<!--                android:layout_width="102dp"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:adjustViewBounds="false"-->
+<!--                android:src=""-->
+<!--                android:padding="6dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <TextView
                 android:id="@+id/video_title"
@@ -40,13 +41,12 @@
                 android:layout_alignTop="@+id/video_view"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/video_view"
                 android:text="Video Title"
                 android:textColor="@android:color/black"
                 android:textSize="18dp"
-                app:layout_constraintStart_toEndOf="@+id/video_view"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -62,29 +62,15 @@
                 app:layout_constraintStart_toStartOf="@+id/video_title"
                 app:layout_constraintTop_toBottomOf="@+id/video_title" />
 
-            <ImageView
-                android:id="@+id/bookmark"
-                android:layout_width="40dp"
-                android:layout_height="33dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/checkbox"
-                app:layout_constraintTop_toBottomOf="@+id/checkbox"
-                app:srcCompat="@drawable/ic_bookmark" />
-
             <CheckBox
                 android:id="@+id/checkbox"
-                android:layout_width="35dp"
-                android:layout_height="36dp"
-                android:layout_alignStart="@+id/bookmark"
-                android:layout_alignBottom="@+id/bookmark"
+                android:layout_width="92dp"
+                android:layout_height="77dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Add to Favorites"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

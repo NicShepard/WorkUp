@@ -20,94 +20,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/p1_image"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="76dp"
-                app:layout_constraintEnd_toStartOf="@+id/p3_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/person" />
-
-            <ImageView
-                android:id="@+id/p2_image"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/p3_image"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/p1_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/person" />
-
             <TextView
-                android:id="@+id/challenge_date"
+                android:id="@+id/challenge_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="DATE"
-                android:textColor="@android:color/black"
-                android:textSize="25dp"
-                app:layout_constraintEnd_toStartOf="@+id/p1_image"
+                android:text="CHALLENGE NAME"
+                android:textColor="@color/purple_500"
+                android:textSize="30dp"
                 app:layout_constraintHorizontal_bias="0.035"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/challenge_placement"
+                android:id="@+id/challenge_dates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="1st Place"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@+id/challenge_date"
-                app:layout_constraintTop_toBottomOf="@+id/challenge_date" />
+                android:layout_marginTop="17dp"
+                android:text="4/21 - 4/27"
+                android:textSize="25dp"
+                app:layout_constraintStart_toStartOf="@+id/challenge_name"
+                app:layout_constraintTop_toBottomOf="@+id/challenge_name" />
 
             <TextView
-                android:id="@+id/p1_name"
+                android:id="@+id/challenge_friends"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
-                android:text="Nikki"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/p1_image"
-                app:layout_constraintTop_toBottomOf="@+id/p1_image" />
+                android:layout_marginTop="17dp"
+                android:text="Nikki, Alex, Bob, Carly"
+                android:textSize="25dp"
+                app:layout_constraintStart_toStartOf="@+id/challenge_dates"
+                app:layout_constraintTop_toBottomOf="@+id/challenge_dates" />
 
-            <TextView
-                android:id="@+id/p2_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Akshay"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/p2_image"
-                app:layout_constraintTop_toBottomOf="@+id/p2_image" />
-
-            <ImageView
-                android:id="@+id/p3_image"
-                android:layout_width="62dp"
-                android:layout_height="62dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/person" />
-
-            <TextView
-                android:id="@+id/p3_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="12dp"
-                android:text="Eva"
-                android:textSize="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/p3_image"
-                app:layout_constraintTop_toBottomOf="@+id/p3_image" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
