@@ -26,7 +26,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -272,7 +271,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.addValueEventListener(userListener);
     }
 
-    List<String> getActiveChallengesForUser(String userKey) {
+    List<String> getActiveChallengesForUser() {
         Log.d("activeChallenges", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -281,7 +280,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         ValueEventListener challengeListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     challenges.add(ds.getValue().toString());
                 }
             }
@@ -306,7 +305,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         ValueEventListener challengeListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     challenges.add(ds.getValue().toString());
                 }
             }
@@ -324,15 +323,25 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
 
     //Todo move get user to dataservice to work as store
-    void declineChallenge(String challengeKey){
+    void declineChallenge(String challengeKey) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").child(user.getUid()).child("activeChallenges").child(challengeKey).setValue(null);
         databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
     }
 
-    void updateChallenges(){
+    void updateChallenges() {
+        //Get current date to compare everything against
+        LocalDate ld;
+        ld = LocalDate.now();
+
+
         //Get active challenges
+        List<String> activeChallenges = getActiveChallengesForUser();
+
+        for (String challenge : activeChallenges) {
+        }
+
         //Iterate through all of them
         //Add total steps for each day in the challenge and update it in challenge
         //Compare dates to see if it is over
@@ -345,12 +354,12 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         final User[] user = {null};
         final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
 
-        Log.d("Username is", "Called" );
+        Log.d("Username is", "Called");
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.getValue() != null){
+                if (dataSnapshot.getValue() != null) {
                     user[0] = new User();
                     user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
                     currentUsername = dataSnapshot.getValue(User.class).getUsername();
