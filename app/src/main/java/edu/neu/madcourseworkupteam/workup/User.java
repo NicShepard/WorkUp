@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @IgnoreExtraProperties
 class User {
@@ -17,6 +18,8 @@ class User {
     SettingConfiguration settingConfiguration;
     HashMap<String, String> favorites;
     List<String> friends;
+    Map<String, Boolean> activeChallenges;
+    Map<String, Integer> pastChallenges;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -84,6 +87,22 @@ class User {
 
     public void setSettingConfiguration(SettingConfiguration settingConfiguration) {
         this.settingConfiguration = settingConfiguration;
+    }
+
+    public Map<String, Boolean> getActiveChallenges() {
+        return activeChallenges;
+    }
+
+    public void setActiveChallenges(Map<String, Boolean> activeChallenges) {
+        this.activeChallenges = activeChallenges;
+    }
+
+    public Map<String, Integer> getPastChallenges() {
+        return pastChallenges;
+    }
+
+    public void setPastChallenges(Map<String, Integer> pastChallenges) {
+        this.pastChallenges = pastChallenges;
     }
 
     public HashMap<String, String> getFavorites() {

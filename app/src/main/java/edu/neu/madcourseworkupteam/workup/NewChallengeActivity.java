@@ -326,7 +326,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             }
         };
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("pastChallenges");
         databaseReference.addValueEventListener(challengeListener);
         return challenges;
     }
