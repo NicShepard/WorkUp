@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-
 
 
 public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener, View.OnClickListener {
@@ -75,7 +75,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
         nameOfChallenge = findViewById(R.id.name_of_challenge);
-
 
 
         start = null;
@@ -170,6 +169,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void initialItemData(Bundle savedInstanceState) {
         getFriends();
+        getActiveChallengesForUser("test");
     }
 
 
@@ -221,7 +221,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
 
-
     }
 
     //PLAN TODO
@@ -231,9 +230,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
      * Add challenge to all user's nodes
      * For each user, on visit the app it will calculate the total steps from start to now and
      * update their map. If it is past the last day, update the map, create a sorted list of rankings.
-     *
+     * <p>
      * A user declining the challenge will delete it from the map, and from their user node
-     *
+     * <p>
      * Create active and past challenges
      */
 
@@ -257,8 +256,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     String currentKey = String.valueOf(ds.getKey());
 
-                    for (Object user : selectedUsers){
-                        if(ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated){
+                    for (Object user : selectedUsers) {
+                        if (ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated) {
                             String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
                             databaseReference.child("users").child(currentKey).child("activeChallenges").child(activeKey).setValue(key);
                         }
@@ -277,8 +276,33 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.addValueEventListener(userListener);
     }
 
+    List<String> getActiveChallengesForUser(String userKey) {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    challenges.add(ds.getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
 
 
+        return challenges;
+
+    }
 
     @Override
     public void onClick(View v) {
