@@ -234,13 +234,13 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("Get Steps", "called");
                 //Protect against referencing a null object and infinite loop
-                if (dataSnapshot != null && !alreadyRun[0]) {
+                if (dataSnapshot.getValue() != null && !alreadyRun[0]) {
                     existingSteps[0] = (Long) dataSnapshot.getValue();
                     databaseReference.setValue(stepsToAdd + existingSteps[0]);
                     alreadyRun[0] = true;
                     //Create the entry if it doesn't exist already
                 } else if (!alreadyRun[0]){
-                    databaseReference.setValue(stepsToAdd);
+                 databaseReference.setValue(stepsToAdd);
                 }
             }
 
