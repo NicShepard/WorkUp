@@ -50,7 +50,7 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
 
-                    Intent intent = new Intent(itemView.getContext(), VideoActivity.class);
+                    Intent intent = new Intent(itemView.getContext(), VideoCard.class);
                     intent.putExtra("videoURL", videoURL);
                     intent.putExtra("videoTitle", videoName.getText().toString());
                     intent.putExtra("videoDesc", videoDesc.getText().toString());

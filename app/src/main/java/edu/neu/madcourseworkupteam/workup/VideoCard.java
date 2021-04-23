@@ -2,6 +2,7 @@ package edu.neu.madcourseworkupteam.workup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,6 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -53,11 +55,15 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
     TextView videoTitle;
     TextView videoDesc;
     private static final String TAG = "VideoActivity";
+    BottomNavigationView bottomNavigation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_video);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         Log.d(TAG, "onCreate: Starting.");
         video = (WebView) findViewById(R.id.video_view);
@@ -133,6 +139,26 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         video.setWebViewClient(new VideoCard.Callback());
         video.loadUrl(videoURL);
     }
+
+    BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+            menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent explore_intent = new Intent(this, LandingPage.class);
+                        startActivity(explore_intent);
+                        return true;
+                    case R.id.navigation_favorite:
+                        Intent fav_intent = new Intent(this, FavoriteActivity.class);
+                        startActivity(fav_intent);
+                        return true;
+                    case R.id.navigation_explore:
+                        Intent prof_intent = new Intent(this, ExploreScreenActivity.class);
+                        startActivity(prof_intent);
+                        return true;
+                }
+                return false;
+            };
+
 
     private class Callback extends WebViewClient {
         @Override
