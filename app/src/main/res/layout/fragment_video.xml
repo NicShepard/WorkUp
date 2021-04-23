@@ -57,36 +57,67 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/video_title" />
 
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="169dp"
-                android:layout_height="43dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
+            <TextView
+                android:id="@+id/step_display"
+                android:layout_width="184dp"
+                android:layout_height="82dp"
+                android:text="Steps"
+                android:textAlignment="center"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:text="Add to Favorites"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/startPedometer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.344"
-                app:layout_constraintStart_toEndOf="@+id/startPedometer"
-                app:layout_constraintTop_toBottomOf="@+id/video_desc"></CheckBox>
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/video_desc"
+                app:layout_constraintVertical_bias="0.707" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp">
+
+                <Button
+                    android:id="@+id/startPedometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Start Pedometer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/checkbox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/video_desc" />
+
+                <CheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="169dp"
+                    android:layout_height="43dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="25dp"
+                    android:text="Add to Favorites"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.344"
+                    app:layout_constraintStart_toEndOf="@+id/startPedometer"
+                    app:layout_constraintTop_toBottomOf="@+id/video_desc"/>
+            </TableRow>
 
             <Button
-                android:id="@+id/startPedometer"
+                android:id="@+id/addSteps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginBottom="65dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/purple_700"
-                android:padding="15dp"
-                android:text="Start Pedometer"
-                android:textColor="@color/white"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center"
+                android:text="Add Steps To My Day"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkbox"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_desc" />
+                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
         </LinearLayout>
     </ScrollView>
 
