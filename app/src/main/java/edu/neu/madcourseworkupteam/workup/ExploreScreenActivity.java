@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +39,14 @@ public class ExploreScreenActivity extends AppCompatActivity {
     private static final String TAG = "ExploreScreen ACTIVITY";
 
     private DatabaseReference databaseReference;
+    User currentUser = null;
+    private String currentUsername;
+
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
     private ExerciseAdapter exerciseAdapter;
     private RecyclerView.LayoutManager layout;
-    private String currentUser;
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -52,7 +56,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_screen);
-        currentUser = getIntent().getStringExtra("CURRENT_USER");
+        currentUser = getCurrentUser();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
@@ -97,6 +101,39 @@ public class ExploreScreenActivity extends AppCompatActivity {
             outState.putBoolean(KEY_OF_INSTANCE + i + "3", cardList.get(i).getStatus());
         }
         super.onSaveInstanceState(outState);
+    }
+
+    User getCurrentUser() {
+        final User[] user = {null};
+        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
+
+        Log.d("Username is", "Called");
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getValue() != null) {
+                    user[0] = new User();
+                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
+                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
+                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
+                    user[0].setFavorites(dataSnapshot.getValue(User.class).getFavorites());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        //db.child("users").child(userKey).addValueEventListener(userListener);
+        //return user;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
+        return user[0];
     }
 
     private void init(Bundle savedInstanceState) {
@@ -171,6 +208,8 @@ public class ExploreScreenActivity extends AppCompatActivity {
         rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
         exerciseAdapter = new ExerciseAdapter(cardList);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         ItemClickListener itemClickListener = new ItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -181,11 +220,36 @@ public class ExploreScreenActivity extends AppCompatActivity {
             public void onCheckBoxClick(int position) {
                 // attributions bond to the item has been changed
                 cardList.get(position).onCheckBoxClick(position);
+                Log.w("Clicking checkbox at: ", String.valueOf(position));
+                // if it is checked, add to favorites in db
+                if (cardList.get(position).getStatus()){
+                    Log.w("Adding to favorites: ", "ATTEMPT");
+                    addToFavorites(cardList.get(position));
+                } else if (cardList.get(position).getStatus() == false){
+                    Log.w("Removing from favorites", "ATTEMPT");
+                    // remove from favorites in db
+                    String[] url = cardList.get(position).getVideoUrl().split("v=");
+                    db.child("users").child(user.getUid()).child("favorites").child(url[1]).removeValue();
+                    // remove from recycler view
+                }
                 exerciseAdapter.notifyItemChanged(position);
             }
         };
         exerciseAdapter.setOnClickItemClickListener(itemClickListener);
         rView.setAdapter(exerciseAdapter);
         rView.setLayoutManager(layout);
+    }
+
+    void addToFavorites(ExerciseCard card) {
+
+        Log.d("Add to favorites", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        Log.w("Adding videoURL to favorites", String.valueOf(card.getVideoUrl()));
+        String key = db.child("users").child(user.getUid()).child("favorites").push().getKey();
+        // strip until the v=
+        String[] url = card.getVideoUrl().split("v=");
+        db.child("users").child(user.getUid()).child("favorites").child(url[1]).setValue(url[1]);
     }
 }
