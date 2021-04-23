@@ -230,7 +230,6 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     // remove from favorites in db
                     String[] url = cardList.get(position).getVideoUrl().split("v=");
                     db.child("users").child(user.getUid()).child("favorites").child(url[1]).removeValue();
-                    // remove from recycler view
                 }
                 exerciseAdapter.notifyItemChanged(position);
             }

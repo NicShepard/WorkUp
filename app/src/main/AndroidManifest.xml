@@ -14,10 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkUp">
         <activity android:name=".VideoActivity"></activity>
-        <activity android:name=".NewChallengeActivity" />
+        <activity android:name=".NewChallengeActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".ChallengeActivity" />
         <activity android:name=".Registration" />
-        <activity android:name=".VideoCard" />
+        <activity android:name=".VideoCard"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -26,9 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ExploreScreenActivity" />
-        <activity android:name=".FavoriteActivity" />
-        <activity android:name=".LandingPage" />
+        <activity android:name=".ExploreScreenActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".FavoriteActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".LandingPage"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
