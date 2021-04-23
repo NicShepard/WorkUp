@@ -85,7 +85,7 @@ public class DataService {
 //        mFirebaseDB.child("users").child("email").setValue(email);
     }
 
-    User getUser(String userKey) {
+    User getCurrentUser(String userKey) {
         User user = null;
 
         Log.d("Username is", "Called" );
@@ -111,11 +111,6 @@ public class DataService {
         //return user;
         mFirebaseDB.child("users").child(userKey).addValueEventListener(userListener);
         return user;
-        //return user[0];
-    }
-
-    User getCurrentUser() {
-        return currentUser;
     }
 
     /******* Movements *******/

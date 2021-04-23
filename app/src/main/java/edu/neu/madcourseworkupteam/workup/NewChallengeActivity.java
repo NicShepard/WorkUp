@@ -48,6 +48,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private final String defaultString = "default";
     private MultiSelectSpinner multiSelectSpinner;
 
+    User currentUser = null;
+
     private String course1;
     private String course2;
     private Button saveButton;
@@ -66,10 +68,10 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
+        currentUser = getCurrentUser();
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
         nameOfChallenge = findViewById(R.id.name_of_challenge);
-
 
         start = null;
         end = null;
@@ -159,6 +161,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void init(Bundle savedInstanceState) {
         initialItemData(savedInstanceState);
+        declineChallenge("-MYyzQeU-JtawVlx-BlW");
     }
 
     private void initialItemData(Bundle savedInstanceState) {
@@ -319,11 +322,13 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         return challenges;
     }
 
-    //TODO delete from map
+
+    //Todo move get user to dataservice to work as store
     void declineChallenge(String challengeKey){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").child(user.getUid()).child("activeChallenges").child(challengeKey).setValue(null);
+        databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
     }
 
     void updateChallenges(){
@@ -334,6 +339,38 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         //If challenge is over add to past challenges in user node, and then delete from active
         //Create ranking list in challenge
         //Add rank to past challenge?
+    }
+
+    User getCurrentUser() {
+        final User[] user = {null};
+        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
+
+        Log.d("Username is", "Called" );
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.getValue() != null){
+                    user[0] = new User();
+                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
+                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
+                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        //db.child("users").child(userKey).addValueEventListener(userListener);
+        //return user;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
+        return user[0];
     }
 
     @Override
