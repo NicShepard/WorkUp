@@ -31,7 +31,6 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> 
         ChallengeCard currentCard = challengeList.get(position);
         holder.challengeName.setText(currentCard.getChallengeName());
         holder.dates.setText(currentCard.getDate());
-        holder.friendNames.setText(currentCard.getFriends());
     }
 
     @Override
