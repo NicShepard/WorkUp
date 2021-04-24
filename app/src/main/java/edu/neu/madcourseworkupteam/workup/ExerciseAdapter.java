@@ -36,15 +36,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
         holder.videoName.setText(currentCard.getName());
         holder.videoDesc.setText(currentCard.getDesc());
         holder.videoURL = currentCard.getVideoUrl();
-<<<<<<< HEAD
 
-=======
         if (currentCard.getChecked()) {
             holder.checkBox.setChecked(true);
         } else {
             holder.checkBox.setChecked(false);
         }
->>>>>>> origin/design7
     }
 
     @Override
