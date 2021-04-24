@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -61,6 +62,13 @@ public class LandingPage extends AppCompatActivity {
         simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
         // TODO: To change the user's progress, use .setProgress with new value
         simpleProgressBar.setProgress(40);
+        simpleProgressBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "You can edit your step goal in your profile!", Toast.LENGTH_LONG).show();
+            }
+        });
+
         text_prog.setText("40%");
         currentUser = getIntent().getStringExtra("CURRENT_USER");
         createRecyclerView();
