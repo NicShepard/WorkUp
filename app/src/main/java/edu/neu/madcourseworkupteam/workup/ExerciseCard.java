@@ -19,7 +19,7 @@ public class ExerciseCard implements ItemClickListener {
     }
 
     public void setVideoUrl(String videoUrl) {
-        this.videoUrl = "https://www.youtube.com/watch?v=" + videoUrl;
+        this.videoUrl = videoUrl;
     }
 
     public void setVideoImg(String videoUrl) {

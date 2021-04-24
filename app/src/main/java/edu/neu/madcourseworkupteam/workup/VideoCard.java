@@ -106,6 +106,8 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
             videoURL = (String) savedInstanceState.getSerializable("videoURL");
         }
 
+        Log.d("URL", videoURL);
+
         YouTubePlayerView youTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtube_player);
         YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
             @Override
