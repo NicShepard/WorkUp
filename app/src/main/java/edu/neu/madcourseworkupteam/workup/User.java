@@ -9,7 +9,6 @@ class User {
     String firstName;
     String lastName;
     String username;
-    Long totalPoints;
     Long totalSteps;
     String email;
     SettingConfiguration settingConfiguration;
@@ -50,14 +49,6 @@ class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Long getTotalPoints() {
-        return totalPoints;
-    }
-
-    public void setTotalPoints(Long totalPoints) {
-        this.totalPoints = totalPoints;
     }
 
     public Long getTotalSteps() {
