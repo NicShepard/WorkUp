@@ -247,17 +247,6 @@ public class LandingPage extends AppCompatActivity {
         rView.setLayoutManager(layout);
 
     }
-    private int addItem(int position) {
-
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        String dateStr = formatter.format(date);
-
-        cardList.add(position, new ChallengeCard(dateStr + " - " + dateStr, "Dance Off!", "Aaron, Nate, Damion"));
-
-        challengeAdapter.notifyItemInserted(position);
-        return 1;
-    }
 
     private void goToProfile(){
         Intent intent = new Intent(this, ProfileActivity.class);
@@ -296,7 +285,7 @@ public class LandingPage extends AppCompatActivity {
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
                     c.setAccepted(ds.getValue(Challenge.class).getAccepted());
-                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle(), "Andrew, Sally, Bob");
+                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle());
                     cardList.add(item);
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
