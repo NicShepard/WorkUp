@@ -36,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class LandingPage extends AppCompatActivity {
 
@@ -231,36 +233,7 @@ public class LandingPage extends AppCompatActivity {
     }
 
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
-        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
-            if (cardList == null || cardList.size() == 0) {
-
-                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-                size = cardList.size();
-                for (int i = 0; i < size; i++) {
-                    Date date = new Date();
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                    String dateStr = formatter.format(date);
-
-                    ChallengeCard sCard = new ChallengeCard(dateStr + " - " + dateStr, "Stretch for 10 min", "Andrew, Sally, Bob");
-                    cardList.add(sCard);
-                }
-            }
-        }
-        // Load the initial cards
-        else {
-            Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            String dateStr = formatter.format(date);
-
-            ChallengeCard item1 = new ChallengeCard(dateStr + " - " + dateStr, "Stretch for 10 min", "Andrew, Sally, Bob");
-            ChallengeCard item2 = new ChallengeCard(dateStr + " - " + dateStr, "5,000 steps/day", "Aaron, Charles, Phillip");
-            ChallengeCard item3 = new ChallengeCard(dateStr + " - " + dateStr, "Drink 24 oz of water/day", "Sandra, Leslie, Elena");
-            ChallengeCard item4 = new ChallengeCard(dateStr + " - " + dateStr, "Lift 15 lbs", "Nancy, Marcus, Dennis");
-            cardList.add(item1);
-            cardList.add(item2);
-            cardList.add(item3);
-            cardList.add(item4);
-        }
+        getActiveChallengesForUser();
     }
 
     private void createRecyclerView() {
@@ -304,4 +277,43 @@ public class LandingPage extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    List<Challenge> getActiveChallengesForUser() {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle(), "Andrew, Sally, Bob");
+                    cardList.add(item);
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
+                }
+                createRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+        return challenges;
+    }
+
 }
