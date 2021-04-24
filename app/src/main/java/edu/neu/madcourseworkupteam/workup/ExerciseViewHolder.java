@@ -25,8 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
-    //public ImageView video;
-    public WebView video;
+    public ImageView video;
+    //public WebView video;
     public String videoURL;
     public TextView videoName;
     public TextView videoDesc;
@@ -37,9 +37,9 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
     public ExerciseViewHolder(@NonNull View itemView, final ItemClickListener listener) {
         super(itemView);
-        video = itemView.findViewById(R.id.video_view);
-        videoName = itemView.findViewById(R.id.video_title);
-        videoDesc = itemView.findViewById(R.id.video_desc);
+//        this.video = itemView.findViewById(R.id.img_view);
+        this.videoName = itemView.findViewById(R.id.video_title);
+        this.videoDesc = itemView.findViewById(R.id.video_desc);
         this.checkBox = itemView.findViewById(R.id.checkbox);
 
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -50,13 +50,12 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
 
-//                    Intent intent = new Intent(itemView.getContext(), VideoFragment.newInstance(videoURL).getClass());
-//                    itemView.getContext().startActivity(intent);
+                    Intent intent = new Intent(itemView.getContext(), VideoCard.class);
+                    intent.putExtra("videoURL", videoURL);
+                    intent.putExtra("videoTitle", videoName.getText().toString());
+                    intent.putExtra("videoDesc", videoDesc.getText().toString());
 
-                    video.getSettings().setJavaScriptEnabled(true);
-                    video.setWebChromeClient(new WebChromeClient());
-                    video.loadUrl(videoURL);
-
+                    itemView.getContext().startActivity(intent);
 
                     //Intent webintent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoURL));
                     //itemView.getContext().startActivity(webintent);

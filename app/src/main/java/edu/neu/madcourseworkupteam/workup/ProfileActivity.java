@@ -87,7 +87,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = new User();
 
+
         //setStreak();
+
+
 
          //calculateStreak();
         //currentStreak = new Streak();
@@ -164,7 +167,7 @@ public class ProfileActivity extends AppCompatActivity {
     private int addItem(int position) {
 
         //TODO: CHANGE TO CHALLENGE CARD
-        cardList.add(position, new ChallengeCard(new Date(), "1st Place", "Aaron, Nate, Damion"));
+        cardList.add(position, new ChallengeCard(new Date().toString(), "1st Place", "Aaron, Nate, Damion"));
         //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
 
         challengeAdapter.notifyItemInserted(position);

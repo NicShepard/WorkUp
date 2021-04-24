@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
@@ -39,8 +41,7 @@ public class TestActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Long steps = new Long(10);
-                updateStepsForDay(steps);
+                updateChallenges();
             }
         });
     }
@@ -120,6 +121,144 @@ public class TestActivity extends AppCompatActivity {
         };
 
         databaseReference.addValueEventListener(userListener);
+    }
+
+    List<Challenge> getActiveChallengesForUser() {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+        return challenges;
+    }
+
+    //TODO Async doesn't matter here, just need to perform all the functions.
+    //Move to dataservice?
+    void updateChallenges() {
+        Log.d("Update Challenges is", "Called");
+
+        Integer rank;
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        //Get current date to compare everything against
+        LocalDate ld;
+        ld = LocalDate.now();
+
+        //Get active challenges
+        List<Challenge> challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
+                }
+
+                //Iterate through all of them
+                for (Challenge challenge : challenges) {
+                    //Add total steps for each day in the challenge and update it in challenge
+
+                    //Compare dates to see if it is over
+                    LocalDate start = LocalDate.parse(challenge.getStartDate());
+                    LocalDate end = LocalDate.parse(challenge.getEndDate());
+                    LocalDate today = LocalDate.now();
+
+                    //If challenge is over create ranking list in challenge
+
+                    Log.d("Update Challenges is", "evaluating dates");
+
+                    Log.d("Update Challenges is", today.toString());
+                    Log.d("Update Challenges is", end.toString());
+
+                    //Add to past challenges in user node, and then delete from active
+                    if(today.isAfter(end)){
+                        Log.d("Update Challenges is", "correcting start and end dates");
+
+                        db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
+                        db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
+
+                    }
+                    //Add rank to past challenge
+                    //Send FCM to say, come see how you did!
+                    //End of challenge make sure they log their steps?
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+    }
+
+    void createRankingsForChallenge(String challengeKey){
+
+        Log.d("Create Rankings For Challenge is", "Called");
+
+        Integer rank;
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Challenge c = new Challenge();
+                c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
+        databaseReference.addValueEventListener(challengeListener);
     }
 
 

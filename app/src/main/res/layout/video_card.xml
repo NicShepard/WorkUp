@@ -3,112 +3,104 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="10dp">
+    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youtube_player"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="242dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible">
+
+    </com.google.android.youtube.player.YouTubePlayerView>
+
+    <TextView
+        android:id="@+id/video_title"
+        android:layout_width="343dp"
+        android:layout_height="49dp"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@+id/video_view"
+        android:autoSizeTextType="uniform"
+        android:text="Video Title"
+        android:textColor="@android:color/black"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/video_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/youtube_player" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <Button
+        android:id="@+id/startPedometer"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Start Pedometer"
+        app:layout_constraintBottom_toTopOf="@+id/addSteps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_display" />
 
-            <WebView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="185dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="10dp"
-                android:adjustViewBounds="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/video_desc"
+        android:layout_width="279dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:text="Lorem ipsum dolor sit amet, consectetur"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/step_display"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_title"
+        app:layout_constraintVertical_bias="0.523" />
 
+    <TextView
+        android:id="@+id/step_display"
+        android:layout_width="184dp"
+        android:layout_height="82dp"
+        android:layout_gravity="center"
+        android:text="Steps"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/startPedometer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_desc" />
 
-            <TextView
-                android:id="@+id/video_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:layout_toEndOf="@+id/video_view"
-                android:gravity="center"
-                android:text="Video Title"
-                android:textColor="@android:color/black"
-                android:textSize="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_view" />
+    <Button
+        android:id="@+id/addSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Add Steps To My Day"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startPedometer" />
 
-            <TextView
-                android:id="@+id/video_desc"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="16dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur"
-                android:textSize="18dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_title" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/purple_700"
+        android:clickable="true"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/bottom_navigation_home">
 
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="169dp"
-                android:layout_height="43dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="16dp"
-                android:text="Add to Favorites"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.344"
-                app:layout_constraintStart_toEndOf="@+id/startPedometer"
-                app:layout_constraintTop_toBottomOf="@+id/video_desc"></CheckBox>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-            <Button
-                android:id="@+id/startPedometer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Start Pedometer"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkbox"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_desc" />
-
-            <TextView
-                android:id="@+id/step_display"
-                android:layout_width="184dp"
-                android:layout_height="82dp"
-                android:text="Steps"
-                android:textAlignment="center"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/startPedometer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/video_desc"
-                app:layout_constraintVertical_bias="0.707" />
-
-            <Button
-                android:id="@+id/addSteps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add Steps To My Day"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

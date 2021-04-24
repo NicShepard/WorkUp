@@ -29,11 +29,9 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {
         ChallengeCard currentCard = challengeList.get(position);
-        Date date = currentCard.getDate();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        String dateStr = formatter.format(date);
-        holder.date.setText(dateStr);
-        holder.place.setText(currentCard.getPlacement());
+        holder.challengeName.setText(currentCard.getChallengeName());
+        holder.dates.setText(currentCard.getDate());
+        holder.friendNames.setText(currentCard.getFriends());
     }
 
     @Override
