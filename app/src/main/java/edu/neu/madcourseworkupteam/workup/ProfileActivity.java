@@ -87,7 +87,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = new User();
 
-//        setStreak();
+
+        //setStreak();
+
+
 
          //calculateStreak();
         //currentStreak = new Streak();

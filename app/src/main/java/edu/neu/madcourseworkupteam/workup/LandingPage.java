@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +65,9 @@ public class LandingPage extends AppCompatActivity {
 
     //private DatabaseReference database;
 
+
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,22 @@ public class LandingPage extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.goProfile:
+                        goToProfile();
+                        break;
+                    case R.id.gotToExplore:
+                        goToExplore();
+                        break;
+                }
+                return true;
+            }
+        });
 
 
         mFirebaseDB = FirebaseDatabase.getInstance().getReference();
@@ -264,6 +284,18 @@ public class LandingPage extends AppCompatActivity {
 
         challengeAdapter.notifyItemInserted(position);
         return 1;
+    }
+
+    private void goToProfile(){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+
+    }
+
+    private void goToExplore(){
+        Intent intent = new Intent(this, ExploreScreenActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
