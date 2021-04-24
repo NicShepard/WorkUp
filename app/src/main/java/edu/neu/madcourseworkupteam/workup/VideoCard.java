@@ -1,8 +1,13 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,6 +21,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,9 +67,13 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Activity activity = this;
         setContentView(R.layout.fragment_video);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        Context context = getApplicationContext();
 
         Log.d(TAG, "onCreate: Starting.");
         video = (WebView) findViewById(R.id.video_view);
@@ -85,9 +95,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         } else {
             videoURL = (String) savedInstanceState.getSerializable("videoURL");
         }
-
-
-
+        
         //Step counter active flag starts as inactive
         active = false;
         //Set the initial steps to -1 so that we can zero out the counter every time
@@ -106,6 +114,12 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         startCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(activity, "Activity permissions must be enabled to use this feature", Toast.LENGTH_LONG).show();
+                    ActivityCompat.requestPermissions(activity, new String[]{
+                            Manifest.permission.ACTIVITY_RECOGNITION}, 100);
+                }
 
                 if (active) {
                     startCounter.setText("Start Pedometer");
@@ -208,6 +222,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
 
     /**
      * Update the steps for a given day
+     *
      * @param stepsToAdd the number of steps we'd like to add to the day
      */
     void updateStepsForDay(Long stepsToAdd) {
@@ -239,8 +254,8 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
                     databaseReference.setValue(stepsToAdd + existingSteps[0]);
                     alreadyRun[0] = true;
                     //Create the entry if it doesn't exist already
-                } else if (!alreadyRun[0]){
-                 databaseReference.setValue(stepsToAdd);
+                } else if (!alreadyRun[0]) {
+                    databaseReference.setValue(stepsToAdd);
                 }
             }
 
