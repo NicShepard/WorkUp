@@ -15,8 +15,8 @@ class User {
     SettingConfiguration settingConfiguration;
     HashMap<String, String> favorites;
     List<String> friends;
-    Map<String, Boolean> activeChallenges;
-    Map<String, Integer> pastChallenges;
+    Map<String, Challenge> activeChallenges;
+    Map<String, Challenge> pastChallenges;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -86,19 +86,19 @@ class User {
         this.settingConfiguration = settingConfiguration;
     }
 
-    public Map<String, Boolean> getActiveChallenges() {
+    public Map<String, Challenge> getActiveChallenges() {
         return activeChallenges;
     }
 
-    public void setActiveChallenges(Map<String, Boolean> activeChallenges) {
+    public void setActiveChallenges(Map<String, Challenge> activeChallenges) {
         this.activeChallenges = activeChallenges;
     }
 
-    public Map<String, Integer> getPastChallenges() {
+    public Map<String, Challenge> getPastChallenges() {
         return pastChallenges;
     }
 
-    public void setPastChallenges(Map<String, Integer> pastChallenges) {
+    public void setPastChallenges(Map<String, Challenge> pastChallenges) {
         this.pastChallenges = pastChallenges;
     }
 
@@ -117,4 +117,6 @@ class User {
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
+
+
 }

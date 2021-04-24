@@ -216,10 +216,9 @@ public class TestActivity extends AppCompatActivity {
 
                         db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
                         db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
+
                     }
-
                     //Add rank to past challenge
-
                     //Send FCM to say, come see how you did!
                     //End of challenge make sure they log their steps?
                 }
@@ -233,9 +232,33 @@ public class TestActivity extends AppCompatActivity {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
+    }
 
+    void createRankingsForChallenge(String challengeKey){
 
+        Log.d("Create Rankings For Challenge is", "Called");
 
+        Integer rank;
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Challenge c = new Challenge();
+                c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
+        databaseReference.addValueEventListener(challengeListener);
     }
 
 

@@ -174,7 +174,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     User friend = new User();
-                    Log.d("Get friend key", String.valueOf(ds.getKey()));
 
                     friend.setFirstName(ds.getValue(User.class).getFirstName());
                     friend.setLastName(ds.getValue(User.class).getLastName());
