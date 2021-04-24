@@ -5,11 +5,13 @@
 
     <item android:id="@+id/goProfile"
         android:title="Profile"/>
-    <item android:id="@+id/gotToExplore"
-        android:title="Explore"/>
-    <item android:id="@+id/settings"
-        android:title="Settings"/>
-
+    <item android:id="@+id/goChallenges"
+        android:title="Challenges"/>
+    <item
+        android:id="@+id/action_signout"
+        android:orderInCategory="100"
+        android:title="Sign Out"
+        app:showAsAction="never" />
 
     <ImageView
         android:id="@+id/imageView3"

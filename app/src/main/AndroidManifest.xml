@@ -38,6 +38,8 @@
         </activity>
         <activity android:name=".ExploreScreenActivity"
             android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ProfileActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".FavoriteActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".LandingPage"

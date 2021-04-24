@@ -106,8 +106,8 @@ public class LandingPage extends AppCompatActivity {
                     case R.id.goProfile:
                         goToProfile();
                         break;
-                    case R.id.gotToExplore:
-                        goToExplore();
+                    case R.id.goChallenges:
+                        goToChallenges();
                         break;
                 }
                 return true;
@@ -254,8 +254,8 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
-    private void goToExplore(){
-        Intent intent = new Intent(this, ExploreScreenActivity.class);
+    private void goToChallenges(){
+        Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
 
     }
