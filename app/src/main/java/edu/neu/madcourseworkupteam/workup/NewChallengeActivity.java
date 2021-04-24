@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -110,26 +112,39 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                 String endDate = dateFormat.format(newEndDate);
                 endDate = LocalDate.parse(endDate).plusDays(1).toString();
 
-                //Crete the challenge to be added
-                challengeToAdd = new Challenge();
-                challengeToAdd.setStartDate(startDate);
-                challengeToAdd.setEndDate(endDate);
-                String selected = multiSelectSpinner.getSelectedItemsAsString();
-                Log.d("Items Selected", selected);
-                challengeToAdd.setUserPoints(pointsMap);
-
-                if (nameOfChallenge.getText().length() > 0) {
-                    challengeToAdd.setTitle(nameOfChallenge.getText().toString());
+                if(start < System.currentTimeMillis()){
+                    Toast.makeText(NewChallengeActivity.this,
+                            "Please choose a start date in the future", Toast.LENGTH_SHORT).show();
+                    challengeToAdd = null;
                 } else {
-                    challengeToAdd.setTitle("Unnamed Challenge");
+                    //Create the challenge to be added
+                    challengeToAdd = new Challenge();
+                    challengeToAdd.setStartDate(startDate);
+                    challengeToAdd.setEndDate(endDate);
+                    String selected = multiSelectSpinner.getSelectedItemsAsString();
+                    Log.d("Items Selected", selected);
+                    challengeToAdd.setUserPoints(pointsMap);
+
+                    if (nameOfChallenge.getText().length() > 0) {
+                        challengeToAdd.setTitle(nameOfChallenge.getText().toString());
+                    } else {
+                        challengeToAdd.setTitle("Unnamed Challenge");
+                    }
                 }
+
+
             }
         });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createChallenge(challengeToAdd);
+                if(challengeToAdd == null){
+                    Toast.makeText(NewChallengeActivity.this,
+                            "Please create a valid challenge with a future start date", Toast.LENGTH_LONG).show();
+                } else{
+                    createChallenge(challengeToAdd);
+                }
             }
         });
 
