@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,7 +45,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private Long end = null;
     private boolean challengeCreated = false;
 
-    private String currentUsername;
+    private String currentUsername = null;
     private MultiSelectSpinner multiSelectSpinner;
 
     private Button saveButton;
@@ -56,6 +57,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     Button save;
     Button cancel;
 
+    User currentUser;
     private Button startDate;
     private MaterialDatePicker datePicker;
 
@@ -63,6 +65,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
+        currentUser = getCurrentUser();
+        getFriends();
 
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
@@ -131,8 +135,30 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        init(savedInstanceState);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.navigation_home:
+                            Intent explore_intent = new Intent(this, LandingPage.class);
+                            startActivity(explore_intent);
+                            return true;
+                        case R.id.navigation_favorite:
+                            Intent fav_intent = new Intent(this, FavoriteActivity.class);
+                            startActivity(fav_intent);
+                            return true;
+                        case R.id.navigation_explore:
+                            Intent prof_intent = new Intent(this, ExploreScreenActivity.class);
+                            startActivity(prof_intent);
+                            return true;
+                    }
+                    return false;
+                };
+        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+
     }
+
 
     //TODO uncheck first one, filter out self
     public void addOnSpinnerFriends() {
@@ -140,7 +166,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         ArrayList<String> list = new ArrayList<>();
 
         for (User u : friendList) {
-            list.add(u.getUsername());
+            if(!u.getUsername().equalsIgnoreCase(currentUsername)){
+                list.add(u.getUsername());
+            }
         }
 
         String[] friends = new String[list.size()];
@@ -149,19 +177,11 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         }
 
         multiSelectSpinner.setItems(friends);
-        multiSelectSpinner.setSelection(new int[]{0});
         multiSelectSpinner.setListener(this);
 
     }
 
-    private void init(Bundle savedInstanceState) {
-        initialItemData(savedInstanceState);
-    }
-
-    private void initialItemData(Bundle savedInstanceState) {
-        getFriends();
-    }
-
+//TODO store username somewhere
     public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -199,12 +219,12 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     @Override
     public void selectedStrings(List<String> strings) {
         selectedUsers = strings;
-
+        selectedUsers.add(currentUsername);
         pointsMap = new HashMap<>();
         for (String selected : strings) {
             pointsMap.put(selected, Long.valueOf(0));
         }
-
+        pointsMap.put(currentUsername, Long.valueOf(0));
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 

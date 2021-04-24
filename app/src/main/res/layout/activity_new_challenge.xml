@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="886dp"
         android:layout_marginTop="45dp"
         android:layout_marginBottom="65dp">
 
@@ -18,106 +18,75 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="52dp"
-                android:text="Challenge:"
-                android:textSize="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.098"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <EditText
                 android:id="@+id/name_of_challenge"
-                android:layout_width="222dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="34dp"
+                android:layout_width="252dp"
+                android:layout_height="66dp"
                 android:hint="Enter name of challenge"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.135" />
+                app:layout_constraintBottom_toTopOf="@+id/friends_text"
+                app:layout_constraintEnd_toEndOf="@+id/friends_text"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/friends_text"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/friends_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="132dp"
                 android:gravity="center"
                 android:text="Select friends to challenge:"
                 android:textSize="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/friends"
+                app:layout_constraintEnd_toEndOf="@+id/friends"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/friends"
+                app:layout_constraintTop_toBottomOf="@+id/name_of_challenge" />
 
             <edu.neu.madcourseworkupteam.workup.MultiSelectSpinner
                 android:id="@+id/friends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_width="298dp"
+                android:layout_height="229dp"
                 android:dropDownWidth="wrap_content"
                 android:gravity="center"
                 android:spinnerMode="dropdown"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.517"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/friends_text"
-                app:layout_constraintVertical_bias="0.004" />
-
-            <TextView
-                android:id="@+id/start_date_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="256dp"
-                android:gravity="center"
-                android:text="Select challenge date:"
-                android:textSize="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/start_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.44"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="@+id/start_date"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/start_date"
+                app:layout_constraintTop_toBottomOf="@+id/friends_text" />
 
             <Button
                 android:id="@+id/start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="69dp"
                 android:gravity="center"
-                android:text="DATES"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_date_text" />
+                android:text="Select Dates"
+                app:layout_constraintBottom_toTopOf="@+id/save_button"
+                app:layout_constraintEnd_toEndOf="@+id/save_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/save_button"
+                app:layout_constraintTop_toBottomOf="@+id/friends" />
 
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="SAVE"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.309"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/cancel_button"
+                app:layout_constraintEnd_toEndOf="@+id/cancel_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/cancel_button"
                 app:layout_constraintTop_toBottomOf="@+id/start_date" />
 
             <Button
                 android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="CANCEL"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.711"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/start_date" />
+                app:layout_constraintTop_toBottomOf="@+id/save_button" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
