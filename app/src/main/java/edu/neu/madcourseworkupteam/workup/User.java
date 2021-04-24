@@ -11,7 +11,6 @@ class User {
     String username;
     Long totalSteps;
     String email;
-    SettingConfiguration settingConfiguration;
     HashMap<String, String> favorites;
     List<String> friends;
     Map<String, Challenge> activeChallenges;
@@ -70,14 +69,6 @@ class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public SettingConfiguration getSettingConfiguration() {
-        return settingConfiguration;
-    }
-
-    public void setSettingConfiguration(SettingConfiguration settingConfiguration) {
-        this.settingConfiguration = settingConfiguration;
     }
 
     public Map<String, Challenge> getActiveChallenges() {

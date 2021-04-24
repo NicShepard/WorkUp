@@ -18,39 +18,28 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * An activity for storing content the user wants to revisit at a later date.
+ */
 public class FavoriteActivity extends AppCompatActivity {
-
-    private static final String TAG = "Favorites ACTIVITY";
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
     private ExerciseAdapter exerciseAdapter;
     private RecyclerView.LayoutManager layout;
-    User currentUser = null;
-    private String currentUsername;
-
-    private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
-    private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
     BottomNavigationView bottomNavigation;
-
-    //private DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
-        currentUser = getCurrentUser();
-
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-
-        init(savedInstanceState);
+        getMovements();
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -71,86 +60,6 @@ public class FavoriteActivity extends AppCompatActivity {
                 }
                 return false;
             };
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        int size = cardList == null ? 0 : cardList.size();
-        outState.putInt(NUMBER_OF_ITEMS, size);
-
-        // Need to generate unique key for each item
-        // TODO: This is only a possible way to do, please find own way to generate the key
-        for (int i = 0; i < size; i++) {
-            // put image information id into instance
-            outState.putString(KEY_OF_INSTANCE + i + "0", cardList.get(i).getVideoUrl());
-            // put itemName information into instance
-            outState.putString(KEY_OF_INSTANCE + i + "1", cardList.get(i).getName());
-            // put itemDesc information into instance
-            outState.putString(KEY_OF_INSTANCE + i + "2", cardList.get(i).getDesc());
-            // put isChecked information into instance
-            outState.putBoolean(KEY_OF_INSTANCE + i + "3", cardList.get(i).getStatus());
-        }
-        super.onSaveInstanceState(outState);
-    }
-
-    User getCurrentUser() {
-        final User[] user = {null};
-        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
-
-        Log.d("Username is", "Called");
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.getValue() != null) {
-                    user[0] = new User();
-                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
-                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
-                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
-                    user[0].setFavorites(dataSnapshot.getValue(User.class).getFavorites());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        //db.child("users").child(userKey).addValueEventListener(userListener);
-        //return user;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
-        return user[0];
-    }
-
-    private void init(Bundle savedInstanceState) {
-        initialItemData(savedInstanceState);
-    }
-
-    private void initialItemData(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
-            if (cardList == null || cardList.size() == 0) {
-
-                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
-                // Retrieve keys we store in the instance
-                for (int i = 0; i < size; i++) {
-                    String videoUrl = savedInstanceState.getString(KEY_OF_INSTANCE + i + "0");
-                    String itemName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
-                    String itemDesc = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
-                    boolean isChecked = savedInstanceState.getBoolean(KEY_OF_INSTANCE + i + "3");
-
-                    ExerciseCard itemCard = new ExerciseCard(videoUrl, itemName, itemDesc, isChecked);
-                    cardList.add(itemCard);
-                }
-            }
-        }
-        // Load the initial cards
-        else {
-            getMovements();
-        }
-    }
 
     List<String> getFavorites() {
         Log.d("favorites", "called");
