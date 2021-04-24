@@ -67,7 +67,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
-        currentUser = getCurrentUser();
+
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
         nameOfChallenge = findViewById(R.id.name_of_challenge);
@@ -160,13 +160,11 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     private void init(Bundle savedInstanceState) {
         initialItemData(savedInstanceState);
-        declineChallenge("-MYyzQeU-JtawVlx-BlW");
     }
 
     private void initialItemData(Bundle savedInstanceState) {
         getFriends();
     }
-
 
     public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
@@ -176,7 +174,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     User friend = new User();
-                    Log.d("Get friend key", String.valueOf(ds.getKey()));
 
                     friend.setFirstName(ds.getValue(User.class).getFirstName());
                     friend.setLastName(ds.getValue(User.class).getLastName());
@@ -219,6 +216,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     }
 
     //PLAN TODO
+    //Save instance state TODO
+    //https://stackoverflow.com/questions/32283853/android-save-state-on-orientation-change
 
     /**
      * Put challenge in own node
@@ -237,6 +236,13 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        Challenge cCopy = new Challenge();
+
+        cCopy.setTitle(challenge.getTitle());
+        cCopy.setStartDate(challenge.getStartDate());
+        cCopy.setEndDate(challenge.getEndDate());
+        cCopy.setAccepted(false);
+
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
 
         db.child("challenges").child(key).setValue(challenge);
@@ -253,8 +259,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     for (Object user : selectedUsers) {
                         if (ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated) {
-//                            String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
-                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(key);
+                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(cCopy);
                         }
                     }
                 }
@@ -271,7 +276,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.addValueEventListener(userListener);
     }
 
-    List<String> getActiveChallengesForUser() {
+    List<Challenge> getActiveChallengesForUser() {
         Log.d("activeChallenges", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -281,7 +286,18 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    challenges.add(ds.getValue().toString());
+                    Log.d("activeChallenges", "insideSnapshot");
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
                 }
             }
 
@@ -296,8 +312,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         return challenges;
     }
 
-    List<String> getPastChallengesForUser(String userKey) {
-        Log.d("activeChallenges", "called");
+    List<Challenge> getPastChallengesForUser() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         List challenges = new LinkedList();
@@ -306,13 +321,18 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    challenges.add(ds.getValue().toString());
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setPlacement(Integer.valueOf((Integer) ds.getValue()));
+
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         };
 
@@ -330,25 +350,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
     }
 
-    void updateChallenges() {
-        //Get current date to compare everything against
-        LocalDate ld;
-        ld = LocalDate.now();
 
-
-        //Get active challenges
-        List<String> activeChallenges = getActiveChallengesForUser();
-
-        for (String challenge : activeChallenges) {
-        }
-
-        //Iterate through all of them
-        //Add total steps for each day in the challenge and update it in challenge
-        //Compare dates to see if it is over
-        //If challenge is over add to past challenges in user node, and then delete from active
-        //Create ranking list in challenge
-        //Add rank to past challenge?
-    }
 
     User getCurrentUser() {
         final User[] user = {null};

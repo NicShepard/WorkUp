@@ -11,6 +11,9 @@ public class Challenge {
     String endDate;
     Map<String, Long> userPoints;
     List<String> userPlacement;
+    String pk;
+    Boolean accepted;
+    Integer placement;
 
     public Challenge() {
     }
@@ -22,6 +25,30 @@ public class Challenge {
         this.endDate = endDate;
         this.userPoints = userPoints;
         this.userPlacement = userPlacement;
+    }
+
+    public Integer getPlacement() {
+        return placement;
+    }
+
+    public void setPlacement(Integer placement) {
+        this.placement = placement;
+    }
+
+    public String getPk() {
+        return pk;
+    }
+
+    public void setPk(String pk) {
+        this.pk = pk;
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 
     public String getTitle() {
