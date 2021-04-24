@@ -339,13 +339,11 @@ public class ExploreScreenActivity extends AppCompatActivity {
     void addToFavorites(ExerciseCard card) {
 
         Log.d("Add to favorites", "called");
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         Log.w("Adding videoURL to favorites", String.valueOf(card.getVideoUrl()));
-        String key = db.child("users").child(user.getUid()).child("favorites").push().getKey();
-        // strip until the v=
-        String[] url = card.getVideoUrl().split("v=");
-        db.child("users").child(user.getUid()).child("favorites").child(url[1]).setValue(url[1]);
+//        String key = db.child("users").child(user.getUid()).child("favorites").push().getKey();
+        String url = card.getVideoUrl();
+        db.child("users").child(user.getUid()).child("favorites").child(url).setValue(url);
     }
 }
