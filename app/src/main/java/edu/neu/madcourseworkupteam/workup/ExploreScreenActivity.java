@@ -14,9 +14,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.net.MalformedURLException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,8 +49,13 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
+    private ArrayList<ExerciseCard> filteredList = new ArrayList<>();
+
     private ExerciseAdapter exerciseAdapter;
     private RecyclerView.LayoutManager layout;
+
+    private ChipGroup chipGroup;
+
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -59,6 +69,23 @@ public class ExploreScreenActivity extends AppCompatActivity {
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        chipGroup = findViewById(R.id.chip_group);
+
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null) {
+                    Log.w("Chip clicked", String.valueOf(chip.getText()));
+                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getChipText(), Toast.LENGTH_LONG).show();
+                    filteredList.clear();
+                    getFilteredMovements(chip.getText().toString().toLowerCase());
+                } else {
+                    createRecyclerView(cardList);
+                }
+            }
+        });
 
         init(savedInstanceState);
     }
@@ -82,13 +109,16 @@ public class ExploreScreenActivity extends AppCompatActivity {
                 return false;
             };
 
+
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         int size = cardList == null ? 0 : cardList.size();
+        int size2 = filteredList == null ? 0 : filteredList.size();
+
         outState.putInt(NUMBER_OF_ITEMS, size);
 
         // Need to generate unique key for each item
-        // TODO: This is only a possible way to do, please find own way to generate the key
         for (int i = 0; i < size; i++) {
             // put image information id into instance
             outState.putString(KEY_OF_INSTANCE + i + "0", cardList.get(i).getVideoUrl());
@@ -142,7 +172,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
     private void initialItemData(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
             if (cardList == null || cardList.size() == 0) {
-
+                Log.w("GOING INTO THIS WEIRD IF STATEMENT", "ATTEMPT");
                 int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
                 // Retrieve keys we store in the instance
                 for (int i = 0; i < size; i++) {
@@ -187,6 +217,46 @@ public class ExploreScreenActivity extends AppCompatActivity {
         return favorites;
     }
 
+    void getFilteredMovements(String filter) {
+        List<String> favorites = getFavorites();
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Get filtered movement", "called");
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.w("filter: ", String.valueOf(filter));
+                    Log.w("category: ", String.valueOf(ds.getValue(Movement.class).getType()));
+                    if (String.valueOf(ds.getValue(Movement.class).getType()) == filter) {
+                        ExerciseCard movement = new ExerciseCard();
+                        Log.d("Get movement key", String.valueOf(ds.getKey()));
+                        Log.d("Size is", String.valueOf(filteredList.size()));
+                        movement.setVideoName(ds.getValue(Movement.class).getTitle());
+                        movement.setVideoDesc(ds.getValue(Movement.class).getDescription());
+                        movement.setVideoUrl(ds.getValue(Movement.class).getVideoURL());
+                        movement.setCategory(ds.getValue(Movement.class).getType());
+                        if (favorites.contains(ds.getValue(Movement.class).getVideoURL())) {
+                            movement.setChecked(true);
+                        } else {
+                            movement.setChecked(false);
+                        }
+                        filteredList.add(movement);
+                    }
+                }
+                Log.w("Filter list size: ", String.valueOf(filteredList.size()));
+                createRecyclerView(filteredList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("movements");
+        databaseReference.addValueEventListener(userListener);
+        Log.d("Size of list is", String.valueOf(filteredList.size()));
+    }
 
     void getMovements() {
         List<String> favorites = getFavorites();
@@ -199,10 +269,10 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     ExerciseCard movement = new ExerciseCard();
                     Log.d("Get movement key", String.valueOf(ds.getKey()));
                     Log.d("Size is", String.valueOf(cardList.size()));
-
                     movement.setVideoName(ds.getValue(Movement.class).getTitle());
                     movement.setVideoDesc(ds.getValue(Movement.class).getDescription());
                     movement.setVideoUrl(ds.getValue(Movement.class).getVideoURL());
+                    movement.setCategory(ds.getValue(Movement.class).getType());
                     if (favorites.contains(ds.getValue(Movement.class).getVideoURL())) {
                         movement.setChecked(true);
                     } else {
@@ -210,8 +280,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     }
                     cardList.add(movement);
                 }
-                createRecyclerView();
-
+                createRecyclerView(cardList);
             }
 
             @Override
@@ -225,7 +294,8 @@ public class ExploreScreenActivity extends AppCompatActivity {
         Log.d("Size of list is", String.valueOf(cardList.size()));
     }
 
-    private void createRecyclerView() {
+
+    private void createRecyclerView(ArrayList<ExerciseCard> cardList) {
 
         layout = new LinearLayoutManager(ExploreScreenActivity.this);
         rView = findViewById(R.id.recyclerView);

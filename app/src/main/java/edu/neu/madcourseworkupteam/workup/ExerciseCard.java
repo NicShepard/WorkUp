@@ -7,12 +7,14 @@ public class ExerciseCard implements ItemClickListener {
     private String videoName;
     private String videoDesc;
     private Boolean isChecked;
+    private String category;
 
     public ExerciseCard(String url, String name, String desc, Boolean checked) {
         this.videoUrl = url;
         this.videoName = name;
         this.videoDesc = desc;
         this.isChecked = checked;
+        this.category = null;
     }
 
     public ExerciseCard() {
@@ -26,6 +28,7 @@ public class ExerciseCard implements ItemClickListener {
         this.imgView = "https://img.youtube.com/vi/" + videoUrl + "/0.jpg";
     }
 
+    public String getCategory() { return this.category; }
     public String getImgView() {
         return this.imgView;
     }
@@ -33,6 +36,8 @@ public class ExerciseCard implements ItemClickListener {
     public String getVideoName() {
         return videoName;
     }
+
+    public void setCategory(String type) { this.category = type; }
 
     public void setVideoName(String videoName) {
         this.videoName = videoName;
