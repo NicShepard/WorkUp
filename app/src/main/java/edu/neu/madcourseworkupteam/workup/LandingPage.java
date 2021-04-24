@@ -135,8 +135,6 @@ public class LandingPage extends AppCompatActivity {
             //String rtdbEmail = mFirebaseDB.child("users").child(emailCheck).get().toString();
             Toast.makeText(LandingPage.this,
                     "Current user is:" + x, Toast.LENGTH_SHORT).show();
-
-
         }
 
         try {
