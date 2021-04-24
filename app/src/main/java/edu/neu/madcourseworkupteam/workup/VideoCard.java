@@ -1,8 +1,13 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -16,8 +21,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,13 +42,15 @@ import java.time.LocalDate;
  * This class displays and individual activity including the title, video, and description. It also
  * has a step counter that users can use to track their steps while performing the activity.
  */
-public class VideoCard extends AppCompatActivity implements SensorEventListener {
+public class VideoCard extends YouTubeBaseActivity implements SensorEventListener {
 
     // Keep track of steps to display to user, and the first value of the step counter which only
     // resets to zero after reboot so that we can display the number of steps taken while doing the
     // activity.
     int steps;
     int initialSteps;
+
+    private static final String API_KEY = "AIzaSyB1vLSAJyJ-kGrnpvBuaLciMzqHy6DrsRM";
 
     FirebaseUser user;
     SensorManager sensorManager;
@@ -61,9 +73,13 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_video);
+
+        Activity activity = this;
+        setContentView(R.layout.video_card);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+        Context context = getApplicationContext();
 
         Log.d(TAG, "onCreate: Starting.");
         video = (WebView) findViewById(R.id.video_view);
@@ -86,8 +102,24 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
             videoURL = (String) savedInstanceState.getSerializable("videoURL");
         }
 
+        Log.d("URL", videoURL);
 
+        YouTubePlayerView youTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtube_player);
+        YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                if(youTubePlayer != null){
+                    youTubePlayer.cueVideo(videoURL);
+                }
+            }
 
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };
+        youTubePlayerView.initialize(API_KEY, listener);
+        
         //Step counter active flag starts as inactive
         active = false;
         //Set the initial steps to -1 so that we can zero out the counter every time
@@ -107,17 +139,25 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
             @Override
             public void onClick(View v) {
 
-                if (active) {
-                    startCounter.setText("Start Pedometer");
-                    sensorManager.unregisterListener(videoCard, stepCounter);
-                    active = false;
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(activity, "Activity permissions must be enabled to use this feature", Toast.LENGTH_LONG).show();
+                    ActivityCompat.requestPermissions(activity, new String[]{
+                            Manifest.permission.ACTIVITY_RECOGNITION}, 100);
                 } else {
-                    startCounter.setText("Stop Pedometer");
-                    if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
-                        stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-                        sensorManager.registerListener(videoCard, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+
+                    if (active) {
+                        startCounter.setText("Start Pedometer");
+                        sensorManager.unregisterListener(videoCard, stepCounter);
+                        active = false;
+                        initialSteps = -1;
+                    } else {
+                        startCounter.setText("Stop Pedometer");
+                        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+                            stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+                            sensorManager.registerListener(videoCard, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+                        }
+                        active = true;
                     }
-                    active = true;
                 }
             }
         });
@@ -131,13 +171,6 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
                 updateStepsForDay(stepsToSubmit);
             }
         });
-
-        WebSettings settings = video.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setAppCacheEnabled(true);
-        settings.setBuiltInZoomControls(true);
-        video.setWebViewClient(new VideoCard.Callback());
-        video.loadUrl(videoURL);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -208,6 +241,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
 
     /**
      * Update the steps for a given day
+     *
      * @param stepsToAdd the number of steps we'd like to add to the day
      */
     void updateStepsForDay(Long stepsToAdd) {
@@ -239,8 +273,8 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
                     databaseReference.setValue(stepsToAdd + existingSteps[0]);
                     alreadyRun[0] = true;
                     //Create the entry if it doesn't exist already
-                } else if (!alreadyRun[0]){
-                 databaseReference.setValue(stepsToAdd);
+                } else if (!alreadyRun[0]) {
+                    databaseReference.setValue(stepsToAdd);
                 }
             }
 
@@ -252,6 +286,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         };
 
         databaseReference.addValueEventListener(userListener);
+        initialSteps = -1;
     }
 
     void getStepsForDay() {

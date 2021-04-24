@@ -3,6 +3,8 @@ package edu.neu.madcourseworkupteam.workup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,22 +33,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ExerciseViewHolder holder, int position) {
         ExerciseCard currentCard = exerciseList.get(position);
-        //holder.video.setImageResource(currentCard.getImageSource());
         holder.videoName.setText(currentCard.getName());
         holder.videoDesc.setText(currentCard.getDesc());
         holder.videoURL = currentCard.getVideoUrl();
+<<<<<<< HEAD
 
-
-//        String dataUrl =
-//                "<html>" +
-//                        "<body>" +
-//                        "<h2>Video From YouTube</h2>" +
-//                        "<br>" +
-//                        "<iframe width=\"560\" height=\"315\" src=\""+currentCard.getVideoUrl()+"\" frameborder=\"0\" allowfullscreen/>" +
-//                        "</body>" +
-//                        "</html>";
-//        holder.video.loadData(currentCard.getVideoUrl(), "text/html", "utf-8");
-
+=======
+        if (currentCard.getChecked()) {
+            holder.checkBox.setChecked(true);
+        } else {
+            holder.checkBox.setChecked(false);
+        }
+>>>>>>> origin/design7
     }
 
     @Override
