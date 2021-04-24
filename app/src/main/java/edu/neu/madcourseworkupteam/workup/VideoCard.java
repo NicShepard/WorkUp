@@ -61,7 +61,6 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
     Boolean active;
     VideoCard videoCard;
     LocalDate ld;
-    private static YouTubePlayer player;
 
     public WebView video;
     String videoURL;
@@ -76,12 +75,9 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
 
         Activity activity = this;
-        setContentView(R.layout.fragment_video);
+        setContentView(R.layout.video_card);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-
-
-
 
         Context context = getApplicationContext();
 

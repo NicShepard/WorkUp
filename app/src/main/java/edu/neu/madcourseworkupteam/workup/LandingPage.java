@@ -118,7 +118,7 @@ public class LandingPage extends AppCompatActivity {
                         startActivity(fav_intent);
                         return true;
                     case R.id.navigation_explore:
-                        Intent prof_intent = new Intent(this, ChallengeActivity.class);
+                        Intent prof_intent = new Intent(this, ExploreScreenActivity.class);
                         startActivity(prof_intent);
                         return true;
                 }
