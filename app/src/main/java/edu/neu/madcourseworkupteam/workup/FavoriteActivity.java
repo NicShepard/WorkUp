@@ -235,8 +235,8 @@ public class FavoriteActivity extends AppCompatActivity {
                 if (cardList.get(position).getStatus() == false){
                     Log.w("Removing from favorites", "ATTEMPT");
                     // remove from favorites in db
-                    String[] url = cardList.get(position).getVideoUrl().split("v=");
-                    db.child("users").child(user.getUid()).child("favorites").child(url[1]).removeValue();
+                    String url = cardList.get(position).getVideoUrl();
+                    db.child("users").child(user.getUid()).child("favorites").child(url).removeValue();
                     cardList.remove(position);
                 }
                 exerciseAdapter.notifyItemChanged(position);
