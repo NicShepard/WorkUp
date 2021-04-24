@@ -8,9 +8,6 @@ import java.util.List;
 @IgnoreExtraProperties
 public class Movement {
 
-//    enum Difficulty {EASY, MEDIUM, HARD};
-//    enum Type {STRETCH, CARDIO, STRENGTH, DANCE}
-
     public String title;
     public String description;
     public String difficulty;

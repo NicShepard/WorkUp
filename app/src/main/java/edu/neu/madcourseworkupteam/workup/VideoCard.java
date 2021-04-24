@@ -24,6 +24,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,13 +42,15 @@ import java.time.LocalDate;
  * This class displays and individual activity including the title, video, and description. It also
  * has a step counter that users can use to track their steps while performing the activity.
  */
-public class VideoCard extends AppCompatActivity implements SensorEventListener {
+public class VideoCard extends YouTubeBaseActivity implements SensorEventListener {
 
     // Keep track of steps to display to user, and the first value of the step counter which only
     // resets to zero after reboot so that we can display the number of steps taken while doing the
     // activity.
     int steps;
     int initialSteps;
+
+    private static final String API_KEY = "AIzaSyB1vLSAJyJ-kGrnpvBuaLciMzqHy6DrsRM";
 
     FirebaseUser user;
     SensorManager sensorManager;
@@ -55,6 +61,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
     Boolean active;
     VideoCard videoCard;
     LocalDate ld;
+    private static YouTubePlayer player;
 
     public WebView video;
     String videoURL;
@@ -72,6 +79,9 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         setContentView(R.layout.fragment_video);
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+
+
+
 
         Context context = getApplicationContext();
 
@@ -95,6 +105,22 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         } else {
             videoURL = (String) savedInstanceState.getSerializable("videoURL");
         }
+
+        YouTubePlayerView youTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtube_player);
+        YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                if(youTubePlayer != null){
+                    youTubePlayer.cueVideo(videoURL);
+                }
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };
+        youTubePlayerView.initialize(API_KEY, listener);
         
         //Step counter active flag starts as inactive
         active = false;
@@ -147,13 +173,6 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
                 updateStepsForDay(stepsToSubmit);
             }
         });
-
-        WebSettings settings = video.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setAppCacheEnabled(true);
-        settings.setBuiltInZoomControls(true);
-        video.setWebViewClient(new VideoCard.Callback());
-        video.loadUrl(videoURL);
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
