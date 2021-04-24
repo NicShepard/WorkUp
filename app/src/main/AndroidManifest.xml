@@ -23,6 +23,7 @@
             android:name=".NewChallengeActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ChallengeActivity" />
+        <activity android:name=".ProfileActivity"/>
         <activity android:name=".Registration" />
         <activity
             android:name=".VideoCard"
