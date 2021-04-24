@@ -27,88 +27,66 @@
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-    <SearchView
-        android:id="@+id/searchView2"
-        android:layout_width="302dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="8dp"
-        android:outlineAmbientShadowColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/search_btton"
-        android:layout_width="99dp"
-        android:layout_height="44dp"
-        android:text="Search"
-        app:layout_constraintBottom_toTopOf="@+id/scrollview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/searchView2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072" />
-
     <HorizontalScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView2"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.068">
 
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                app:singleLine="true"
-                android:id="@+id/chip_group"
-                app:singleSelection="true"
-                app:chipSpacingHorizontal="25dp"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
-                android:layout_height="match_parent">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            app:chipSpacingHorizontal="25dp"
+            app:singleLine="true"
+            app:singleSelection="true">
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:padding="12dp"
-                    android:text="@string/dance"
-                    android:textAlignment="center" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:padding="12dp"
+                android:text="@string/dance"
+                android:textAlignment="center" />
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:padding="12dp"
-                    android:text="@string/cardio"
-                    android:textAlignment="center"
-                    android:visibility="visible" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:padding="12dp"
+                android:text="@string/cardio"
+                android:textAlignment="center"
+                android:visibility="visible" />
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:padding="12dp"
-                    android:text="@string/stretch"
-                    android:textAlignment="center"
-                    android:visibility="visible" />
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:padding="12dp"
+                android:text="@string/stretch"
+                android:textAlignment="center"
+                android:visibility="visible" />
 
-                <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:padding="12dp"
-                    android:text="Strength"
-                    android:textAlignment="center"
-                    android:visibility="visible" />
-            </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:padding="12dp"
+                android:text="Strength"
+                android:textAlignment="center"
+                android:visibility="visible" />
+        </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
 
