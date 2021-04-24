@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -33,6 +35,9 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        startActivity(new Intent(TestActivity.this,
+                NewChallengeActivity.class));
 
         mTextView = findViewById(R.id.text);
         mButton = findViewById(R.id.test);
@@ -183,11 +188,14 @@ public class TestActivity extends AppCompatActivity {
                     Log.d("activeChallenges", "insideSnapshot");
 
                     Challenge c = new Challenge();
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
+                    c.createRankings();
                     c.setPk(ds.getKey());
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
                     c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
 
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
@@ -213,7 +221,7 @@ public class TestActivity extends AppCompatActivity {
                     //Add to past challenges in user node, and then delete from active
                     if(today.isAfter(end)){
                         Log.d("Update Challenges is", "correcting start and end dates");
-
+                        challenge.createRankings();
                         db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
                         db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
 
@@ -234,32 +242,6 @@ public class TestActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(challengeListener);
     }
 
-    void createRankingsForChallenge(String challengeKey){
-
-        Log.d("Create Rankings For Challenge is", "Called");
-
-        Integer rank;
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-
-        ValueEventListener challengeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                Challenge c = new Challenge();
-                c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
-        databaseReference.addValueEventListener(challengeListener);
-    }
 
 
 }
