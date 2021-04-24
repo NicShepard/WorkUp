@@ -5,10 +5,13 @@
 
     <item android:id="@+id/goProfile"
         android:title="Profile"/>
-    <item android:id="@+id/gotToExplore"
-        android:title="Explore"/>
-    <item android:id="@+id/settings"
-        android:title="Settings"/>
+    <item android:id="@+id/goChallenges"
+        android:title="Challenges"/>
+    <item
+        android:id="@+id/action_signout"
+        android:orderInCategory="100"
+        android:title="Sign Out"
+        app:showAsAction="never" />
 
 <!--    <androidx.appcompat.widget.Toolbar-->
 <!--        android:id="@+id/toolbar"-->
@@ -22,17 +25,17 @@
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        app:layout_constraintVertical_bias="0.0" />-->
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_700"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@color/purple_700"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
 
 
