@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -21,16 +23,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.net.MalformedURLException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ExploreScreen ACTIVITY";
 
-    // exercise database reference
-    // buttons to filter
-    // card clicks
 
     private RecyclerView rView;
     private ArrayList<ChallengeCard> cardList = new ArrayList<>();
@@ -42,6 +45,11 @@ public class ProfileActivity extends AppCompatActivity {
     private String currentUserId;
     private User currentUser;
     private String testUser;
+    //private Streak currentStreak;
+    private int currentStreak;
+    private Date dateToday;
+
+    private DayOfWeek dayToday;
 
     private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
     private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
@@ -79,6 +87,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = new User();
 
+        setStreak();
+
+         //calculateStreak();
+        //currentStreak = new Streak();
+
 
         try {
             initialItemData(savedInstanceState);
@@ -87,6 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         //displayCurrentUser.setText(currentUser.getUsername());
+
     }
 
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
@@ -184,5 +198,81 @@ public class ProfileActivity extends AppCompatActivity {
         };
         databaseReference.child("users").child(currentUserId).addValueEventListener(userListener);
     }
+
+    void setStreak() {
+        HashMap<String, String> stepMap = new HashMap<>();
+        currentUser.setDailySteps(stepMap);
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //if (dataSnapshot.child("users").child(currentUserId).hasChild("dailySteps")) {
+                    Log.d("currentUserId is", currentUserId);
+                    currentUser.setDailySteps(dataSnapshot.getValue(User.class).getDailySteps());
+                    Log.d("Daily steps:", currentUser.getDailySteps().get("2021-04-19"));
+                    //displayCurrentUser.setText(currentUser.getUsername());
+
+                //} else {
+                    currentStreak = 0;
+                    Log.d("currentStreak", String.valueOf(currentStreak));
+
+               // }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        databaseReference.child("users").child(currentUserId).child("dailySteps").addValueEventListener(userListener);
+    }
+
+    //TODO try just pushing one date into DB and then retreiving that, comparing it and calculating the streak
+    //The Streak node will have a date child and a streakLength child and if date in node is the day before today,
+    //update streakLength + 1. If it's not, then update streakLength to 0
+    //Optional: third child longestStreak update each time and replace if longer 
+
+    void calculateStreak() {
+        SharedPreferences sharedPreferences = getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
+        Calendar c = Calendar.getInstance();
+
+        //TODO Get rid of this if it doesn't work:
+        // GET THE CURRENT DAY OF THE YEAR
+        //int thisDay = c.get(Calendar.DAY_OF_YEAR);
+        dateToday = new Date();
+
+        //LocalDate dateToday = new LocalDate().now();
+
+        //dayToday = new DayOfWeek();
+
+
+        //String thisDay = dateToday.toString();
+        //String thisDay = dayToday.toString();
+        Log.d("today is:", dateToday.toString());
+
+        //If we don't have a saved value, use 0.
+        int lastDay = sharedPreferences.getInt("YOUR DATE PREF KEY", 0);
+        Log.d("last day is:", String.valueOf(lastDay));
+        //If we don't have a saved value, use 0.
+        int counterOfConsecutiveDays = sharedPreferences.getInt("YOUR COUNTER PREF KEY", 0);
+
+//        if(lastDay == thisDay -1){
+//            Log.d("this day is:", String.valueOf(thisDay));
+//            Log.d("last day is:", String.valueOf(lastDay));
+//
+//            // CONSECUTIVE DAYS
+//            counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
+//            sharedPreferences.edit().putInt("YOUR DATE PREF KEY", thisDay);
+//            sharedPreferences.edit().putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays).commit();
+//        } else {
+//            sharedPreferences.edit().putInt("YOUR DATE PREF KEY", thisDay);
+//            Log.d("this day is:", String.valueOf(thisDay));
+//            Log.d("Consec days: ", String.valueOf(counterOfConsecutiveDays));
+//            sharedPreferences.edit().putInt("YOUR COUNTER PREF KEY", 1).commit();
+//
+//        }
+    }
+
 
 }
