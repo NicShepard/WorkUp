@@ -203,8 +203,6 @@ public class ExploreScreenActivity extends AppCompatActivity {
                     movement.setVideoName(ds.getValue(Movement.class).getTitle());
                     movement.setVideoDesc(ds.getValue(Movement.class).getDescription());
                     movement.setVideoUrl(ds.getValue(Movement.class).getVideoURL());
-                    // TODO: fix checked area here
-                    // TODO: look at favorites and do check the box if it's in the favorites
                     if (favorites.contains(ds.getValue(Movement.class).getVideoURL())) {
                         movement.setChecked(true);
                     } else {
