@@ -17,6 +17,7 @@ import java.util.List;
 public class DataService {
 
     DatabaseReference mFirebaseDB;
+    Long stepGoal = new Long(5000);
     User currentUser;
     HashMap<String , String> userMap = new HashMap<>();
     private String currentUserID;
@@ -71,6 +72,8 @@ public class DataService {
             userMap.put("stepGoal", String.valueOf(5000));
 
             mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
+            mFirebaseDB.child("users").child(currentUserID).child("stepGoal").setValue(stepGoal);
+
 //            this.setUser();
 //                    .addOnCompleteListener( new OnCompleteListener<Void>()
 //            @Override

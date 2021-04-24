@@ -1,15 +1,20 @@
 package edu.neu.madcourseworkupteam.workup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,22 +40,26 @@ import java.util.List;
  */
 public class LandingPage extends AppCompatActivity {
 
-    Integer stepGoal = 5000;
+    Integer goal = 5000;
     ProgressBar simpleProgressBar;
     TextView text_prog;
+
     LocalDate ld;
     FirebaseUser user;
+
     private RecyclerView rView;
     private ArrayList<ChallengeCard> cardList = new ArrayList<>();
     private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
     BottomNavigationView bottomNavigation;
+
     NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+
 
         ld = LocalDate.now();
         text_prog = (TextView) findViewById(R.id.text_view_progress);
@@ -107,7 +116,7 @@ public class LandingPage extends AppCompatActivity {
                         startActivity(fav_intent);
                         return true;
                     case R.id.navigation_explore:
-                        Intent prof_intent = new Intent(this, NewChallengeActivity.class);
+                        Intent prof_intent = new Intent(this, ExploreScreenActivity.class);
                         startActivity(prof_intent);
                         return true;
                 }
@@ -115,6 +124,7 @@ public class LandingPage extends AppCompatActivity {
             };
 
     void getStepsForDay() {
+        List<String> stepGoal = getStepGoal();
         user = FirebaseAuth.getInstance().getCurrentUser();
         ld = LocalDate.now();
         ValueEventListener userListener = new ValueEventListener() {
@@ -123,13 +133,15 @@ public class LandingPage extends AppCompatActivity {
                 Log.d("Get Steps", "called");
 
                 if (dataSnapshot != null) {
-                    Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
-                    String str = String.valueOf(dataSnapshot.getValue());
-                    text_prog.setText(str);
-                    float val = ((float) Integer.valueOf(str) / stepGoal) * 100;
-                    int val1 = (int) val;
-                    Log.w("Step bar:", String.valueOf(val));
-                    simpleProgressBar.setProgress(val1);
+                    if (dataSnapshot.getValue() != null) {
+                        Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
+                        String str = String.valueOf(dataSnapshot.getValue());
+                        text_prog.setText(str);
+                        float val = ((float) Integer.valueOf(str) / goal) * 100;
+                        int val1 = (int) val;
+                        Log.w("Step bar:", String.valueOf(val));
+                        simpleProgressBar.setProgress(val1);
+                    }
                 }
             }
 
@@ -144,8 +156,36 @@ public class LandingPage extends AppCompatActivity {
         databaseReference.addValueEventListener(userListener);
     }
 
+    List<String> getStepGoal() {
+        Log.d("getStepGoals", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List goals = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    //goals.add(String.valueOf(ds.getKey()));
+                    Log.w("STEPGOALS:", String.valueOf(ds.getKey()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("stepGoal");
+        databaseReference.addValueEventListener(challengeListener);
+        return goals;
+    }
+
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
+        getStepsForDay();
         getActiveChallengesForUser();
+
     }
 
     private void createRecyclerView() {
@@ -168,6 +208,51 @@ public class LandingPage extends AppCompatActivity {
     private void goToChallenges() {
         Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        if (item.getItemId() == R.id.goProfile) {
+            Intent intent = new Intent(LandingPage.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.goChallenges) {
+            Intent intent = new Intent(LandingPage.this, ChallengeActivity.class);
+            startActivity(intent);
+        }
+        if (item.getItemId() == R.id.action_signout) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
+            builder.setMessage("Are you sure you want to logout?");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Continue using App", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setNegativeButton("Exit WorkUp", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(LandingPage.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+
+            Button negativeButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            negativeButton.setTextColor(Color.RED);
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setTextColor(Color.BLUE);
+        }
+
+        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
