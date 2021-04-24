@@ -193,9 +193,19 @@ public class LandingPage extends AppCompatActivity {
         layout = new LinearLayoutManager(this);
         rView = findViewById(R.id.recyclerView);
         rView.setHasFixedSize(true);
-
         challengeAdapter = new ChallengeAdapter(cardList);
         rView.setAdapter(challengeAdapter);
+        ItemClickListener itemClickListener = new ItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                cardList.get(position).onItemClick(position);
+            }
+
+            @Override
+            public void onCheckBoxClick(int position) {
+            }
+        };
+        challengeAdapter.setOnClickItemClickListener(itemClickListener);
         rView.setLayoutManager(layout);
 
     }

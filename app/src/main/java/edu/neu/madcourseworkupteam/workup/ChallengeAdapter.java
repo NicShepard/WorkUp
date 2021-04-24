@@ -14,6 +14,8 @@ import java.util.Date;
 public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> {
 
     private final ArrayList<ChallengeCard> challengeList;
+    private ItemClickListener listener;
+
 
     public ChallengeAdapter(ArrayList<ChallengeCard> cards) { this.challengeList = cards; }
 
@@ -22,9 +24,14 @@ public class ChallengeAdapter extends RecyclerView.Adapter<ChallengeViewHolder> 
     public ChallengeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.challenge_card, parent,
                 false);
-        return new ChallengeViewHolder(view);
+        return new ChallengeViewHolder(view, listener);
         //return null;
     }
+
+    public void setOnClickItemClickListener(ItemClickListener listener) {
+        this.listener = listener;
+    }
+
 
     @Override
     public void onBindViewHolder(@NonNull ChallengeViewHolder holder, int position) {

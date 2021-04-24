@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +17,30 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
     public TextView friendNames;
 
 
-    public ChallengeViewHolder(@NonNull View itemView) {
+    public ChallengeViewHolder(@NonNull View itemView, final ItemClickListener listener) {
         super(itemView);
         dates = itemView.findViewById(R.id.challenge_dates);
         challengeName = itemView.findViewById(R.id.challenge_name);
         friendNames = itemView.findViewById(R.id.challenge_friends);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    int position = getLayoutPosition();
+                    listener.onItemClick(position);
+
+                    Intent intent = new Intent(itemView.getContext(), ChallengeView.class);
+                    intent.putExtra("videoURL", "");
+                    intent.putExtra("videoTitle", "");
+                    intent.putExtra("videoDesc", "");
+
+                    itemView.getContext().startActivity(intent);
+
+                }
+            }
+        });
     }
+
 }
