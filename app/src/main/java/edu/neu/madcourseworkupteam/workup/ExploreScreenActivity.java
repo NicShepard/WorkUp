@@ -42,7 +42,6 @@ public class ExploreScreenActivity extends AppCompatActivity {
     User currentUser = null;
     private String currentUsername;
 
-
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
     private ExerciseAdapter exerciseAdapter;

@@ -28,8 +28,6 @@ class User {
         this.username = username;
     }
 
-
-
     public String getFirstName() {
         return firstName;
     }
@@ -86,7 +84,6 @@ class User {
         this.settingConfiguration = settingConfiguration;
     }
 
-
     public Map<String, Challenge> getActiveChallenges() {
         return activeChallenges;
     }
@@ -118,6 +115,5 @@ class User {
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
-
 
 }
