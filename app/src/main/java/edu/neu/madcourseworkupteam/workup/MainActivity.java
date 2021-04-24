@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
         login_button = (Button) findViewById(R.id.signInButton);
@@ -66,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(MainActivity.this,
-                    LandingPage.class));
-        }
+//        if(currentUser != null){
+//            startActivity(new Intent(MainActivity.this,
+//                    LandingPage.class));
+//        }
     }
 
     //Login the user using Firebase authentication, authentication is currently supported with

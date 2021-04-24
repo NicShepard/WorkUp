@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.neu.madcourseworkupteam.workup">
 
-
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,7 +22,6 @@
             android:name=".NewChallengeActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ChallengeActivity" />
-        <activity android:name=".ProfileActivity"/>
         <activity android:name=".Registration" />
         <activity
             android:name=".VideoCard"
@@ -38,6 +36,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ExploreScreenActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".ProfileActivity"
             android:configChanges="orientation|screenSize"/>
         <activity android:name=".FavoriteActivity"
             android:configChanges="orientation|screenSize"/>
