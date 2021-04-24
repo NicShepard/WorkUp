@@ -87,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = new User();
 
-        setStreak();
+        //setStreak();
 
          //calculateStreak();
         //currentStreak = new Streak();
@@ -199,34 +199,34 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference.child("users").child(currentUserId).addValueEventListener(userListener);
     }
 
-    void setStreak() {
-        HashMap<String, String> stepMap = new HashMap<>();
-        currentUser.setDailySteps(stepMap);
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //if (dataSnapshot.child("users").child(currentUserId).hasChild("dailySteps")) {
-                    Log.d("currentUserId is", currentUserId);
-                    currentUser.setDailySteps(dataSnapshot.getValue(User.class).getDailySteps());
-                    Log.d("Daily steps:", currentUser.getDailySteps().get("2021-04-19"));
-                    //displayCurrentUser.setText(currentUser.getUsername());
-
-                //} else {
-                    currentStreak = 0;
-                    Log.d("currentStreak", String.valueOf(currentStreak));
-
-               // }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        databaseReference.child("users").child(currentUserId).child("dailySteps").addValueEventListener(userListener);
-    }
+//    void setStreak() {
+//        HashMap<String, String> stepMap = new HashMap<>();
+//        currentUser.setDailySteps(stepMap);
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                //if (dataSnapshot.child("users").child(currentUserId).hasChild("dailySteps")) {
+//                    Log.d("currentUserId is", currentUserId);
+//                    currentUser.setDailySteps(dataSnapshot.getValue(User.class).getDailySteps());
+//                    Log.d("Daily steps:", currentUser.getDailySteps().get("2021-04-19"));
+//                    //displayCurrentUser.setText(currentUser.getUsername());
+//
+//                //} else {
+//                    currentStreak = 0;
+//                    Log.d("currentStreak", String.valueOf(currentStreak));
+//
+//               // }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // Getting Post failed, log a message
+//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+//            }
+//        };
+//        databaseReference.child("users").child(currentUserId).child("dailySteps").addValueEventListener(userListener);
+//    }
 
     //TODO try just pushing one date into DB and then retreiving that, comparing it and calculating the streak
     //The Streak node will have a date child and a streakLength child and if date in node is the day before today,
