@@ -39,7 +39,7 @@ import java.util.Date;
 
 public class LandingPage extends AppCompatActivity {
 
-    Integer stepGoal  = 10000;
+    Integer stepGoal = 5000;
     ProgressBar simpleProgressBar;
     TextView text_prog;
     private FirebaseAuth mAuth;
@@ -75,6 +75,7 @@ public class LandingPage extends AppCompatActivity {
         currentUser = getCurrentUser();
         ld = LocalDate.now();
         String date = ld.toString();
+
         Log.w("date now:", String.valueOf(ld.toString()));
 
         text_prog = (TextView) findViewById(R.id.text_view_progress);
