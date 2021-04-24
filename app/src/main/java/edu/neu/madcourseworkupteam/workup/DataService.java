@@ -133,5 +133,38 @@ public class DataService {
 
     }
 
+//    User getCurrentUser() {
+//        final User[] user = {null};
+//        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
+//
+//        Log.d("Username is", "Called");
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                if (dataSnapshot.getValue() != null) {
+//                    user[0] = new User();
+//                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
+//                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
+//                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+//                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
+//                    user[0].setFavorites(dataSnapshot.getValue(User.class).getFavorites());
+//                    user[0].setTotalSteps(dataSnapshot.getValue(User.class).getTotalSteps());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                // Getting Post failed, log a message
+//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+//            }
+//        };
+//        //return user;
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+//
+//        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
+//        return user[0];
+//    }
+
 
 }

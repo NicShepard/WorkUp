@@ -4,21 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,62 +21,40 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
-
 import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The landing page is the first page the app displays. The goal of the page is to drive engagement by reminding users of
+ * their (progress towards their) daily step goal as well as the various active challenges they have with
+ * friends which are won based on step counts.
+ */
 public class LandingPage extends AppCompatActivity {
 
     Integer stepGoal = 5000;
     ProgressBar simpleProgressBar;
     TextView text_prog;
-    private FirebaseAuth mAuth;
-    DatabaseReference mFirebaseDB;
-    User currentUser = null;
-    private String currentUsername;
     LocalDate ld;
     FirebaseUser user;
-
-
-
-    private static final String TAG = "LANDINGPAGE ACTIVITY";
-
     private RecyclerView rView;
     private ArrayList<ChallengeCard> cardList = new ArrayList<>();
     private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
-
-
-    private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
-    private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
     BottomNavigationView bottomNavigation;
-
-    //private DatabaseReference database;
-
-
     NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        currentUser = getCurrentUser();
+
         ld = LocalDate.now();
-        String date = ld.toString();
-
-        Log.w("date now:", String.valueOf(ld.toString()));
-
         text_prog = (TextView) findViewById(R.id.text_view_progress);
         simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
-        // TODO: To change the user's progress, use .setProgress with new value
         simpleProgressBar.setProgress(0);
         simpleProgressBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,34 +87,6 @@ public class LandingPage extends AppCompatActivity {
             }
         });
 
-
-        mFirebaseDB = FirebaseDatabase.getInstance().getReference();
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
-            Toast.makeText(LandingPage.this,
-                    "Current user is null", Toast.LENGTH_SHORT).show();
-        } else {
-            String emailCheck = currentUser.getEmail();
-            Toast.makeText(LandingPage.this,
-                    "Current user is:" + emailCheck, Toast.LENGTH_SHORT).show();
-
-
-            Query query = mFirebaseDB.child("users").orderByChild("email").equalTo(emailCheck);
-
-            String x = query.toString();
-
-            //query.addListenerForSingleValueEvent(valueEventListener);
-
-            //Ok here is the issue:
-            //String rtdbEmail = mFirebaseDB.child("users").child(emailCheck).get().toString();
-            Toast.makeText(LandingPage.this,
-                    "Current user is:" + x, Toast.LENGTH_SHORT).show();
-
-
-        }
-
         try {
             initialItemData(savedInstanceState);
         } catch (MalformedURLException e) {
@@ -169,39 +113,6 @@ public class LandingPage extends AppCompatActivity {
                 }
                 return false;
             };
-
-    User getCurrentUser() {
-        final User[] user = {null};
-        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
-
-        Log.d("Username is", "Called");
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.getValue() != null) {
-                    user[0] = new User();
-                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
-                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
-                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
-                    user[0].setFavorites(dataSnapshot.getValue(User.class).getFavorites());
-                    user[0].setTotalSteps(dataSnapshot.getValue(User.class).getTotalSteps());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        //return user;
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
-        return user[0];
-    }
 
     void getStepsForDay() {
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -249,16 +160,14 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
-    private void goToProfile(){
+    private void goToProfile() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
-
     }
 
-    private void goToChallenges(){
+    private void goToChallenges() {
         Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
-
     }
 
     @Override
