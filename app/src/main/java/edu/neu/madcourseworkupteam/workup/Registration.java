@@ -34,11 +34,7 @@ public class Registration extends AppCompatActivity {
     EditText username;
     EditText email;
     EditText password;
-
-    Movement m;
     int steps;
-    SensorManager sensorManager;
-    Sensor stepCounter;
 
     DataService dataService;
 
@@ -86,6 +82,9 @@ public class Registration extends AppCompatActivity {
             Log.d("password: ", tempPass);
 
 
+            mAuth = FirebaseAuth.getInstance();
+            DatabaseReference mFirebaseDB = FirebaseDatabase.getInstance().getReference();
+
             if (!tempEmail.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(tempEmail).matches()){
                 if (!tempPass.isEmpty()){
                     Log.d("in the if state: ", tempPass);
@@ -96,8 +95,11 @@ public class Registration extends AppCompatActivity {
                                     Toast.makeText(Registration.this,
                                             "Registered Successfully !!", Toast.LENGTH_SHORT).show();
                                     // params: first name, last name and username
-                                    dataService.registerUser(fName.getText().toString(),
+                                    User u = new User((fName.getText().toString()),
                                             lName.getText().toString(), username.getText().toString());
+                                    u.setStepGoal(Long.valueOf(5000));
+                                    mFirebaseDB.child("users").child(mAuth.getUid()).setValue(u);
+
                                     startActivity(new Intent(Registration.this , MainActivity.class));
                                     finish();
                                 }
@@ -117,6 +119,5 @@ public class Registration extends AppCompatActivity {
                 email.setError("Pleas Enter Correct Email");
             }
         }
-
 
 }

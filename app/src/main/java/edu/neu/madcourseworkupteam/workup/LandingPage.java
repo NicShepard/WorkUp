@@ -63,7 +63,7 @@ public class LandingPage extends AppCompatActivity {
             }
         });
 
-        text_prog.setText("");
+        text_prog.setText("0");
         getStepsForDay();
         createRecyclerView();
 
