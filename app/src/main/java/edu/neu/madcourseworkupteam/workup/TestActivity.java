@@ -128,41 +128,7 @@ public class TestActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(userListener);
     }
 
-    List<Challenge> getActiveChallengesForUser() {
-        Log.d("activeChallenges", "called");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List challenges = new LinkedList();
-
-        ValueEventListener challengeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Log.d("activeChallenges", "insideSnapshot");
-
-                    Challenge c = new Challenge();
-                    c.setPk(ds.getKey());
-                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
-                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
-                    c.setTitle(ds.getValue(Challenge.class).getTitle());
-                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
-
-                    challenges.add(c);
-                    Log.d("Size of list is", String.valueOf(challenges.size()));
-                    Log.d("Size of list is", challenges.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
-        databaseReference.addValueEventListener(challengeListener);
-        return challenges;
-    }
 
     //TODO Async doesn't matter here, just need to perform all the functions.
     //Move to dataservice?

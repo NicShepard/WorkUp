@@ -6,10 +6,9 @@ public class ChallengeCard {
     private String challengeName;
     private String friends;
 
-    public ChallengeCard(String dates, String name, String friends) {
+    public ChallengeCard(String dates, String name) {
         this.dates = dates;
         this.challengeName = name;
-        this.friends = friends;
     }
 
     public String getDate() { return this.dates; }

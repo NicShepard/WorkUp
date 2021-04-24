@@ -276,7 +276,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.addValueEventListener(userListener);
     }
 
-    List<Challenge> getActiveChallengesForUser() {
+    List<Challenge> allengesForUser() {
         Log.d("activeChallenges", "called");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

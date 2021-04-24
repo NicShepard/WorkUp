@@ -164,16 +164,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private int addItem(int position) {
-
-        //TODO: CHANGE TO CHALLENGE CARD
-        cardList.add(position, new ChallengeCard(new Date().toString(), "1st Place", "Aaron, Nate, Damion"));
-        //        Toast.makeText(LinkCollector.this, "Add an item", Toast.LENGTH_SHORT).show();
-
-        challengeAdapter.notifyItemInserted(position);
-        return 1;
-    }
-
 
     void setUser() {
         User user = new User();
