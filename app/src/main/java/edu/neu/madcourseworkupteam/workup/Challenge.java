@@ -1,5 +1,10 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import android.util.Log;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -146,5 +151,20 @@ public class Challenge {
 
     public void setUserPlacement(List<String> userPlacement) {
         this.userPlacement = userPlacement;
+    }
+
+
+    public List<String> createRankings(){
+        List rankings = new LinkedList();
+
+        this.getUserPoints().entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(x -> rankings.add(x.getKey()));
+
+        Collections.reverse(rankings);
+        Log.d("Rankings", rankings.toString());
+
+        return rankings;
     }
 }

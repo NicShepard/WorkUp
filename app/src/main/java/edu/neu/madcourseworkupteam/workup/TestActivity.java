@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -34,6 +36,9 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        startActivity(new Intent(TestActivity.this,
+                NewChallengeActivity.class));
+
         mTextView = findViewById(R.id.text);
         mButton = findViewById(R.id.test);
         ds = new DataService();
@@ -41,7 +46,7 @@ public class TestActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateChallenges();
+                createRankingsForChallenge("-MZ4F-ntDvg5FPZZCekF");
             }
         });
     }
@@ -249,6 +254,8 @@ public class TestActivity extends AppCompatActivity {
 
                 Challenge c = new Challenge();
                 c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
+                Log.d("Create Rankings For Challenge Points Are", c.getUserPoints().toString());
+                c.createRankings();
             }
 
             @Override
