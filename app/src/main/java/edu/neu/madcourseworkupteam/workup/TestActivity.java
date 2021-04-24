@@ -46,7 +46,7 @@ public class TestActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createRankingsForChallenge("-MZ4F-ntDvg5FPZZCekF");
+                updateChallenges();
             }
         });
     }
@@ -188,11 +188,14 @@ public class TestActivity extends AppCompatActivity {
                     Log.d("activeChallenges", "insideSnapshot");
 
                     Challenge c = new Challenge();
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
+                    c.createRankings();
                     c.setPk(ds.getKey());
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
                     c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
 
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
@@ -218,7 +221,7 @@ public class TestActivity extends AppCompatActivity {
                     //Add to past challenges in user node, and then delete from active
                     if(today.isAfter(end)){
                         Log.d("Update Challenges is", "correcting start and end dates");
-
+                        challenge.createRankings();
                         db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
                         db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
 
@@ -239,34 +242,6 @@ public class TestActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(challengeListener);
     }
 
-    void createRankingsForChallenge(String challengeKey){
-
-        Log.d("Create Rankings For Challenge is", "Called");
-
-        Integer rank;
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-
-        ValueEventListener challengeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                Challenge c = new Challenge();
-                c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
-                Log.d("Create Rankings For Challenge Points Are", c.getUserPoints().toString());
-                c.createRankings();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
-        databaseReference.addValueEventListener(challengeListener);
-    }
 
 
 }

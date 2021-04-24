@@ -153,18 +153,22 @@ public class Challenge {
         this.userPlacement = userPlacement;
     }
 
-
     public List<String> createRankings(){
         List rankings = new LinkedList();
 
-        this.getUserPoints().entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .forEachOrdered(x -> rankings.add(x.getKey()));
+        if(this.userPoints != null){
+            this.getUserPoints().entrySet()
+                    .stream()
+                    .sorted(Map.Entry.comparingByValue())
+                    .forEachOrdered(x -> rankings.add(x.getKey()));
 
-        Collections.reverse(rankings);
-        Log.d("Rankings", rankings.toString());
+            Collections.reverse(rankings);
+            Log.d("Rankings", rankings.toString());
+        }
 
+        this.userPlacement = rankings;
         return rankings;
     }
+
+
 }
