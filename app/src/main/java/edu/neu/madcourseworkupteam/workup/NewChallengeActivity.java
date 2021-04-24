@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,10 +30,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This activity is used for creating new challenges. It uses a date, title, and a selection of users
+ * to generate each challenge- both in a central node and in each users node as well.
+ */
+//TODO bottom navigation
 public class NewChallengeActivity extends AppCompatActivity implements MultiSelectSpinner.OnMultipleItemsSelectedListener, View.OnClickListener {
 
-    private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
-    private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private ArrayList<User> friendList = new ArrayList<>();
@@ -42,15 +44,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     private Long end = null;
     private boolean challengeCreated = false;
 
-    private SharedPreferences sharedPreferences;
     private String currentUsername;
-    private final String defaultString = "default";
     private MultiSelectSpinner multiSelectSpinner;
 
-    User currentUser = null;
-
-    private String course1;
-    private String course2;
     private Button saveButton;
     BottomNavigationView bottomNavigation;
     private Challenge challengeToAdd;
