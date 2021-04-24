@@ -28,16 +28,6 @@ public class FavoriteActivity extends AppCompatActivity {
 
     private static final String TAG = "Favorites ACTIVITY";
 
-    private ArrayList<String> videoURLs = new ArrayList<String>(
-            Arrays.asList("cBPP_izKKSs", "GLy2rYHwUqY", "EXh42q4jDBc", "y01ri_43G50"));
-
-    private ArrayList<String> videoNames = new ArrayList<String>(
-            Arrays.asList(
-                    "Detox Yoga - 20 Minute Yoga Flow for Detox and Digestion", "Total Body Yoga - Deep Stretch",
-                    "Kick Ball Change",
-                    "Calf Stretch"));
-
-
     private RecyclerView rView;
     private ArrayList<ExerciseCard> cardList = new ArrayList<>();
     private ExerciseAdapter exerciseAdapter;
