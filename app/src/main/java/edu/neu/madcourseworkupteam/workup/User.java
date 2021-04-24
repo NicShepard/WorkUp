@@ -86,6 +86,7 @@ class User {
         this.settingConfiguration = settingConfiguration;
     }
 
+
     public Map<String, Challenge> getActiveChallenges() {
         return activeChallenges;
     }

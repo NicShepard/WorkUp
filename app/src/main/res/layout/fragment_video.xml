@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="65dp"
             android:orientation="vertical">
-
             <WebView
                 android:id="@+id/video_view"
                 class="com.google.android.youtube.player.YouTubePlayerView"
@@ -73,6 +72,8 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:paddingTop="20dp">
 
                 <Button
