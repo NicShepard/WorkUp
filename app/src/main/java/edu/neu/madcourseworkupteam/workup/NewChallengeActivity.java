@@ -219,6 +219,8 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     }
 
     //PLAN TODO
+    //Save instance state TODO
+    //https://stackoverflow.com/questions/32283853/android-save-state-on-orientation-change
 
     /**
      * Put challenge in own node
@@ -315,7 +317,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     Challenge c = new Challenge();
                     c.setPk(ds.getKey());
-
+                    c.setPlacement(Integer.valueOf((Integer) ds.getValue()));
 
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
@@ -341,24 +343,37 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
     }
 
+    //TODO Async doesn't matter here, just need to perform all the functions.
+    //Move to dataservice?
     void updateChallenges() {
         //Get current date to compare everything against
         LocalDate ld;
         ld = LocalDate.now();
 
-
         //Get active challenges
         List<Challenge> activeChallenges = getActiveChallengesForUser();
 
+        //Iterate through all of them
         for (Challenge challenge : activeChallenges) {
+            //Add total steps for each day in the challenge and update it in challenge
+
+            //Compare dates to see if it is over
+            LocalDate start = LocalDate.parse(challenge.getStartDate());
+            LocalDate end = LocalDate.parse(challenge.getEndDate());
+            LocalDate today = LocalDate.now();
+
+            //If challenge is over add to past challenges in user node, and then delete from active
+            if(today.isAfter(end)){
+
+            }
+            //Create ranking list in challenge
+
+            //Add rank to past challenge?
+
+            //Send FCM to say, come see how you did!
+            //End of challenge make sure they log their steps?
         }
 
-        //Iterate through all of them
-        //Add total steps for each day in the challenge and update it in challenge
-        //Compare dates to see if it is over
-        //If challenge is over add to past challenges in user node, and then delete from active
-        //Create ranking list in challenge
-        //Add rank to past challenge?
     }
 
     User getCurrentUser() {

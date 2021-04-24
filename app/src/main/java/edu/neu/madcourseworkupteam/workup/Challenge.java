@@ -13,6 +13,7 @@ public class Challenge {
     List<String> userPlacement;
     String pk;
     Boolean accepted;
+    Integer placement;
 
     public Challenge() {
     }
@@ -24,6 +25,14 @@ public class Challenge {
         this.endDate = endDate;
         this.userPoints = userPoints;
         this.userPlacement = userPlacement;
+    }
+
+    public Integer getPlacement() {
+        return placement;
+    }
+
+    public void setPlacement(Integer placement) {
+        this.placement = placement;
     }
 
     public String getPk() {
