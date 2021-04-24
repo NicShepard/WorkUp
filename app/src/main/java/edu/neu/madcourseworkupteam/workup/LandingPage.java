@@ -32,6 +32,7 @@ import com.google.firebase.database.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -44,6 +45,10 @@ public class LandingPage extends AppCompatActivity {
     DatabaseReference mFirebaseDB;
     User currentUser = null;
     private String currentUsername;
+    LocalDate ld;
+    FirebaseUser user;
+
+
 
     private static final String TAG = "LANDINGPAGE ACTIVITY";
 
@@ -64,6 +69,9 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
         currentUser = getCurrentUser();
+        ld = LocalDate.now();
+        String date = ld.toString();
+        Log.w("date now:", String.valueOf(ld.toString()));
 
         text_prog = (TextView) findViewById(R.id.text_view_progress);
         simpleProgressBar = (ProgressBar) findViewById(R.id.progressBar); // initiate the progress bar
@@ -77,6 +85,7 @@ public class LandingPage extends AppCompatActivity {
         });
 
         text_prog.setText("");
+        getStepsForDay();
         createRecyclerView();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
@@ -171,6 +180,35 @@ public class LandingPage extends AppCompatActivity {
         return user[0];
     }
 
+    void getStepsForDay() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        ld = LocalDate.now();
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Get Steps", "called");
+
+                if (dataSnapshot != null) {
+                    Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
+                    String str = String.valueOf(dataSnapshot.getValue());
+                    text_prog.setText(str);
+                    float val = ((float) Integer.valueOf(str) / stepGoal) * 100;
+                    int val1 = (int) val;
+                    Log.w("Step bar:", String.valueOf(val));
+                    simpleProgressBar.setProgress(val1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
+        databaseReference.addValueEventListener(userListener);
+    }
 
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
         if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
