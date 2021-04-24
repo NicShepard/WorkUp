@@ -119,19 +119,21 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
                     Toast.makeText(activity, "Activity permissions must be enabled to use this feature", Toast.LENGTH_LONG).show();
                     ActivityCompat.requestPermissions(activity, new String[]{
                             Manifest.permission.ACTIVITY_RECOGNITION}, 100);
-                }
-
-                if (active) {
-                    startCounter.setText("Start Pedometer");
-                    sensorManager.unregisterListener(videoCard, stepCounter);
-                    active = false;
                 } else {
-                    startCounter.setText("Stop Pedometer");
-                    if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
-                        stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-                        sensorManager.registerListener(videoCard, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+
+                    if (active) {
+                        startCounter.setText("Start Pedometer");
+                        sensorManager.unregisterListener(videoCard, stepCounter);
+                        active = false;
+                        initialSteps = -1;
+                    } else {
+                        startCounter.setText("Stop Pedometer");
+                        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+                            stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+                            sensorManager.registerListener(videoCard, stepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+                        }
+                        active = true;
                     }
-                    active = true;
                 }
             }
         });
@@ -267,6 +269,7 @@ public class VideoCard extends AppCompatActivity implements SensorEventListener 
         };
 
         databaseReference.addValueEventListener(userListener);
+        initialSteps = -1;
     }
 
     void getStepsForDay() {
