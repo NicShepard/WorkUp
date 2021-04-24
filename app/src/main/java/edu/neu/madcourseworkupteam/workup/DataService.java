@@ -68,6 +68,7 @@ public class DataService {
             userMap.put("firstName", fName);
             userMap.put("lastName", lName);
             userMap.put("username", userName1);
+            userMap.put("stepGoal", String.valueOf(5000));
 
             mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
 //            this.setUser();

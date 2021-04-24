@@ -41,7 +41,7 @@ import java.util.List;
 
 public class LandingPage extends AppCompatActivity {
 
-    Integer stepGoal  = 10000;
+    Integer stepGoal = 5000;
     ProgressBar simpleProgressBar;
     TextView text_prog;
     private FirebaseAuth mAuth;
@@ -77,6 +77,7 @@ public class LandingPage extends AppCompatActivity {
         currentUser = getCurrentUser();
         ld = LocalDate.now();
         String date = ld.toString();
+
         Log.w("date now:", String.valueOf(ld.toString()));
 
         text_prog = (TextView) findViewById(R.id.text_view_progress);
@@ -106,8 +107,8 @@ public class LandingPage extends AppCompatActivity {
                     case R.id.goProfile:
                         goToProfile();
                         break;
-                    case R.id.gotToExplore:
-                        goToExplore();
+                    case R.id.goChallenges:
+                        goToChallenges();
                         break;
                 }
                 return true;
@@ -254,8 +255,8 @@ public class LandingPage extends AppCompatActivity {
 
     }
 
-    private void goToExplore(){
-        Intent intent = new Intent(this, ExploreScreenActivity.class);
+    private void goToChallenges(){
+        Intent intent = new Intent(this, ChallengeActivity.class);
         startActivity(intent);
 
     }

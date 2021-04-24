@@ -16,6 +16,7 @@ class User {
     List<String> friends;
     Map<String, Challenge> activeChallenges;
     Map<String, Challenge> pastChallenges;
+    Long stepGoal;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -38,6 +39,10 @@ class User {
     public String getLastName() {
         return lastName;
     }
+
+    public Long getStepGoal() { return this.stepGoal; }
+
+    public void setStepGoal(Long stepGoal) { this.stepGoal = stepGoal; }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
