@@ -67,7 +67,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_challenge);
-        getActiveChallengesForUser();
 
         startDate = (Button) findViewById(R.id.start_date);
         saveButton = findViewById(R.id.save_button);
@@ -167,7 +166,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         getFriends();
     }
 
-
     public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -239,6 +237,13 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        Challenge cCopy = new Challenge();
+
+        cCopy.setTitle(challenge.getTitle());
+        cCopy.setStartDate(challenge.getStartDate());
+        cCopy.setEndDate(challenge.getEndDate());
+        cCopy.setAccepted(false);
+
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
 
         db.child("challenges").child(key).setValue(challenge);
@@ -255,8 +260,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     for (Object user : selectedUsers) {
                         if (ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated) {
-//                            String activeKey = databaseReference.child("users").child(currentKey).child("activeChallenges").push().getKey();
-                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(key);
+                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(cCopy);
                         }
                     }
                 }
@@ -287,7 +291,11 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     Challenge c = new Challenge();
                     c.setPk(ds.getKey());
-                    c.setAccepted(Boolean.valueOf(ds.getValue().toString()));
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
+
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
                     Log.d("Size of list is", challenges.toString());
@@ -343,38 +351,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
     }
 
-    //TODO Async doesn't matter here, just need to perform all the functions.
-    //Move to dataservice?
-    void updateChallenges() {
-        //Get current date to compare everything against
-        LocalDate ld;
-        ld = LocalDate.now();
 
-        //Get active challenges
-        List<Challenge> activeChallenges = getActiveChallengesForUser();
-
-        //Iterate through all of them
-        for (Challenge challenge : activeChallenges) {
-            //Add total steps for each day in the challenge and update it in challenge
-
-            //Compare dates to see if it is over
-            LocalDate start = LocalDate.parse(challenge.getStartDate());
-            LocalDate end = LocalDate.parse(challenge.getEndDate());
-            LocalDate today = LocalDate.now();
-
-            //If challenge is over add to past challenges in user node, and then delete from active
-            if(today.isAfter(end)){
-
-            }
-            //Create ranking list in challenge
-
-            //Add rank to past challenge?
-
-            //Send FCM to say, come see how you did!
-            //End of challenge make sure they log their steps?
-        }
-
-    }
 
     User getCurrentUser() {
         final User[] user = {null};

@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 onStart();
 
                                 startActivity(new Intent(MainActivity.this,
-                                        LandingPage.class));
+                                        TestActivity.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
