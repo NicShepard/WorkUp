@@ -231,7 +231,7 @@ public class ExploreScreenActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Log.w("filter: ", String.valueOf(filter));
                     Log.w("category: ", String.valueOf(ds.getValue(Movement.class).getType()));
-                    if (String.valueOf(ds.getValue(Movement.class).getType()) == filter) {
+                    if (String.valueOf(ds.getValue(Movement.class).getType()).equalsIgnoreCase(filter)) {
                         ExerciseCard movement = new ExerciseCard();
                         Log.d("Get movement key", String.valueOf(ds.getKey()));
                         Log.d("Size is", String.valueOf(filteredList.size()));
