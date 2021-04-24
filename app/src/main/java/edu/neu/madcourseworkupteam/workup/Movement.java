@@ -12,7 +12,7 @@ public class Movement {
     public String description;
     public String difficulty;
     public String videoURL;
-    public String type;
+    public String category;
 
 
     public Movement(String title, String description, String difficulty, String videoURL, String type) {
@@ -20,7 +20,7 @@ public class Movement {
         this.description = description;
         this.difficulty = difficulty;
         this.videoURL = videoURL;
-        this.type = type;
+        this.category = type;
     }
 
     public Movement() {
@@ -28,11 +28,11 @@ public class Movement {
     }
 
     public String getType() {
-        return type;
+        return category;
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.category = type;
     }
 
     public String getTitle() {

@@ -36,14 +36,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ExploreScreenActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".FavoriteActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".LandingPage"
-            android:configChanges="orientation|screenSize" />
+        <activity android:name=".ExploreScreenActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".FavoriteActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity android:name=".LandingPage"
+            android:screenOrientation="portrait"/>
     </application>
 </manifest>

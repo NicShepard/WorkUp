@@ -193,7 +193,7 @@ public class FavoriteActivity extends AppCompatActivity {
                         movement.setVideoName(ds.getValue(Movement.class).getTitle());
                         movement.setVideoDesc(ds.getValue(Movement.class).getDescription());
                         movement.setVideoUrl(ds.getValue(Movement.class).getVideoURL());
-                        movement.setChecked(false);
+                        movement.setChecked(true);
 
                         cardList.add(movement);
                     }
@@ -232,10 +232,7 @@ public class FavoriteActivity extends AppCompatActivity {
                 cardList.get(position).onCheckBoxClick(position);
                 Log.w("Clicking checkbox at: ", String.valueOf(position));
                 // if it is checked, add to favorites in db
-                if (cardList.get(position).getStatus()){
-                    Log.w("Adding to favorites: ", "ATTEMPT");
-                    //addToFavorites(cardList.get(position));
-                } else if (cardList.get(position).getStatus() == false){
+                if (cardList.get(position).getStatus() == false){
                     Log.w("Removing from favorites", "ATTEMPT");
                     // remove from favorites in db
                     String[] url = cardList.get(position).getVideoUrl().split("v=");
