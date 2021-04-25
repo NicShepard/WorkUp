@@ -287,7 +287,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String streakNow = currentUser.getStreak().get("currStreak").toString();
                 int streakUp = parseInt(streakNow) + 1;
                 databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
-            displayStreak.setText(String.valueOf(streakUp));
+            displayStreak.setText(String.valueOf(streakUp) + " Day Streak");
             } else {
             databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(0);
             displayStreak.setText(String.valueOf(0));
