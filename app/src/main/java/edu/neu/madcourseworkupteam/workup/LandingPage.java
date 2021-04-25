@@ -88,9 +88,9 @@ public class LandingPage extends AppCompatActivity {
                     case R.id.goProfile:
                         goToProfile();
                         break;
-                    case R.id.goChallenges:
-                        goToChallenges();
-                        break;
+//                    case R.id.goChallenges:
+//                        goToChallenges();
+//                        break;
                 }
                 return true;
             }
@@ -229,10 +229,10 @@ public class LandingPage extends AppCompatActivity {
             Intent intent = new Intent(LandingPage.this, ProfileActivity.class);
             startActivity(intent);
         }
-        if (item.getItemId() == R.id.goChallenges) {
-            Intent intent = new Intent(LandingPage.this, ChallengeActivity.class);
-            startActivity(intent);
-        }
+//        if (item.getItemId() == R.id.goChallenges) {
+//            Intent intent = new Intent(LandingPage.this, ChallengeActivity.class);
+//            startActivity(intent);
+//        }
         if (item.getItemId() == R.id.action_signout) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
             builder.setMessage("Are you sure you want to logout?");

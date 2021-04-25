@@ -63,8 +63,8 @@ public class ChallengeActivity extends AppCompatActivity implements View.OnClick
                     case R.id.goProfile:
                         goToProfile();
                         break;
-                    case R.id.goChallenges:
-                        break;
+//                    case R.id.goChallenges:
+//                        break;
                 }
                 return true;
             }
@@ -113,10 +113,10 @@ public class ChallengeActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
         }
-        if (item.getItemId() == R.id.goChallenges) {
-            Intent intent = new Intent(this, ChallengeActivity.class);
-            startActivity(intent);
-        }
+//        if (item.getItemId() == R.id.goChallenges) {
+//            Intent intent = new Intent(this, ChallengeActivity.class);
+//            startActivity(intent);
+//        }
         if (item.getItemId() == R.id.action_signout) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Are you sure you want to logout?");
