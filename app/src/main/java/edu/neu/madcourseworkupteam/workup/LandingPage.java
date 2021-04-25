@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +39,7 @@ import java.util.List;
  * their (progress towards their) daily step goal as well as the various active challenges they have with
  * friends which are won based on step counts.
  */
-public class LandingPage extends AppCompatActivity {
+public class LandingPage extends AppCompatActivity implements View.OnClickListener {
 
     DataService ds;
 
@@ -54,6 +55,7 @@ public class LandingPage extends AppCompatActivity {
     private ChallengeAdapter challengeAdapter;
     private RecyclerView.LayoutManager layout;
     BottomNavigationView bottomNavigation;
+    FloatingActionButton add_challenge;
 
     NavigationView navigationView;
 
@@ -64,6 +66,9 @@ public class LandingPage extends AppCompatActivity {
 
         ds = new DataService();
         ds.archiveChallenges();
+
+        add_challenge = (FloatingActionButton) findViewById(R.id.add_new_challenge);
+        add_challenge.setOnClickListener(this::onClick);
 
         ld = LocalDate.now();
         text_prog = (TextView) findViewById(R.id.text_view_progress);
@@ -256,6 +261,15 @@ public class LandingPage extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.add_new_challenge:
+                startActivity(new Intent(this, NewChallengeActivity.class));
+                break;
+        }
     }
 
     @Override
