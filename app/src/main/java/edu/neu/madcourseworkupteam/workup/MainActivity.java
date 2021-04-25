@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(MainActivity.this,
-                    LandingPage.class));
-        }
+//        if(currentUser != null){
+//            startActivity(new Intent(MainActivity.this,
+//                    LandingPage.class));
+//        }
     }
 
     //Login the user using Firebase authentication, authentication is currently supported with
