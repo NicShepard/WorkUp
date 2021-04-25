@@ -56,6 +56,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
 
     private static final String API_KEY = "AIzaSyB1vLSAJyJ-kGrnpvBuaLciMzqHy6DrsRM";
 
+    String currentUsername;
     FirebaseUser user;
     SensorManager sensorManager;
     Sensor stepCounter;
@@ -78,6 +79,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActiveChallengesForUser();
+        this.getCurrentUser();
 
         Activity activity = this;
         setContentView(R.layout.video_card);
@@ -307,8 +309,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
                 LocalDate end = LocalDate.parse(challenge.getEndDate());
                 LocalDate today = LocalDate.now();
 
-
-                Long points = challenge.getUserPoints().get(ds.getCurrentUsername());
+                Long points = challenge.getUserPoints().get(currentUsername);
                 Log.d("Points are", challenge.getUserPoints().toString());
 
                 Log.d("Points are", String.valueOf(points));
@@ -316,7 +317,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
                 if ((today.isAfter(start) || today.isEqual(start)) && (today.isBefore(end) || today.isEqual(end)))
                 {
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(ds.getCurrentUsername()).setValue(points + increment);
+                    databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(currentUsername).setValue(points + increment);
                 }
             }
         }
@@ -396,5 +397,35 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
+    }
+
+    void getCurrentUser() {
+
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        User user = new User();
+        Log.d("Username is", "Called");
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.d("Username is", dataSnapshot.getValue().toString());
+
+                currentUsername = dataSnapshot.getValue(User.class).getUsername();
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        //db.child("users").child(userKey).addValueEventListener(userListener);
+        //return user;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("users").child(fbUser.getUid()).addValueEventListener(userListener);
     }
 }

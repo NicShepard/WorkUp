@@ -153,7 +153,7 @@ public class DataService {
     }
 
     public String getCurrentUsername(){
-        return currentUsername;
+        return currentUser.getUsername();
     }
 
 
