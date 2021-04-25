@@ -30,6 +30,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import static java.lang.Integer.parseInt;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ExploreScreen ACTIVITY";
@@ -89,8 +91,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         //setStreak();
-
-
 
          //calculateStreak();
         //currentStreak = new Streak();
@@ -166,6 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     void setUser() {
+        final boolean[] isAlreadyCalled = {false};
         User user = new User();
         Log.d("Username is", "Called");
         ValueEventListener userListener = new ValueEventListener() {
@@ -178,10 +179,21 @@ public class ProfileActivity extends AppCompatActivity {
                 currentUser.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
                 currentUser.setLastName(dataSnapshot.getValue(User.class).getLastName());
                 Log.d("Username is:", currentUser.getUsername());
+                currentUser.setStreak(dataSnapshot.getValue(User.class).getStreak());
+                Log.d("Streak:", currentUser.getStreak().get("date").toString());
+
                 displayCurrentUser.setText(currentUser.getUsername());
                 //currentUser = user;
                 //}
+
+                if (!isAlreadyCalled[0]) {
+                    updateStreak();
+                    isAlreadyCalled[0] = true;
+                }
+
+
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -192,80 +204,45 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference.child("users").child(currentUserId).addValueEventListener(userListener);
     }
 
-//    void setStreak() {
-//        HashMap<String, String> stepMap = new HashMap<>();
-//        currentUser.setDailySteps(stepMap);
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                //if (dataSnapshot.child("users").child(currentUserId).hasChild("dailySteps")) {
-//                    Log.d("currentUserId is", currentUserId);
-//                    currentUser.setDailySteps(dataSnapshot.getValue(User.class).getDailySteps());
-//                    Log.d("Daily steps:", currentUser.getDailySteps().get("2021-04-19"));
-//                    //displayCurrentUser.setText(currentUser.getUsername());
-//
-//                //} else {
-//                    currentStreak = 0;
-//                    Log.d("currentStreak", String.valueOf(currentStreak));
-//
-//               // }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-//            }
-//        };
-//        databaseReference.child("users").child(currentUserId).child("dailySteps").addValueEventListener(userListener);
-//    }
+    public void updateStreak() {
+        LocalDate today;
+        today = LocalDate.now();
+        String yesterday = currentUser.getStreak().get("date").toString();
+        //LocalDate lastCheckIn;
+        //lastCheckIn = LocalDate.parse(yesterday);
+
+        String[] todayArray = today.toString().split("-", 5);
+        Log.d("todayArray:", todayArray[2].toString());
+
+        String[] lastUpdateArray = yesterday.split("-", 5);
+        Log.d("yesterdayArray:", lastUpdateArray[2].toString());
+
+        int currentCheckIn = parseInt(todayArray[2]);
+        Log.d("CheckIn:", String.valueOf(currentCheckIn));
+
+        int lastCheckIn = parseInt(lastUpdateArray[2]);
+        Log.d("LastCheckIn:", String.valueOf(lastCheckIn));
+
+        int difference = currentCheckIn - lastCheckIn;
+        Log.d("difference:", String.valueOf(difference));
+
+        if(difference == 1) {
+            Log.d("UpdateStreak:", "made it");
+            String streakNow = currentUser.getStreak().get("currStreak").toString();
+            int streakUp = parseInt(streakNow) + 1;
+            databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+
+        } else {
+            databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(0);
+
+        }
+
+    }
 
     //TODO try just pushing one date into DB and then retreiving that, comparing it and calculating the streak
     //The Streak node will have a date child and a streakLength child and if date in node is the day before today,
     //update streakLength + 1. If it's not, then update streakLength to 0
     //Optional: third child longestStreak update each time and replace if longer 
-
-    void calculateStreak() {
-        SharedPreferences sharedPreferences = getSharedPreferences("YOUR PREF KEY", Context.MODE_PRIVATE);
-        Calendar c = Calendar.getInstance();
-
-        //TODO Get rid of this if it doesn't work:
-        // GET THE CURRENT DAY OF THE YEAR
-        //int thisDay = c.get(Calendar.DAY_OF_YEAR);
-        dateToday = new Date();
-
-        //LocalDate dateToday = new LocalDate().now();
-
-        //dayToday = new DayOfWeek();
-
-
-        //String thisDay = dateToday.toString();
-        //String thisDay = dayToday.toString();
-        Log.d("today is:", dateToday.toString());
-
-        //If we don't have a saved value, use 0.
-        int lastDay = sharedPreferences.getInt("YOUR DATE PREF KEY", 0);
-        Log.d("last day is:", String.valueOf(lastDay));
-        //If we don't have a saved value, use 0.
-        int counterOfConsecutiveDays = sharedPreferences.getInt("YOUR COUNTER PREF KEY", 0);
-
-//        if(lastDay == thisDay -1){
-//            Log.d("this day is:", String.valueOf(thisDay));
-//            Log.d("last day is:", String.valueOf(lastDay));
-//
-//            // CONSECUTIVE DAYS
-//            counterOfConsecutiveDays = counterOfConsecutiveDays + 1;
-//            sharedPreferences.edit().putInt("YOUR DATE PREF KEY", thisDay);
-//            sharedPreferences.edit().putInt("YOUR COUNTER PREF KEY", counterOfConsecutiveDays).commit();
-//        } else {
-//            sharedPreferences.edit().putInt("YOUR DATE PREF KEY", thisDay);
-//            Log.d("this day is:", String.valueOf(thisDay));
-//            Log.d("Consec days: ", String.valueOf(counterOfConsecutiveDays));
-//            sharedPreferences.edit().putInt("YOUR COUNTER PREF KEY", 1).commit();
-//
-//        }
-    }
 
 
 }
