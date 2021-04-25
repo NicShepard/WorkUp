@@ -17,6 +17,7 @@ class User {
     Map<String, Challenge> activeChallenges;
     Map<String, Challenge> pastChallenges;
     Long stepGoal;
+    Long streak;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -112,4 +113,11 @@ class User {
         this.friends = friends;
     }
 
+    public void setStreak(Long streak) {
+        this.streak = streak;
+    }
+
+    public Long getStreak() {
+        return this.streak;
+    }
 }

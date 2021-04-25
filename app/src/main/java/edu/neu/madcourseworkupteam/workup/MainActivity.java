@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(MainActivity.this,
-                    LandingPage.class));
-        }
+//        if(currentUser != null){
+//            startActivity(new Intent(MainActivity.this,
+//                    ProfileActivity.class));
+//        }
     }
 
     //Login the user using Firebase authentication, authentication is currently supported with
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                         "Welcome back! You've taken the first step", Toast.LENGTH_SHORT).show();
                                 onStart();
                                 startActivity(new Intent(MainActivity.this,
-                                        LandingPage.class));
+                                        ProfileActivity.class));
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {

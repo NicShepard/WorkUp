@@ -44,6 +44,8 @@ public class DataService {
         //TODO add a hashmap here to add all the user info
         //String email, String userName and maybe other credentials
         String fName, lName, userName1;
+        Long stepsGoal;
+        stepsGoal = Long.valueOf(5000);
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
            return;
@@ -68,9 +70,17 @@ public class DataService {
             userMap.put("firstName", fName);
             userMap.put("lastName", lName);
             userMap.put("username", userName1);
-            userMap.put("stepGoal", String.valueOf(5000));
+            //userMap.put("stepGoal", stepsGoal);
 
-            mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
+            //mFirebaseDB.child("users").child(currentUserID).setValue(userMap);
+
+//            mFirebaseDB.child("users").child(currentUserID).child("email").setValue(currentUserEmail);
+//            mFirebaseDB.child("users").child(currentUserID).child("firstName").setValue(fName);
+//            mFirebaseDB.child("users").child(currentUserID).child("lastName").setValue(lName);
+//            mFirebaseDB.child("users").child(currentUserID).child("username").setValue(userName1);
+
+            mFirebaseDB.child("users").child(currentUserID).child("stepGoal").setValue(stepsGoal);
+
 //            this.setUser();
 //                    .addOnCompleteListener( new OnCompleteListener<Void>()
 //            @Override
