@@ -15,36 +15,37 @@
         android:textAllCaps="false"
         android:textColor="#5C00FF"
         android:textSize="65sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/regEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.131" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <EditText
         android:id="@+id/regEmail"
-        android:layout_width="324dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="41dp"
         android:hint="Enter Email"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/regUsername"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerText"/>
+        app:layout_constraintTop_toBottomOf="@+id/registerText" />
 
     <EditText
         android:id="@+id/regPassword"
-        android:layout_width="324dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="41dp"
         android:hint="Enter Password"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/firstName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regUsername"/>
+        app:layout_constraintTop_toBottomOf="@+id/regUsername" />
 
     <EditText
         android:id="@+id/regUsername"
@@ -52,34 +53,36 @@
         android:layout_height="60dp"
         android:hint="Username"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/firstName"
+        app:layout_constraintBottom_toTopOf="@+id/regPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regEmail" />
 
     <EditText
         android:id="@+id/firstName"
-        android:layout_width="324dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="43dp"
         android:hint="First Name"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/lastName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/regPassword" />
 
     <EditText
         android:id="@+id/lastName"
-        android:layout_width="324dp"
+        android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="43dp"
         android:hint="Last Name"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName"/>
+        app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
 
     <Button
@@ -89,8 +92,7 @@
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastName"/>
+        app:layout_constraintTop_toBottomOf="@+id/lastName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
