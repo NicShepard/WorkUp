@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,8 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ChallengeView extends AppCompatActivity {
 
@@ -26,6 +31,12 @@ public class ChallengeView extends AppCompatActivity {
     private TextView startDate;
     private TextView endDate;
     String challengeID;
+    Map<String, Long> userPoints;
+    private TextView user;
+    private ListView list;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> listItems = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,9 @@ public class ChallengeView extends AppCompatActivity {
         challengeName = findViewById(R.id.challenge_name_display);
         startDate = findViewById(R.id.start_date_display);
         endDate = findViewById(R.id.end_date_display);
+        list = (ListView) findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        list.setAdapter(adapter);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -90,11 +104,19 @@ public class ChallengeView extends AppCompatActivity {
                     if (ds.getKey().equals(challengeID)) {
                         Challenge challenge = new Challenge();
                         challenge.setTitle(ds.getValue(Challenge.class).getTitle());
-                        challengeName.setText(ds.getValue(Challenge.class).getTitle());
                         challenge.setStartDate(ds.getValue(Challenge.class).getStartDate());
-                        startDate.setText(ds.getValue(Challenge.class).getStartDate());
                         challenge.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                        challenge.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
+
+                        challengeName.setText(ds.getValue(Challenge.class).getTitle());
+                        startDate.setText(ds.getValue(Challenge.class).getStartDate());
                         endDate.setText(ds.getValue(Challenge.class).getEndDate());
+                        userPoints = challenge.getUserPoints();
+                        for (Map.Entry<String, Long> user : userPoints.entrySet()) {
+                            listItems.add(user.getKey() + ": " + user.getValue());
+                            adapter.notifyDataSetChanged();
+                        }
+
                     }
                 }
             }
