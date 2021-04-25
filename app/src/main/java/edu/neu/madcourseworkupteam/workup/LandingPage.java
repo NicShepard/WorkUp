@@ -88,9 +88,6 @@ public class LandingPage extends AppCompatActivity {
                     case R.id.goProfile:
                         goToProfile();
                         break;
-//                    case R.id.goChallenges:
-//                        goToChallenges();
-//                        break;
                 }
                 return true;
             }
