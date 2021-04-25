@@ -113,7 +113,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                 if(start < System.currentTimeMillis()){
                     Toast.makeText(NewChallengeActivity.this,
-                            "Please choose a start date in the future", Toast.LENGTH_SHORT).show();
+                            "Please choose a start date further the future", Toast.LENGTH_SHORT).show();
                     challengeToAdd = null;
                 } else {
                     //Create the challenge to be added
