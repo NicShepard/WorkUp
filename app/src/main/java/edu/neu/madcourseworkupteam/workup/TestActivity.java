@@ -160,7 +160,6 @@ public class TestActivity extends AppCompatActivity {
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
-                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
                     c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
 
                     challenges.add(c);

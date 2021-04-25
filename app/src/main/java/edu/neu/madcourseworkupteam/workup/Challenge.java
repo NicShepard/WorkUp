@@ -20,9 +20,7 @@ public class Challenge {
     Map<String, Long> userPoints;
     List<String> userPlacement;
     String pk;
-    Boolean accepted;
     Integer placement;
-
 
     public Challenge() {
         // Default empty Constructor
@@ -67,22 +65,6 @@ public class Challenge {
      */
     public void setPk(String pk) {
         this.pk = pk;
-    }
-
-    /**
-     * Checks if the user accepted the challenge
-     * @return
-     */
-    public Boolean getAccepted() {
-        return accepted;
-    }
-
-    /**
-     * Sets whether the user accepted the challenge or not
-     * @param accepted
-     */
-    public void setAccepted(Boolean accepted) {
-        this.accepted = accepted;
     }
 
     /**
