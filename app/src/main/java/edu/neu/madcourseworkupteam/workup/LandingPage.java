@@ -215,11 +215,6 @@ public class LandingPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToChallenges() {
-        Intent intent = new Intent(this, ChallengeActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -229,10 +224,7 @@ public class LandingPage extends AppCompatActivity {
             Intent intent = new Intent(LandingPage.this, ProfileActivity.class);
             startActivity(intent);
         }
-//        if (item.getItemId() == R.id.goChallenges) {
-//            Intent intent = new Intent(LandingPage.this, ChallengeActivity.class);
-//            startActivity(intent);
-//        }
+
         if (item.getItemId() == R.id.action_signout) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
             builder.setMessage("Are you sure you want to logout?");
