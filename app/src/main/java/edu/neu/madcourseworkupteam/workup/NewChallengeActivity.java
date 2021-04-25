@@ -1,6 +1,5 @@
 package edu.neu.madcourseworkupteam.workup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
@@ -130,8 +129,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                         challengeToAdd.setTitle("Unnamed Challenge");
                     }
                 }
-
-
             }
         });
 
@@ -304,81 +301,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         databaseReference.addValueEventListener(userListener);
     }
-
-    List<Challenge> allengesForUser() {
-        Log.d("activeChallenges", "called");
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List challenges = new LinkedList();
-
-        ValueEventListener challengeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Log.d("activeChallenges", "insideSnapshot");
-
-                    Challenge c = new Challenge();
-                    c.setPk(ds.getKey());
-                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
-                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
-                    c.setTitle(ds.getValue(Challenge.class).getTitle());
-
-                    challenges.add(c);
-                    Log.d("Size of list is", String.valueOf(challenges.size()));
-                    Log.d("Size of list is", challenges.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
-        databaseReference.addValueEventListener(challengeListener);
-        return challenges;
-    }
-
-    List<Challenge> getPastChallengesForUser() {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List challenges = new LinkedList();
-
-        ValueEventListener challengeListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-
-                    Challenge c = new Challenge();
-                    c.setPk(ds.getKey());
-                    c.setPlacement(Integer.valueOf((Integer) ds.getValue()));
-
-                    challenges.add(c);
-                    Log.d("Size of list is", String.valueOf(challenges.size()));
-                    Log.d("Size of list is", challenges.toString());
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("pastChallenges");
-        databaseReference.addValueEventListener(challengeListener);
-        return challenges;
-    }
-
-
-    //Todo move get user to dataservice to work as store
-    void declineChallenge(String challengeKey) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("users").child(user.getUid()).child("activeChallenges").child(challengeKey).setValue(null);
-        databaseReference.child("challenges").child(challengeKey).child("userPoints").child(currentUsername).setValue(null);
-    }
-
-
 
     User getCurrentUser() {
         final User[] user = {null};
