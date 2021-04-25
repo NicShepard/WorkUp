@@ -140,6 +140,9 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                             "Please create a valid challenge with a future start date", Toast.LENGTH_LONG).show();
                 } else{
                     createChallenge(challengeToAdd);
+                    Toast.makeText(NewChallengeActivity.this,
+                            "Your Challenge Has Been Created", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });
