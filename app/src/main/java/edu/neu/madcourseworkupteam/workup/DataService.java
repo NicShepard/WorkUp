@@ -2,6 +2,8 @@ package edu.neu.madcourseworkupteam.workup;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -10,8 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DataService {
@@ -136,38 +140,100 @@ public class DataService {
 
     }
 
-//    User getCurrentUser() {
-//        final User[] user = {null};
-//        final FirebaseUser[] fbUser = {FirebaseAuth.getInstance().getCurrentUser()};
-//
-//        Log.d("Username is", "Called");
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                if (dataSnapshot.getValue() != null) {
-//                    user[0] = new User();
-//                    user[0].setUsername(dataSnapshot.getValue(User.class).getUsername());
-//                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
-//                    user[0].setFirstName(dataSnapshot.getValue(User.class).getFirstName());
-//                    user[0].setLastName(dataSnapshot.getValue(User.class).getLastName());
-//                    user[0].setFavorites(dataSnapshot.getValue(User.class).getFavorites());
-//                    user[0].setTotalSteps(dataSnapshot.getValue(User.class).getTotalSteps());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Getting Post failed, log a message
-//                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
-//            }
-//        };
-//        //return user;
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//
-//        databaseReference.child("users").child(fbUser[0].getUid()).addValueEventListener(userListener);
-//        return user[0];
-//    }
+    void archiveChallenges() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        //Get current date to compare everything against
+        LocalDate ld;
+        ld = LocalDate.now();
+
+        //Get active challenges
+        List<Challenge> challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+
+                    Challenge c = new Challenge();
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
+                }
+
+                //Iterate through all of them
+                for (Challenge challenge : challenges) {
+                    //Add total steps for each day in the challenge and update it in challenge
+
+                    //Compare dates to see if it is over
+                    LocalDate end = LocalDate.parse(challenge.getEndDate());
+                    LocalDate today = LocalDate.now();
+
+                    //Create rankings
+                    calculateRankings(challenge.getPk());
+
+                    //Add to past challenges in user node, and then delete from active
+                    if(today.isAfter(end)){
+                        Log.d("Update Challenges is", "correcting start and end dates");
+                        db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
+                        db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
+                    }
+                    //Add rank to past challenge
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+    }
+
+    void calculateRankings(String challengeKey) {
+
+        final Boolean[] rankingCalculated = {false};
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        final Boolean[] finalRankingCalculated = {rankingCalculated[0]};
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    Challenge c = new Challenge();
+                    c.setUserPoints(snapshot.getValue(Challenge.class).getUserPoints());
+                    c.createRankings();
+                    c.setPk(snapshot.getKey());
+                    c.setStartDate(snapshot.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(snapshot.getValue(Challenge.class).getEndDate());
+                    c.setTitle(snapshot.getValue(Challenge.class).getTitle());
+
+                    if(!finalRankingCalculated[0]){
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
+                        db.setValue(c);
+                        finalRankingCalculated[0] = true;
+                    }
+                }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
+        databaseReference.addValueEventListener(challengeListener);
+    }
+
+
 
 
 }

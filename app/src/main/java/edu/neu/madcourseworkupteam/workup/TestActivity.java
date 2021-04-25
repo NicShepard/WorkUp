@@ -46,7 +46,7 @@ public class TestActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateChallenges();
+
             }
         });
     }
@@ -132,10 +132,7 @@ public class TestActivity extends AppCompatActivity {
 
     //TODO Async doesn't matter here, just need to perform all the functions.
     //Move to dataservice?
-    void updateChallenges() {
-        Log.d("Update Challenges is", "Called");
-
-        Integer rank;
+    void archiveChallenges() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -172,34 +169,25 @@ public class TestActivity extends AppCompatActivity {
                     //Add total steps for each day in the challenge and update it in challenge
 
                     //Compare dates to see if it is over
-                    LocalDate start = LocalDate.parse(challenge.getStartDate());
                     LocalDate end = LocalDate.parse(challenge.getEndDate());
                     LocalDate today = LocalDate.now();
 
                     //If challenge is over create ranking list in challenge
-
-                    Log.d("Update Challenges is", "evaluating dates");
-
-                    Log.d("Update Challenges is", today.toString());
-                    Log.d("Update Challenges is", end.toString());
 
                     //Add to past challenges in user node, and then delete from active
                     if(today.isAfter(end)){
                         Log.d("Update Challenges is", "correcting start and end dates");
                         challenge.createRankings();
                         db.child("users").child(user.getUid()).child("pastChallenges").child(challenge.getPk()).setValue(challenge);
+                        db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(challenge);
                         db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).setValue(null);
-
                     }
                     //Add rank to past challenge
-                    //Send FCM to say, come see how you did!
-                    //End of challenge make sure they log their steps?
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         };
 

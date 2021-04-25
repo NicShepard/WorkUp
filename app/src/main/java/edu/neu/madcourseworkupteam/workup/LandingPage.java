@@ -40,6 +40,8 @@ import java.util.List;
  */
 public class LandingPage extends AppCompatActivity {
 
+    DataService ds;
+
     Integer goal = 5000;
     ProgressBar simpleProgressBar;
     TextView text_prog;
@@ -60,6 +62,8 @@ public class LandingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
 
+        ds = new DataService();
+        ds.archiveChallenges();
 
         ld = LocalDate.now();
         text_prog = (TextView) findViewById(R.id.text_view_progress);
