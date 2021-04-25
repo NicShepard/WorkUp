@@ -317,29 +317,10 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
 
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
                 databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(currentUsername).setValue(points + increment);
-
+                DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                db.child("users").child(user.getUid()).child("activeChallenges").child(challenge.getPk()).child("userPoints").child(currentUsername).setValue(points + increment);
             }
         }
-
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Get Steps", "called");
-
-                if (dataSnapshot != null) {
-                    Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
-        databaseReference.addValueEventListener(userListener);
     }
 
     void getStepsForDay() {
@@ -407,22 +388,16 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 Log.d("Username is", dataSnapshot.getValue().toString());
-
                 currentUsername = dataSnapshot.getValue(User.class).getUsername();
-
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
             }
         };
-        //db.child("users").child(userKey).addValueEventListener(userListener);
-        //return user;
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("users").child(fbUser.getUid()).addValueEventListener(userListener);
