@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -138,6 +140,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void initialItemData(Bundle savedInstanceState) throws MalformedURLException {
         setUser();
+        getPastChallengesForUser();
 //        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
 //            if (cardList == null || cardList.size() == 0) {
 //
@@ -175,6 +178,42 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    List<Challenge> getPastChallengesForUser() {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List challenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+
+                    Challenge c = new Challenge();
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    c.setID(String.valueOf(ds.getKey()));
+                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle(), c.getID());
+                    cardList.add(item);
+                    challenges.add(c);
+                    Log.d("Size of list is", String.valueOf(challenges.size()));
+                    Log.d("Size of list is", challenges.toString());
+                }
+                createRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("pastChallenges");
+        databaseReference.addValueEventListener(challengeListener);
+        return challenges;
+    }
 
     void setUser() {
         final boolean[] isAlreadyCalled = {false};
