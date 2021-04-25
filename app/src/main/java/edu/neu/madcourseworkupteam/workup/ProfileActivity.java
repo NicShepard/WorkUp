@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layout;
     private ImageView profilePic;
     private TextView displayCurrentUser;
+    private TextView displayStreak;
     private FirebaseAuth mAuth;
     private String currentUserId;
     private User currentUser;
@@ -89,6 +90,8 @@ public class ProfileActivity extends AppCompatActivity {
         profilePic = findViewById(R.id.profilePic);
 
         displayCurrentUser = findViewById(R.id.user_name);
+
+        displayStreak = findViewById(R.id.current_streak);
 
         currentUser = new User();
 
@@ -284,8 +287,10 @@ public class ProfileActivity extends AppCompatActivity {
                 String streakNow = currentUser.getStreak().get("currStreak").toString();
                 int streakUp = parseInt(streakNow) + 1;
                 databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+            displayStreak.setText(String.valueOf(streakUp));
             } else {
             databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(0);
+            displayStreak.setText(String.valueOf(0));
 
         }
 
