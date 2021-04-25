@@ -176,6 +176,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
             public void onClick(View v) {
                 Long stepsToSubmit = new Long(steps);
                 updateStepsForDay(stepsToSubmit);
+                updateStepsForChallenges(stepsToSubmit);
             }
         });
     }
@@ -314,11 +315,9 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
 
                 Log.d("Points are", String.valueOf(points));
 
-                if ((today.isAfter(start) || today.isEqual(start)) && (today.isBefore(end) || today.isEqual(end)))
-                {
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(currentUsername).setValue(points + increment);
-                }
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(currentUsername).setValue(points + increment);
+
             }
         }
 
