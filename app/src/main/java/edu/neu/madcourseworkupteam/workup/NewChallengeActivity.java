@@ -265,12 +265,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        Challenge cCopy = new Challenge();
-
-        cCopy.setTitle(challenge.getTitle());
-        cCopy.setStartDate(challenge.getStartDate());
-        cCopy.setEndDate(challenge.getEndDate());
-
 
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
 
@@ -288,7 +282,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                     for (Object user : selectedUsers) {
                         if (ds.getValue(User.class).getUsername().equalsIgnoreCase(String.valueOf(user)) && !challengeCreated) {
-                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(cCopy);
+                            databaseReference.child("users").child(currentKey).child("activeChallenges").child(key).setValue(challenge);
                         }
                     }
                 }

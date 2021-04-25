@@ -64,6 +64,7 @@ public class LandingPage extends AppCompatActivity {
 
         ds = new DataService();
         ds.archiveChallenges();
+        ds.getCurrentUser();
 
         ld = LocalDate.now();
         text_prog = (TextView) findViewById(R.id.text_view_progress);

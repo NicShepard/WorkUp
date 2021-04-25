@@ -1,5 +1,6 @@
 package edu.neu.madcourseworkupteam.workup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -13,6 +14,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class displays and individual activity including the title, video, and description. It also
@@ -61,7 +65,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
     Boolean active;
     VideoCard videoCard;
     LocalDate ld;
-
+    List<Challenge> activeChallenges;
     public WebView video;
     String videoURL;
     TextView videoTitle;
@@ -73,6 +77,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActiveChallengesForUser();
 
         Activity activity = this;
         setContentView(R.layout.video_card);
@@ -104,11 +109,11 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
 
         Log.d("URL", videoURL);
 
-        YouTubePlayerView youTubePlayerView = (YouTubePlayerView)findViewById(R.id.youtube_player);
+        YouTubePlayerView youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtube_player);
         YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                if(youTubePlayer != null){
+                if (youTubePlayer != null) {
                     youTubePlayer.cueVideo(videoURL);
                 }
             }
@@ -119,7 +124,7 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
             }
         };
         youTubePlayerView.initialize(API_KEY, listener);
-        
+
         //Step counter active flag starts as inactive
         active = false;
         //Set the initial steps to -1 so that we can zero out the counter every time
@@ -286,7 +291,55 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
         };
 
         databaseReference.addValueEventListener(userListener);
+        updateStepsForChallenges(stepsToAdd);
         initialSteps = -1;
+    }
+
+    void updateStepsForChallenges(Long increment) {
+        DataService ds = new DataService();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (activeChallenges != null) {
+            for (Challenge challenge : activeChallenges) {
+
+                //Compare dates to see if it has started and is not over
+                LocalDate start = LocalDate.parse(challenge.getStartDate());
+                LocalDate end = LocalDate.parse(challenge.getEndDate());
+                LocalDate today = LocalDate.now();
+
+
+                Long points = challenge.getUserPoints().get(ds.getCurrentUsername());
+                Log.d("Points are", challenge.getUserPoints().toString());
+
+                Log.d("Points are", String.valueOf(points));
+
+                if ((today.isAfter(start) || today.isEqual(start)) && (today.isBefore(end) || today.isEqual(end)))
+                {
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                    databaseReference.child("challenges").child(challenge.getPk()).child("userPoints").child(ds.getCurrentUsername()).setValue(points + increment);
+                }
+            }
+        }
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("Get Steps", "called");
+
+                if (dataSnapshot != null) {
+                    Log.d("Get Steps key", String.valueOf(dataSnapshot.getValue()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
+        databaseReference.addValueEventListener(userListener);
     }
 
     void getStepsForDay() {
@@ -313,11 +366,35 @@ public class VideoCard extends YouTubeBaseActivity implements SensorEventListene
         databaseReference.addValueEventListener(userListener);
     }
 
-    void setStepsForDay() {
-        ld = LocalDate.now();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(user.getUid()).child("dailySteps").child(ld.toString());
-        databaseReference.setValue("0");
+
+    void getActiveChallengesForUser() {
+        Log.d("activeChallenges", "called");
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        activeChallenges = new LinkedList();
+
+        ValueEventListener challengeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Log.d("activeChallenges", "insideSnapshot");
+                    Challenge c = new Challenge();
+                    c.setUserPoints(ds.getValue(Challenge.class).getUserPoints());
+                    c.setPk(ds.getKey());
+                    c.setStartDate(ds.getValue(Challenge.class).getStartDate());
+                    c.setEndDate(ds.getValue(Challenge.class).getEndDate());
+                    c.setTitle(ds.getValue(Challenge.class).getTitle());
+                    activeChallenges.add(c);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
+        databaseReference.addValueEventListener(challengeListener);
     }
 }

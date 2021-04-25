@@ -13,13 +13,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DataService {
 
+    User currentUser;
+    String currentUsername;
     DatabaseReference mFirebaseDB;
     Long stepGoal = new Long(5000);
     HashMap<String, String> userMap = new HashMap<>();
@@ -31,6 +32,8 @@ public class DataService {
     }
 
     void calculateRankings(String challengeKey) {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         final Boolean[] rankingCalculated = {false};
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -50,6 +53,7 @@ public class DataService {
 
                 if (!finalRankingCalculated[0]) {
                     DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("challenges").child(challengeKey);
+                    db.child("users").child(user.getUid()).child("pastChallenges").child(c.getPk()).setValue(c);
                     db.setValue(c);
                     finalRankingCalculated[0] = true;
                 }
@@ -115,6 +119,43 @@ public class DataService {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("activeChallenges");
         databaseReference.addValueEventListener(challengeListener);
     }
+
+    void getCurrentUser() {
+
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        User user = new User();
+        Log.d("Username is", "Called");
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Log.d("Username is", dataSnapshot.getValue().toString());
+
+                    user.setUsername(dataSnapshot.getValue(User.class).getUsername());
+                    currentUsername = dataSnapshot.getValue(User.class).getUsername();
+                    user.setFirstName(dataSnapshot.getValue(User.class).getFirstName());
+                    user.setLastName(dataSnapshot.getValue(User.class).getLastName());
+                    currentUser = user;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("TAG", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        //db.child("users").child(userKey).addValueEventListener(userListener);
+        //return user;
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("users").child(fbUser.getUid()).addValueEventListener(userListener);
+    }
+
+    public String getCurrentUsername(){
+        return currentUsername;
+    }
+
 
 
 }
