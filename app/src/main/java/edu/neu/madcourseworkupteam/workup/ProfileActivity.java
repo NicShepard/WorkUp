@@ -58,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
 
     private DatabaseReference databaseReference;
+//    HashMap<String , Object> streakMap = new HashMap<>();
 
 
     @Override
@@ -89,10 +90,20 @@ public class ProfileActivity extends AppCompatActivity {
 
         currentUser = new User();
 
+//        LocalDate today;
+//        today = LocalDate.now();
+//        Long streak;
+//        streak = Long.valueOf(0);
+//
+//        streakMap.put("date", today.toString());
+//        streakMap.put("currStreak", streak);
+//
+//        databaseReference.child("users").child(currentUserId).child("streak").setValue(streakMap);
+
 
         //setStreak();
 
-         //calculateStreak();
+        //calculateStreak();
         //currentStreak = new Streak();
 
 
@@ -226,16 +237,45 @@ public class ProfileActivity extends AppCompatActivity {
         int difference = currentCheckIn - lastCheckIn;
         Log.d("difference:", String.valueOf(difference));
 
-        if(difference == 1) {
-            Log.d("UpdateStreak:", "made it");
-            String streakNow = currentUser.getStreak().get("currStreak").toString();
-            int streakUp = parseInt(streakNow) + 1;
-            databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+        int monthDiff = parseInt(todayArray[1]) - parseInt(lastUpdateArray[1]);
+        Log.d("monthdifference:", String.valueOf(monthDiff));
 
-        } else {
+        if (difference == 1) {
+                Log.d("UpdateStreak:", "made it");
+                String streakNow = currentUser.getStreak().get("currStreak").toString();
+                int streakUp = parseInt(streakNow) + 1;
+                databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+            } else {
             databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(0);
 
         }
+
+//        if (monthDiff == 0) {
+//            if (difference == 1) {
+//                Log.d("UpdateStreak:", "made it");
+//                String streakNow = currentUser.getStreak().get("currStreak").toString();
+//                int streakUp = parseInt(streakNow) + 1;
+//                databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+//            }
+//
+//        } else if (monthDiff == 1) {
+//            if (lastCheckIn == 28 && currentCheckIn == 1) {
+//                String streakNow = currentUser.getStreak().get("currStreak").toString();
+//                int streakUp = parseInt(streakNow) + 1;
+//                databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+//            } else if (lastCheckIn == 30 && currentCheckIn == 1) {
+//                String streakNow = currentUser.getStreak().get("currStreak").toString();
+//                int streakUp = parseInt(streakNow) + 1;
+//                databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+//            } else if (lastCheckIn == 31 && currentCheckIn == 1) {
+//                String streakNow = currentUser.getStreak().get("currStreak").toString();
+//                int streakUp = parseInt(streakNow) + 1;
+//                databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(streakUp);
+//            }
+//        } else {
+//            databaseReference.child("users").child(currentUserId).child("streak").child("currStreak").setValue(0);
+//
+//        }
 
     }
 

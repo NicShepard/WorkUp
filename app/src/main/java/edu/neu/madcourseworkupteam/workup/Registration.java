@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+
 public class Registration extends AppCompatActivity {
     DatabaseReference rootNode;
     private FirebaseAuth mAuth;
@@ -37,6 +40,7 @@ public class Registration extends AppCompatActivity {
     int steps;
 
     DataService dataService;
+    HashMap<String , Object> streakMap = new HashMap<>();
 
     private String mEmail, mPassword, mFirstName, mLastName;
 
@@ -73,51 +77,64 @@ public class Registration extends AppCompatActivity {
         });
     }
 
-        private void createUser() {
-            String tempEmail = email.getText().toString();
-            String tempPass = password.getText().toString();
-            //String tempEmail = "cat@gmail.com";
-            //String tempPass = "catcat";
-            Log.d("email: ", tempEmail);
-            Log.d("password: ", tempPass);
+    private void createUser() {
+        String tempEmail = email.getText().toString();
+        String tempPass = password.getText().toString();
+        //String tempEmail = "cat@gmail.com";
+        //String tempPass = "catcat";
+        Log.d("email: ", tempEmail);
+        Log.d("password: ", tempPass);
 
 
-            mAuth = FirebaseAuth.getInstance();
-            DatabaseReference mFirebaseDB = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        DatabaseReference mFirebaseDB = FirebaseDatabase.getInstance().getReference();
 
-            if (!tempEmail.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(tempEmail).matches()){
-                if (!tempPass.isEmpty()){
-                    Log.d("in the if state: ", tempPass);
-                    mAuth.createUserWithEmailAndPassword(tempEmail, tempPass)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Toast.makeText(Registration.this,
-                                            "Registered Successfully !!", Toast.LENGTH_SHORT).show();
-                                    // params: first name, last name and username
+        if (!tempEmail.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(tempEmail).matches()) {
+            if (!tempPass.isEmpty()) {
+                Log.d("in the if state: ", tempPass);
+                mAuth.createUserWithEmailAndPassword(tempEmail, tempPass)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(Registration.this,
+                                        "Registered Successfully !!", Toast.LENGTH_SHORT).show();
+                                // params: first name, last name and username
+                                mAuth = FirebaseAuth.getInstance();
+                                if (mAuth.getCurrentUser() == null) {
+                                    return;
+                                } else {
                                     User u = new User((fName.getText().toString()),
                                             lName.getText().toString(), username.getText().toString());
                                     u.setStepGoal(Long.valueOf(5000));
                                     mFirebaseDB.child("users").child(mAuth.getUid()).setValue(u);
+                                    LocalDate today;
+                                    today = LocalDate.now();
+                                    Long streak;
+                                    streak = Long.valueOf(0);
+                                    streakMap.put("date", today.toString());
+                                    streakMap.put("currStreak", streak);
+                                    mFirebaseDB.child("users").child(mAuth.getUid()).child("streak").setValue(streakMap);
 
-                                    startActivity(new Intent(Registration.this , MainActivity.class));
-                                    finish();
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Registration.this,
-                                    "Registration Error !!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }else{
-                    password.setError("Empty Fields Are not Allowed");
-                }
-            }else if(email.getText().toString().isEmpty()){
-                email.setError("Empty Fields Are not Allowed");
-            }else{
-                email.setError("Pleas Enter Correct Email");
+
+                                startActivity(new Intent(Registration.this, MainActivity.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Registration.this,
+                                "Registration Error !!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                password.setError("Empty Fields Are not Allowed");
             }
+        } else if (email.getText().toString().isEmpty()) {
+            email.setError("Empty Fields Are not Allowed");
+        } else {
+            email.setError("Pleas Enter Correct Email");
         }
+    }
 
 }
