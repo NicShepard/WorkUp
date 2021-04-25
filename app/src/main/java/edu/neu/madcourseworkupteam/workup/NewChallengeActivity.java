@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -114,7 +113,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
                 if(start < System.currentTimeMillis()){
                     Toast.makeText(NewChallengeActivity.this,
-                            "Please choose a start date in the future", Toast.LENGTH_SHORT).show();
+                            "Please choose a start date further the future", Toast.LENGTH_SHORT).show();
                     challengeToAdd = null;
                 } else {
                     //Create the challenge to be added
@@ -196,7 +195,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
 
     }
 
-//TODO store username somewhere
     public void getFriends() {
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -272,7 +270,7 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
         cCopy.setTitle(challenge.getTitle());
         cCopy.setStartDate(challenge.getStartDate());
         cCopy.setEndDate(challenge.getEndDate());
-        cCopy.setAccepted(false);
+
 
         String key = db.child("users").child(user.getUid()).child("challenges").push().getKey();
 
@@ -324,7 +322,6 @@ public class NewChallengeActivity extends AppCompatActivity implements MultiSele
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
-                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
 
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));

@@ -20,9 +20,11 @@
 
             <EditText
                 android:id="@+id/name_of_challenge"
-                android:layout_width="252dp"
-                android:layout_height="66dp"
+                android:layout_width="365dp"
+                android:layout_height="55dp"
+                android:capitalize="words"
                 android:hint="Enter name of challenge"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/friends_text"
                 app:layout_constraintEnd_toEndOf="@+id/friends_text"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -38,7 +40,7 @@
                 android:textSize="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/friends"
                 app:layout_constraintEnd_toEndOf="@+id/friends"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.75"
                 app:layout_constraintStart_toStartOf="@+id/friends"
                 app:layout_constraintTop_toBottomOf="@+id/name_of_challenge" />
 

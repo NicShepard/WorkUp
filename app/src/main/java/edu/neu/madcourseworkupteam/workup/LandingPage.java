@@ -289,7 +289,6 @@ public class LandingPage extends AppCompatActivity {
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
-                    c.setAccepted(ds.getValue(Challenge.class).getAccepted());
                     ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle());
                     cardList.add(item);
                     challenges.add(c);
