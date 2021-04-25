@@ -31,6 +31,7 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
         challengeName = itemView.findViewById(R.id.challenge_name);
         friendNames = itemView.findViewById(R.id.challenge_friends);
 
+
         itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -38,27 +39,10 @@ public class ChallengeViewHolder extends RecyclerView.ViewHolder {
                 if (listener != null) {
                     int position = getLayoutPosition();
                     listener.onItemClick(position);
+                    Intent intent = new Intent(itemView.getContext(), ChallengeView.class);
+                    intent.putExtra("challengeID", challengeID);
+                    itemView.getContext().startActivity(intent);
 
-                    ValueEventListener userListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.d("Get challenge on data change!!!", "called");
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                Log.d("Get challenge key", String.valueOf(ds.getKey()));
-                                Intent intent = new Intent(itemView.getContext(), ChallengeView.class);
-                                intent.putExtra("challengeID", String.valueOf(ds.getKey()));
-                                itemView.getContext().startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Getting Post failed, log a message
-                            Log.w("Get Movement", "loadPost:onCancelled", databaseError.toException());
-                        }
-                    };
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("challenges");
-                    databaseReference.addValueEventListener(userListener);
                 }
             }
         });
