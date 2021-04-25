@@ -21,6 +21,7 @@ public class Challenge {
     List<String> userPlacement;
     String pk;
     Integer placement;
+    String ID;
 
     public Challenge() {
         // Default empty Constructor
@@ -33,6 +34,7 @@ public class Challenge {
         this.endDate = endDate;
         this.userPoints = userPoints;
         this.userPlacement = userPlacement;
+        this.ID = "";
     }
 
     /**
@@ -59,6 +61,13 @@ public class Challenge {
         return pk;
     }
 
+    public void setID(String id) {
+        this.ID = id;
+    }
+
+    public String getID() {
+        return this.ID;
+    }
     /**
      * Sets the primary Key
      * @param pk

@@ -93,9 +93,6 @@ public class LandingPage extends AppCompatActivity {
                     case R.id.goProfile:
                         goToProfile();
                         break;
-                    case R.id.goChallenges:
-                        goToChallenges();
-                        break;
                 }
                 return true;
             }
@@ -220,11 +217,6 @@ public class LandingPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToChallenges() {
-        Intent intent = new Intent(this, ChallengeActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -234,10 +226,7 @@ public class LandingPage extends AppCompatActivity {
             Intent intent = new Intent(LandingPage.this, ProfileActivity.class);
             startActivity(intent);
         }
-        if (item.getItemId() == R.id.goChallenges) {
-            Intent intent = new Intent(LandingPage.this, ChallengeActivity.class);
-            startActivity(intent);
-        }
+
         if (item.getItemId() == R.id.action_signout) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(LandingPage.this);
             builder.setMessage("Are you sure you want to logout?");
@@ -294,7 +283,8 @@ public class LandingPage extends AppCompatActivity {
                     c.setStartDate(ds.getValue(Challenge.class).getStartDate());
                     c.setEndDate(ds.getValue(Challenge.class).getEndDate());
                     c.setTitle(ds.getValue(Challenge.class).getTitle());
-                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle());
+                    c.setID(String.valueOf(ds.getKey()));
+                    ChallengeCard item = new ChallengeCard(c.getStartDate() + " - " + c.getEndDate(), c.getTitle(), c.getID());
                     cardList.add(item);
                     challenges.add(c);
                     Log.d("Size of list is", String.valueOf(challenges.size()));
